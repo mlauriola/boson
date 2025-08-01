@@ -7,13 +7,10 @@ namespace Boson\Contracts\Http\Component;
 /**
  * @phpstan-type HeaderInputNameType non-empty-string|\Stringable
  * @phpstan-type HeaderOutputNameType non-empty-lowercase-string
- *
  * @phpstan-type HeaderInputLineValueType string|\Stringable
  * @phpstan-type HeaderOutputLineValueType string
- *
  * @phpstan-type HeaderInputValueType HeaderInputLineValueType|iterable<mixed, HeaderInputLineValueType>
  * @phpstan-type HeaderOutputValueType list<HeaderOutputLineValueType>
- *
  * @phpstan-type HeadersListInputType iterable<HeaderInputNameType, HeaderInputValueType>
  * @phpstan-type HeadersListOutputType array<HeaderOutputNameType, HeaderOutputValueType>
  *

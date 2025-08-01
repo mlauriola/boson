@@ -7,20 +7,16 @@ namespace Boson\Component\Http\Component;
 use Boson\Component\Http\Component\Headers\HeadersNormalizer;
 use Boson\Contracts\Http\Component\EvolvableHeadersInterface;
 use Boson\Contracts\Http\Component\HeadersInterface;
-use Stringable as HeaderInputValueType;
 
 /**
  * An implementation of immutable headers list.
  *
  * @phpstan-import-type HeaderInputNameType from HeadersInterface
  * @phpstan-import-type HeaderOutputNameType from HeadersInterface
- *
  * @phpstan-import-type HeaderInputLineValueType from HeadersInterface
  * @phpstan-import-type HeaderOutputLineValueType from HeadersInterface
- *
  * @phpstan-import-type HeaderInputValueType from HeadersInterface
  * @phpstan-import-type HeaderOutputValueType from HeadersInterface
- *
  * @phpstan-import-type HeadersListInputType from HeadersInterface
  * @phpstan-import-type HeadersListOutputType from HeadersInterface
  *
@@ -31,7 +27,7 @@ class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
     /**
      * @var HeadersListOutputType
      */
-    protected array $lines;
+    protected readonly array $lines;
 
     /**
      * Expects list of header values in format:
@@ -100,24 +96,24 @@ class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
 
     public function first(string|\Stringable $name, string|\Stringable|null $default = null): ?string
     {
-        $formatted = HeadersNormalizer::normalizeHeaderName($name, false);
+        $normalizedName = HeadersNormalizer::normalizeHeaderName($name, false);
+
+        // Stack Allocation optimization
         $lines = $this->lines;
 
-        if (\array_key_exists($formatted, $lines)) {
-            $first = $lines[$formatted][0] ?? null;
+        if (\array_key_exists($normalizedName, $lines)) {
+            $first = $lines[$normalizedName][0] ?? null;
 
             if ($first !== null) {
                 return $first;
             }
-
-            if ($default === null) {
-                return null;
-            }
-
-            return HeadersNormalizer::normalizeHeaderLineValue($default, false);
         }
 
-        return $default;
+        if ($default === null) {
+            return null;
+        }
+
+        return HeadersNormalizer::normalizeHeaderLineValue($default, false);
     }
 
     public function all(string|\Stringable $name): array

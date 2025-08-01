@@ -9,13 +9,10 @@ use Boson\Contracts\Http\Component\HeadersInterface;
 /**
  * @phpstan-import-type HeaderInputNameType from HeadersInterface
  * @phpstan-import-type HeaderOutputNameType from HeadersInterface
- *
  * @phpstan-import-type HeaderInputLineValueType from HeadersInterface
  * @phpstan-import-type HeaderOutputLineValueType from HeadersInterface
- *
  * @phpstan-import-type HeaderInputValueType from HeadersInterface
  * @phpstan-import-type HeaderOutputValueType from HeadersInterface
- *
  * @phpstan-import-type HeadersListInputType from HeadersInterface
  * @phpstan-import-type HeadersListOutputType from HeadersInterface
  */
@@ -37,6 +34,7 @@ final readonly class HeadersNormalizer
      * consistently appear in lowercase.
      *
      * @param HeaderInputNameType $name
+     *
      * @return HeaderOutputNameType
      */
     public static function normalizeHeaderName(string|\Stringable $name, bool $validate = true): string
@@ -50,11 +48,13 @@ final readonly class HeadersNormalizer
             HeadersValidator::assertValidHeaderName($name);
         }
 
+        /** @var non-empty-lowercase-string */
         return \strtolower($name);
     }
 
     /**
      * @param HeaderInputLineValueType $value
+     *
      * @return HeaderOutputLineValueType
      */
     public static function normalizeHeaderLineValue(string|\Stringable $value, bool $validate = true): string
@@ -83,6 +83,7 @@ final readonly class HeadersNormalizer
 
     /**
      * @param HeaderInputValueType $values
+     *
      * @return HeaderOutputValueType
      */
     public static function normalizeHeaderValue(
@@ -96,6 +97,8 @@ final readonly class HeadersNormalizer
         }
 
         foreach ($values as $value) {
+            assert(\is_string($value) || $value instanceof \Stringable);
+
             $result[] = self::normalizeHeaderLineValue($value, $validate);
         }
 
@@ -104,6 +107,7 @@ final readonly class HeadersNormalizer
 
     /**
      * @param HeadersListInputType $headers
+     *
      * @return HeadersListOutputType
      */
     public static function normalizeHeadersList(iterable $headers, bool $validate = true): array

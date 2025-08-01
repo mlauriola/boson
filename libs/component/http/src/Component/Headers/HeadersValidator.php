@@ -29,7 +29,6 @@ final readonly class HeadersValidator
     /**
      * @link http://tools.ietf.org/html/rfc7230#section-3.2
      *
-     * @param HeaderOutputNameType $name
      * @return ($name is non-empty-string ? void : never)
      * @throws \InvalidArgumentException
      */
@@ -50,9 +49,8 @@ final readonly class HeadersValidator
     }
 
     /**
-     * @param HeaderOutputLineValueType $value
-     *
      * @link http://tools.ietf.org/html/rfc7230#section-3.2
+     *
      * @throws \InvalidArgumentException
      */
     public static function assertValidHeaderValue(string $value): void
@@ -65,5 +63,4 @@ final readonly class HeadersValidator
             ));
         }
     }
-
 }

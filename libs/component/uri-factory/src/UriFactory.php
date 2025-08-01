@@ -64,7 +64,7 @@ final readonly class UriFactory implements UriFactoryInterface
         if ($uri instanceof \Stringable) {
             try {
                 $scalar = (string) $uri;
-            /** @phpstan-ignore-next-line : PHPStan false-positive, this is not dead catch */
+                /** @phpstan-ignore-next-line : PHPStan false-positive, this is not dead catch */
             } catch (\Throwable $e) {
                 throw InvalidUriException::becauseStringCastingErrorOccurs($uri, $e);
             }
