@@ -4,18 +4,29 @@ declare(strict_types=1);
 
 namespace Boson\Component\Http\Component;
 
+use Boson\Component\Http\Component\Headers\HeadersNormalizer;
+use Boson\Contracts\Http\Component\EvolvableHeadersInterface;
 use Boson\Contracts\Http\Component\HeadersInterface;
+use Stringable as HeaderInputValueType;
 
 /**
  * An implementation of immutable headers list.
  *
- * @phpstan-type HeadersListInputType iterable<non-empty-lowercase-string, list<string>>
+ * @phpstan-import-type HeaderInputNameType from HeadersInterface
+ * @phpstan-import-type HeaderOutputNameType from HeadersInterface
  *
+ * @phpstan-import-type HeaderInputLineValueType from HeadersInterface
+ * @phpstan-import-type HeaderOutputLineValueType from HeadersInterface
+ *
+ * @phpstan-import-type HeaderInputValueType from HeadersInterface
+ * @phpstan-import-type HeaderOutputValueType from HeadersInterface
+ *
+ * @phpstan-import-type HeadersListInputType from HeadersInterface
  * @phpstan-import-type HeadersListOutputType from HeadersInterface
  *
  * @template-implements \IteratorAggregate<non-empty-lowercase-string, string>
  */
-class HeadersMap implements HeadersInterface, \IteratorAggregate
+class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
 {
     /**
      * @var HeadersListOutputType
@@ -36,7 +47,7 @@ class HeadersMap implements HeadersInterface, \IteratorAggregate
      */
     final public function __construct(iterable $headers = [])
     {
-        $this->lines = \iterator_to_array($headers);
+        $this->lines = HeadersNormalizer::normalizeHeadersList($headers);
     }
 
     /**
@@ -53,90 +64,81 @@ class HeadersMap implements HeadersInterface, \IteratorAggregate
         return new self($headers->toArray());
     }
 
-    /**
-     * According to HTTP specifications, specifically RFC-9110 and its
-     * predecessors like RFC-2616 and RFC-7230, HTTP header names are
-     * case-insensitive. This means that "Content-Type", "content-type",
-     * and "CONTENT-TYPE" are all treated as the same header name by
-     * compliant HTTP implementations.
-     *
-     * While the standard dictates case-insensitivity, HTTP/2 mandates
-     * that header names be converted to lowercase for various reasons,
-     * including performance optimization and simplification. Therefore,
-     * if interacting with an HTTP/2 server, the header names will
-     * consistently appear in lowercase.
-     *
-     * @phpstan-pure
-     *
-     * @param non-empty-string $name
-     *
-     * @return non-empty-lowercase-string
-     */
-    final public static function getNormalizedHeaderName(string $name): string
-    {
-        return \strtolower($name);
-    }
-
-    /**
-     * @param non-empty-string $name
-     */
-    public function withAddedHeader(string $name, string $value): self
+    public function withAddedHeader(string|\Stringable $name, string|\Stringable $value): self
     {
         if ($name === '') {
             return $this;
         }
 
         $headers = $this->lines;
-        $headers[self::getNormalizedHeaderName($name)][] = $value;
+        $headers[HeadersNormalizer::normalizeHeaderName($name)][]
+            = HeadersNormalizer::normalizeHeaderLineValue($value);
 
         return new self($headers);
     }
 
-    /**
-     * @param non-empty-string $name
-     */
-    public function withoutHeader(string $name): self
+    public function withHeader(\Stringable|string $name, iterable|\Stringable|string $values): EvolvableHeadersInterface
+    {
+        $headers = $this->lines;
+        $headers[HeadersNormalizer::normalizeHeaderName($name)]
+            = HeadersNormalizer::normalizeHeaderValue($values);
+
+        return new self($headers);
+    }
+
+    public function withoutHeader(string|\Stringable $name): self
     {
         if ($name === '') {
             return $this;
         }
 
         $headers = $this->lines;
-        unset($headers[self::getNormalizedHeaderName($name)]);
+        unset($headers[HeadersNormalizer::normalizeHeaderName($name, false)]);
 
         return new self($headers);
     }
 
-    public function first(string $name, ?string $default = null): ?string
+    public function first(string|\Stringable $name, string|\Stringable|null $default = null): ?string
     {
-        $formatted = self::getNormalizedHeaderName($name);
+        $formatted = HeadersNormalizer::normalizeHeaderName($name, false);
         $lines = $this->lines;
 
         if (\array_key_exists($formatted, $lines)) {
-            return $lines[$formatted][0] ?? $default;
+            $first = $lines[$formatted][0] ?? null;
+
+            if ($first !== null) {
+                return $first;
+            }
+
+            if ($default === null) {
+                return null;
+            }
+
+            return HeadersNormalizer::normalizeHeaderLineValue($default, false);
         }
 
         return $default;
     }
 
-    public function all(string $name): array
+    public function all(string|\Stringable $name): array
     {
-        return $this->lines[self::getNormalizedHeaderName($name)]
+        return $this->lines[HeadersNormalizer::normalizeHeaderName($name, false)]
             ?? [];
     }
 
-    public function has(string $name): bool
+    public function has(string|\Stringable $name): bool
     {
-        $formatted = self::getNormalizedHeaderName($name);
+        $normalizedName = HeadersNormalizer::normalizeHeaderName($name, false);
 
-        return \array_key_exists($formatted, $this->lines);
+        return \array_key_exists($normalizedName, $this->lines);
     }
 
-    public function contains(string $name, string $value): bool
+    public function contains(string|\Stringable $name, string|\Stringable $value): bool
     {
-        $formatted = self::getNormalizedHeaderName($name);
+        $normalizedName = HeadersNormalizer::normalizeHeaderName($name, false);
+        $normalizedValue = HeadersNormalizer::normalizeHeaderLineValue($value, false);
 
-        return \in_array($value, $this->lines[$formatted] ?? [], true);
+        return \in_array($normalizedValue, $this->lines[$normalizedName] ?? [], true);
     }
 
     public function getIterator(): \Traversable
