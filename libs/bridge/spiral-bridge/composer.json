@@ -34,7 +34,8 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^12.0"
+        "phpunit/phpunit": "^12.0",
+        "nyholm/psr7": "^1.8"
     },
     "autoload-dev": {
         "psr-4": {
