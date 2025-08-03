@@ -32,6 +32,9 @@
             "Boson\\Component\\Uri\\Factory\\Tests\\": "tests"
         }
     },
+    "provide": {
+        "boson-php/uri-factory-contracts-implementation": "^0.15"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "0.15.x-dev",
