@@ -5,19 +5,15 @@ declare(strict_types=1);
 namespace Boson\Component\Http;
 
 use Boson\Component\Http\Component\MutableHeadersMap;
+use Boson\Contracts\Http\Component\Body\EvolvableBodyProviderInterface;
+use Boson\Contracts\Http\Component\Headers\EvolvableHeadersProviderInterface;
+use Boson\Contracts\Http\Component\StatusCode\StatusCodeProviderInterface;
 use Boson\Contracts\Http\Component\StatusCodeInterface;
-use Boson\Contracts\Http\EvolvableMessageInterface;
-use Boson\Contracts\Http\EvolvableResponseInterface;
-use Boson\Contracts\Http\MessageInterface;
-use Boson\Contracts\Http\ResponseInterface;
 
 /**
- * @phpstan-import-type InStatusCodeType from ResponseInterface
- * @phpstan-import-type OutStatusCodeType from EvolvableResponseInterface
- * @phpstan-import-type InHeadersType from EvolvableMessageInterface
- * @phpstan-import-type OutHeadersType from MessageInterface
- * @phpstan-import-type InBodyType from EvolvableMessageInterface
- * @phpstan-import-type OutBodyType from MessageInterface
+ * @phpstan-import-type InStatusCodeType from StatusCodeProviderInterface
+ * @phpstan-import-type InHeadersType from EvolvableHeadersProviderInterface
+ * @phpstan-import-type InBodyType from EvolvableBodyProviderInterface
  */
 class JsonResponse extends Response
 {

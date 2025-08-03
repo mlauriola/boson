@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boson\Component\Http\Component;
+namespace Boson\Component\Http\Component\Headers;
 
 use Boson\Component\Http\Exception\InvalidHeaderNameException;
 use Boson\Component\Http\Exception\InvalidHeaderValueException;

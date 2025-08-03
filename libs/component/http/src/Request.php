@@ -10,24 +10,30 @@ use Boson\Component\Http\Component\Method;
 use Boson\Component\Http\Exception\InvalidBodyException;
 use Boson\Component\Http\Exception\InvalidHeadersException;
 use Boson\Component\Uri\Factory\UriFactory;
+use Boson\Contracts\Http\Component\Body\BodyProviderInterface;
+use Boson\Contracts\Http\Component\Body\EvolvableBodyProviderInterface;
+use Boson\Contracts\Http\Component\Headers\EvolvableHeadersProviderInterface;
+use Boson\Contracts\Http\Component\Headers\HeadersProviderInterface;
 use Boson\Contracts\Http\Component\HeadersInterface;
+use Boson\Contracts\Http\Component\Method\EvolvableMethodProviderInterface;
+use Boson\Contracts\Http\Component\Method\MethodProviderInterface;
 use Boson\Contracts\Http\Component\MethodInterface;
-use Boson\Contracts\Http\EvolvableMessageInterface;
+use Boson\Contracts\Http\Component\Url\EvolvableUrlProviderInterface;
+use Boson\Contracts\Http\Component\Url\UrlProviderInterface;
 use Boson\Contracts\Http\EvolvableRequestInterface;
-use Boson\Contracts\Http\MessageInterface;
 use Boson\Contracts\Http\RequestInterface;
 use Boson\Contracts\Uri\Factory\UriFactoryInterface;
 use Boson\Contracts\Uri\UriInterface;
 
 /**
- * @phpstan-import-type InMethodType from EvolvableRequestInterface
- * @phpstan-import-type OutMethodType from RequestInterface
- * @phpstan-import-type InUrlType from EvolvableRequestInterface
- * @phpstan-import-type OutUrlType from RequestInterface
- * @phpstan-import-type InHeadersType from EvolvableMessageInterface
- * @phpstan-import-type OutHeadersType from MessageInterface
- * @phpstan-import-type InBodyType from EvolvableMessageInterface
- * @phpstan-import-type OutBodyType from MessageInterface
+ * @phpstan-import-type InMethodType from EvolvableMethodProviderInterface
+ * @phpstan-import-type OutMethodType from MethodProviderInterface
+ * @phpstan-import-type InUrlType from EvolvableUrlProviderInterface
+ * @phpstan-import-type OutUrlType from UrlProviderInterface
+ * @phpstan-import-type InHeadersType from EvolvableHeadersProviderInterface
+ * @phpstan-import-type OutHeadersType from HeadersProviderInterface
+ * @phpstan-import-type InBodyType from EvolvableBodyProviderInterface
+ * @phpstan-import-type OutBodyType from BodyProviderInterface
  */
 class Request implements EvolvableRequestInterface
 {

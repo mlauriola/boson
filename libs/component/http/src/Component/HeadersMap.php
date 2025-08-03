@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Component\Http\Component;
 
+use Boson\Component\Http\Component\Headers\Header;
 use Boson\Component\Http\Exception\InvalidHeaderValueException;
 use Boson\Contracts\Http\Component\EvolvableHeadersInterface;
 use Boson\Contracts\Http\Component\HeadersInterface;

@@ -6,10 +6,10 @@ namespace Boson\Component\Http\Component;
 
 use Boson\Component\Http\Component\Method\MethodImpl;
 use Boson\Component\Http\Exception\InvalidMethodException;
+use Boson\Contracts\Http\Component\Method\EvolvableMethodProviderInterface;
+use Boson\Contracts\Http\Component\Method\MethodProviderInterface;
+use Boson\Contracts\Http\Component\Method\MutableMethodProviderInterface;
 use Boson\Contracts\Http\Component\MethodInterface;
-use Boson\Contracts\Http\EvolvableRequestInterface;
-use Boson\Contracts\Http\MutableRequestInterface;
-use Boson\Contracts\Http\RequestInterface;
 
 require_once __DIR__ . '/Method/constants.php';
 
@@ -19,9 +19,9 @@ require_once __DIR__ . '/Method/constants.php';
  * Note: Impossible to implement via native PHP enum due to lack of support
  *       for properties: https://externals.io/message/126332
  *
- * @phpstan-import-type InMethodType from EvolvableRequestInterface
- * @phpstan-import-type OutMethodType from RequestInterface
- * @phpstan-import-type OutMutableMethodType from MutableRequestInterface
+ * @phpstan-import-type InMethodType from EvolvableMethodProviderInterface
+ * @phpstan-import-type OutMethodType from MethodProviderInterface
+ * @phpstan-import-type OutMutableMethodType from MutableMethodProviderInterface
  */
 final readonly class Method implements MethodInterface
 {

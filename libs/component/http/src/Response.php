@@ -9,25 +9,30 @@ use Boson\Component\Http\Component\MutableHeadersMap;
 use Boson\Component\Http\Component\StatusCode;
 use Boson\Component\Http\Exception\InvalidBodyException;
 use Boson\Component\Http\Exception\InvalidHeadersException;
+use Boson\Contracts\Http\Component\Body\BodyProviderInterface;
+use Boson\Contracts\Http\Component\Body\EvolvableBodyProviderInterface;
+use Boson\Contracts\Http\Component\Body\MutableBodyProviderInterface;
+use Boson\Contracts\Http\Component\Headers\EvolvableHeadersProviderInterface;
+use Boson\Contracts\Http\Component\Headers\HeadersProviderInterface;
+use Boson\Contracts\Http\Component\Headers\MutableHeadersProviderInterface;
 use Boson\Contracts\Http\Component\MutableHeadersInterface;
+use Boson\Contracts\Http\Component\StatusCode\EvolvableStatusCodeProviderInterface;
+use Boson\Contracts\Http\Component\StatusCode\MutableStatusCodeProviderInterface;
+use Boson\Contracts\Http\Component\StatusCode\StatusCodeProviderInterface;
 use Boson\Contracts\Http\Component\StatusCodeInterface;
-use Boson\Contracts\Http\EvolvableMessageInterface;
-use Boson\Contracts\Http\EvolvableResponseInterface;
-use Boson\Contracts\Http\MessageInterface;
-use Boson\Contracts\Http\MutableMessageInterface;
 use Boson\Contracts\Http\MutableResponseInterface;
 use Boson\Contracts\Http\ResponseInterface;
 
 /**
- * @phpstan-import-type InStatusCodeType from ResponseInterface
- * @phpstan-import-type OutStatusCodeType from EvolvableResponseInterface
- * @phpstan-import-type OutMutableStatusCodeType from MutableResponseInterface
- * @phpstan-import-type InHeadersType from EvolvableMessageInterface
- * @phpstan-import-type OutHeadersType from MessageInterface
- * @phpstan-import-type OutMutableHeadersType from MutableMessageInterface
- * @phpstan-import-type InBodyType from EvolvableMessageInterface
- * @phpstan-import-type OutBodyType from MessageInterface
- * @phpstan-import-type OutMutableBodyType from MutableMessageInterface
+ * @phpstan-import-type InStatusCodeType from StatusCodeProviderInterface
+ * @phpstan-import-type OutStatusCodeType from EvolvableStatusCodeProviderInterface
+ * @phpstan-import-type OutMutableStatusCodeType from MutableStatusCodeProviderInterface
+ * @phpstan-import-type InHeadersType from EvolvableHeadersProviderInterface
+ * @phpstan-import-type OutHeadersType from HeadersProviderInterface
+ * @phpstan-import-type OutMutableHeadersType from MutableHeadersProviderInterface
+ * @phpstan-import-type InBodyType from EvolvableBodyProviderInterface
+ * @phpstan-import-type OutBodyType from BodyProviderInterface
+ * @phpstan-import-type OutMutableBodyType from MutableBodyProviderInterface
  */
 class Response implements MutableResponseInterface
 {

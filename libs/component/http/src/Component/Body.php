@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Boson\Component\Http\Component;
 
 use Boson\Component\Http\Exception\InvalidBodyException;
-use Boson\Contracts\Http\EvolvableMessageInterface;
-use Boson\Contracts\Http\MessageInterface;
-use Boson\Contracts\Http\MutableMessageInterface;
+use Boson\Contracts\Http\Component\Body\BodyProviderInterface;
+use Boson\Contracts\Http\Component\Body\EvolvableBodyProviderInterface;
+use Boson\Contracts\Http\Component\Body\MutableBodyProviderInterface;
 
 /**
- * @phpstan-import-type OutBodyType from MessageInterface
- * @phpstan-import-type InBodyType from EvolvableMessageInterface
- * @phpstan-import-type InMutableBodyType from MutableMessageInterface
+ * @phpstan-import-type InBodyType from EvolvableBodyProviderInterface
+ * @phpstan-import-type OutBodyType from BodyProviderInterface
+ * @phpstan-import-type OutMutableBodyType from MutableBodyProviderInterface
  */
 final readonly class Body
 {
