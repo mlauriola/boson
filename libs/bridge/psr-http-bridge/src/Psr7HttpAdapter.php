@@ -90,9 +90,8 @@ readonly class Psr7HttpAdapter extends HttpAdapter
 
         return new Response(
             body: (string) $response->getBody(),
-            /** @phpstan-ignore-next-line : Allow PSR headers */
-            headers: $response->getHeaders(),
             status: $response->getStatusCode(),
+            headers: $response->getHeaders(),
         );
     }
 }

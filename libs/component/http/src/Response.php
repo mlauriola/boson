@@ -99,8 +99,8 @@ class Response implements MutableResponseInterface
 
     /**
      * @param InBodyType $body
-     * @param InHeadersType $headers
      * @param InStatusCodeType $status
+     * @param InHeadersType $headers
      */
     public function __construct(
         string|\Stringable $body = self::DEFAULT_BODY,

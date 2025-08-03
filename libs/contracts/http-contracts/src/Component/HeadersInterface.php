@@ -16,7 +16,7 @@ use Boson\Contracts\Http\Exception\InvalidComponentArgumentExceptionInterface;
  * @phpstan-type InHeadersListType iterable<InHeaderNameType, InHeaderValuesType>
  * @phpstan-type OutHeadersListType array<OutHeaderNameType, OutHeaderValuesType>
  *
- * @template-extends \Traversable<OutHeaderNameType, InHeaderValueType>
+ * @template-extends \Traversable<OutHeaderNameType, OutHeaderValueType>
  */
 interface HeadersInterface extends \Traversable, \Countable
 {
