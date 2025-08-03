@@ -7,6 +7,11 @@ namespace Boson\Contracts\Http\Component;
 use Boson\Contracts\Http\Exception\InvalidComponentArgumentExceptionInterface;
 
 /**
+ * Evolvable implementation of {@see HeadersInterface}.
+ *
+ * Allows to modify header values using instance values as a prototype
+ * without changing the object itself.
+ *
  * @phpstan-import-type InHeaderNameType from HeadersInterface
  * @phpstan-import-type InHeaderValueType from HeadersInterface
  * @phpstan-import-type InHeaderValuesType from HeadersInterface

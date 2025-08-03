@@ -8,6 +8,11 @@ use Boson\Contracts\Http\Component\MethodInterface;
 use Boson\Contracts\Http\Exception\InvalidComponentArgumentExceptionInterface;
 
 /**
+ * Mutable implementation of {@see MethodProviderInterface}.
+ *
+ * Implementations of this interface DO NOT guarantee that the
+ * HTTP method in this object will not be modified by anyone.
+ *
  * @phpstan-import-type InMethodType from EvolvableMethodProviderInterface
  * @phpstan-import-type OutMethodType from MethodProviderInterface
  *
@@ -23,12 +28,13 @@ interface MutableMethodProviderInterface extends MethodProviderInterface
     public MethodInterface $method {
         get;
         /**
-         * Also allows to set empty or non-normalized method name
-         * string or object.
+         * Allows to set empty or non-normalized HTTP method name
+         * string or stringable object.
          *
-         * @param InMethodType $method
+         * @param InMethodType $method A new HTTP method value
          *
-         * @throws InvalidComponentArgumentExceptionInterface
+         * @throws InvalidComponentArgumentExceptionInterface in case of new
+         *         HTTP method is invalid
          */
         set(string|\Stringable $method);
     }

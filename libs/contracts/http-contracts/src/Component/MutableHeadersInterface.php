@@ -7,6 +7,11 @@ namespace Boson\Contracts\Http\Component;
 use Boson\Contracts\Http\Exception\InvalidComponentArgumentExceptionInterface;
 
 /**
+ * Mutable implementation of {@see HeadersInterface}.
+ *
+ * Implementations of this interface DO NOT guarantee that the
+ * headers will not be modified by anyone.
+ *
  * @phpstan-import-type InHeaderNameType from HeadersInterface
  * @phpstan-import-type InHeaderValueType from HeadersInterface
  * @phpstan-import-type InHeaderValuesType from HeadersInterface

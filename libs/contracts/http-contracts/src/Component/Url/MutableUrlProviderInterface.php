@@ -8,6 +8,11 @@ use Boson\Contracts\Http\Exception\InvalidComponentArgumentExceptionInterface;
 use Boson\Contracts\Uri\UriInterface;
 
 /**
+ * Mutable implementation of {@see StatusCodeProviderInterface}.
+ *
+ * Implementations of this interface DO NOT guarantee that the
+ * HTTP URL in this object will not be modified by anyone.
+ *
  * @phpstan-import-type InUrlType from EvolvableUrlProviderInterface
  * @phpstan-import-type OutUrlType from UrlProviderInterface
  *
@@ -23,11 +28,12 @@ interface MutableUrlProviderInterface extends UrlProviderInterface
     public UriInterface $url {
         get;
         /**
-         * Also allows to set empty or non-normalized URL/URI string or object
+         * Allows to set any non-normalized URL/URI string or stringable object
          *
-         * @param InUrlType $url
+         * @param InUrlType $url A new HTTP URL value
          *
-         * @throws InvalidComponentArgumentExceptionInterface
+         * @throws InvalidComponentArgumentExceptionInterface in case of new
+         *         HTTP URL is invalid
          */
         set(string|\Stringable $url);
     }

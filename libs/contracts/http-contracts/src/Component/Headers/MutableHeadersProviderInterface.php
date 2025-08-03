@@ -8,6 +8,11 @@ use Boson\Contracts\Http\Component\MutableHeadersInterface;
 use Boson\Contracts\Http\Exception\InvalidComponentArgumentExceptionInterface;
 
 /**
+ * Mutable implementation of {@see HeadersProviderInterface}.
+ *
+ * Implementations of this interface DO NOT guarantee that the
+ * HTTP headers in this object will not be modified by anyone.
+ *
  * @phpstan-import-type InHeadersType from EvolvableHeadersProviderInterface
  * @phpstan-import-type OutHeadersType from HeadersProviderInterface
  *
@@ -26,9 +31,10 @@ interface MutableHeadersProviderInterface extends HeadersProviderInterface
         /**
          * Allows to set any headers list, including immutable.
          *
-         * @param InHeadersType $headers
+         * @param InHeadersType $headers A new HTTP headers list
          *
-         * @throws InvalidComponentArgumentExceptionInterface
+         * @throws InvalidComponentArgumentExceptionInterface in case of passed
+         *         headers list value is invalid or contain invalid headers
          */
         set(iterable $headers);
     }
