@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Boson\Component\Http;
 
-use Boson\Component\Http\Component\MutableHeadersMap;
 use Boson\Contracts\Http\Component\Body\EvolvableBodyProviderInterface;
 use Boson\Contracts\Http\Component\Headers\EvolvableHeadersProviderInterface;
-use Boson\Contracts\Http\Component\StatusCode\StatusCodeProviderInterface;
+use Boson\Contracts\Http\Component\MutableHeadersInterface;
+use Boson\Contracts\Http\Component\StatusCode\EvolvableStatusCodeProviderInterface;
 use Boson\Contracts\Http\Component\StatusCodeInterface;
 
 /**
- * @phpstan-import-type InStatusCodeType from StatusCodeProviderInterface
+ * @phpstan-import-type InStatusCodeType from EvolvableStatusCodeProviderInterface
  * @phpstan-import-type InHeadersType from EvolvableHeadersProviderInterface
  * @phpstan-import-type InBodyType from EvolvableBodyProviderInterface
  */
@@ -58,7 +58,7 @@ class JsonResponse extends Response
      * in case of content-type header has not been defined.
      */
     #[\Override]
-    protected function extendHeaders(MutableHeadersMap $headers): void
+    protected function extendHeaders(MutableHeadersInterface $headers): void
     {
         if (!$headers->has('content-type')) {
             $headers->add('content-type', self::DEFAULT_JSON_CONTENT_TYPE);

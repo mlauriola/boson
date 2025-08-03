@@ -23,12 +23,14 @@ final readonly class Body
      *
      * @return OutBodyType
      * @throws InvalidBodyException
+     * @phpstan-ignore throws.unusedType
      */
     public static function create(string|\Stringable $body): string
     {
         if ($body instanceof \Stringable) {
             try {
                 $scalar = (string) $body;
+            /** @phpstan-ignore-next-line : PHPStan false-positive, this is not "dead catch" */
             } catch (\Throwable $e) {
                 throw InvalidBodyException::becauseStringCastingErrorOccurs($body, $e);
             }

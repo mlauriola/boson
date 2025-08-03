@@ -44,7 +44,7 @@ class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
      */
     final public function __construct(iterable $headers = [])
     {
-        $this->lines = $this->castHeadersList($headers);
+        $this->lines = static::castHeadersList($headers);
     }
 
     /**
@@ -81,7 +81,7 @@ class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
 
         foreach ($headers as $name => $values) {
             $normalizedName = Header::castHeaderName($name, $validate);
-            $normalizedValues = self::castHeaderValues($values, $validate);
+            $normalizedValues = static::castHeaderValues($values, $validate);
 
             $result[$normalizedName] = isset($result[$normalizedName])
                 ? \array_merge($result[$normalizedName], $normalizedValues)
@@ -183,15 +183,13 @@ class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
             if ($first !== null) {
                 return $first;
             }
-
-            if ($default === null) {
-                return null;
-            }
-
-            return Header::castHeaderValue($default, false);
         }
 
-        return $default;
+        if ($default === null) {
+            return null;
+        }
+
+        return Header::castHeaderValue($default, false);
     }
 
     public function all(string|\Stringable $name): array

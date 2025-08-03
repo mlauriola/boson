@@ -696,11 +696,16 @@ final readonly class Method implements MethodInterface
         if ($method instanceof \Stringable) {
             try {
                 $scalar = (string) $method;
+            /** @phpstan-ignore-next-line : PHPStan false-positive, this is not "dead catch" */
             } catch (\Throwable $e) {
                 throw InvalidMethodException::becauseStringCastingErrorOccurs($method, $e);
             }
 
             $method = $scalar;
+        }
+
+        if ($method === '') {
+            throw InvalidMethodException::becauseMethodIsEmpty();
         }
 
         return self::tryFrom($method)

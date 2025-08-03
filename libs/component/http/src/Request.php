@@ -67,8 +67,6 @@ class Request implements EvolvableRequestInterface
         get => $this->method;
         /**
          * @param InMethodType $method
-         *
-         * @return OutMethodType
          */
         set(string|\Stringable $method) => static::castMethod($method);
     }
@@ -83,8 +81,6 @@ class Request implements EvolvableRequestInterface
         get => $this->url;
         /**
          * @param InUrlType $url
-         *
-         * @return OutUrlType
          */
         set(string|\Stringable $url) => static::castUrl($url);
     }
@@ -169,7 +165,7 @@ class Request implements EvolvableRequestInterface
      * @return OutHeadersType
      * @throws InvalidHeadersException
      */
-    public static function castHeaders(iterable $headers): HeadersMap
+    public static function castHeaders(iterable $headers): HeadersInterface
     {
         return new HeadersMap($headers);
     }
@@ -239,9 +235,7 @@ class Request implements EvolvableRequestInterface
     public function __clone(): void
     {
         /**
-         * @link https://wiki.php.net/rfc/readonly_amendments
-         *
-         * @phpstan-ignore-next-line : PHPStan does not support PHP 8.3 clone feature
+         * @link https://wiki.php.net/rfc/readonly_amendment
          */
         $this->headers = clone $this->headers;
     }

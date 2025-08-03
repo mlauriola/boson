@@ -24,8 +24,8 @@ use Boson\Contracts\Http\MutableResponseInterface;
 use Boson\Contracts\Http\ResponseInterface;
 
 /**
- * @phpstan-import-type InStatusCodeType from StatusCodeProviderInterface
- * @phpstan-import-type OutStatusCodeType from EvolvableStatusCodeProviderInterface
+ * @phpstan-import-type InStatusCodeType from EvolvableStatusCodeProviderInterface
+ * @phpstan-import-type OutStatusCodeType from StatusCodeProviderInterface
  * @phpstan-import-type OutMutableStatusCodeType from MutableStatusCodeProviderInterface
  * @phpstan-import-type InHeadersType from EvolvableHeadersProviderInterface
  * @phpstan-import-type OutHeadersType from HeadersProviderInterface
@@ -142,12 +142,12 @@ class Response implements MutableResponseInterface
      * @return OutMutableHeadersType
      * @throws InvalidHeadersException
      */
-    public static function castHeaders(iterable $headers): MutableHeadersMap
+    public static function castHeaders(iterable $headers): MutableHeadersInterface
     {
         return new MutableHeadersMap($headers);
     }
 
-    protected function extendHeaders(MutableHeadersMap $headers): void
+    protected function extendHeaders(MutableHeadersInterface $headers): void
     {
         // Set UTF-8 text/html content header in case of
         // content-type header line is not defined.
@@ -177,5 +177,13 @@ class Response implements MutableResponseInterface
             status: $response->status,
             headers: $response->headers,
         );
+    }
+
+    public function __clone(): void
+    {
+        /**
+         * @link https://wiki.php.net/rfc/readonly_amendment
+         */
+        $this->headers = clone $this->headers;
     }
 }

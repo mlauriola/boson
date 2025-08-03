@@ -91,6 +91,7 @@ readonly class Psr7HttpAdapter extends HttpAdapter
         return new Response(
             body: (string) $response->getBody(),
             status: $response->getStatusCode(),
+            /** @phpstan-ignore-next-line : PSR-7 headers are compatible with Boson */
             headers: $response->getHeaders(),
         );
     }

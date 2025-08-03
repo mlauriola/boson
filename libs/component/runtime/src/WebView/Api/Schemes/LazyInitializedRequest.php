@@ -50,6 +50,7 @@ final class LazyInitializedRequest implements RequestInterface
             $scalar = \FFI::string($method);
 
             if ($scalar === '') {
+                /** @var non-empty-uppercase-string */
                 return (string) Request::DEFAULT_METHOD;
             }
 

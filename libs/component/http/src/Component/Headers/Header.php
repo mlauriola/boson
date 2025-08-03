@@ -34,12 +34,15 @@ final readonly class Header
      * @param InHeaderNameType $name
      *
      * @return OutHeaderNameType
+     *
+     * @throws InvalidHeaderNameException
      */
     public static function castHeaderName(string|\Stringable $name, bool $validate = true): string
     {
         if ($name instanceof \Stringable) {
             try {
                 $scalar = (string) $name;
+            /** @phpstan-ignore-next-line : PHPStan false-positive, this is not "dead catch" */
             } catch (\Throwable $e) {
                 throw InvalidHeaderNameException::becauseStringCastingErrorOccurs($name, $e);
             }
@@ -62,7 +65,7 @@ final readonly class Header
     /**
      * @link http://tools.ietf.org/html/rfc7230#section-3.2
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidHeaderNameException
      */
     private static function validateHeaderNameOrFail(string $name): void
     {
@@ -77,12 +80,15 @@ final readonly class Header
      * @param InHeaderValueType $value
      *
      * @return OutHeaderValueType
+     *
+     * @throws InvalidHeaderValueException
      */
     public static function castHeaderValue(string|\Stringable $value, bool $validate = true): string
     {
         if ($value instanceof \Stringable) {
             try {
                 $scalar = (string) $value;
+            /** @phpstan-ignore-next-line : PHPStan false-positive, this is not "dead catch" */
             } catch (\Throwable $e) {
                 throw InvalidHeaderValueException::becauseStringCastingErrorOccurs($value, $e);
             }
@@ -110,7 +116,7 @@ final readonly class Header
     /**
      * @link http://tools.ietf.org/html/rfc7230#section-3.2
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidHeaderValueException
      */
     public static function validateHeaderValueOrFail(string $value): void
     {
