@@ -27,7 +27,7 @@ final class LazyInitializedRequest implements RequestInterface
     }
 
     public HeadersInterface $headers {
-        get => $this->headers ??= Request::castHeaders($this->fetchRawHeadersIterable();
+        get => $this->headers ??= Request::castHeaders($this->fetchRawHeadersIterable());
     }
 
     public string $body {
