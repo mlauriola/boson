@@ -10,6 +10,12 @@ use Boson\Contracts\Http\Component\Body\EvolvableBodyProviderInterface;
 use Boson\Contracts\Http\Component\Body\MutableBodyProviderInterface;
 
 /**
+ * Representation of HTTP body.
+ *
+ * Currently, it only implements methods for type-casting a specific HTTP body
+ * and does not allow creating instances; this behavior may be
+ * added in the future.
+ *
  * @phpstan-import-type InBodyType from EvolvableBodyProviderInterface
  * @phpstan-import-type OutBodyType from BodyProviderInterface
  * @phpstan-import-type OutMutableBodyType from MutableBodyProviderInterface
@@ -19,10 +25,13 @@ final readonly class Body
     private function __construct() {}
 
     /**
-     * @param InBodyType $body
+     * Creates a new immutable HTTP body from user-defined body value.
      *
-     * @return OutBodyType
-     * @throws InvalidBodyException
+     * @param InBodyType $body User-defined HTTP body value
+     *
+     * @return OutBodyType Returned formatted (and validated) HTTP body
+     * @throws InvalidBodyException in case of body creation error occurs
+     *
      * @phpstan-ignore throws.unusedType
      */
     public static function create(string|\Stringable $body): string
@@ -30,7 +39,7 @@ final readonly class Body
         if ($body instanceof \Stringable) {
             try {
                 $scalar = (string) $body;
-            /** @phpstan-ignore-next-line : PHPStan false-positive, this is not "dead catch" */
+                /** @phpstan-ignore-next-line : PHPStan false-positive, this is not "dead catch" */
             } catch (\Throwable $e) {
                 throw InvalidBodyException::becauseStringCastingErrorOccurs($body, $e);
             }
@@ -42,10 +51,12 @@ final readonly class Body
     }
 
     /**
-     * @param InBodyType $body
+     * Creates a new mutable HTTP body from user-defined body value.
      *
-     * @return OutMutableBodyType
-     * @throws InvalidBodyException
+     * @param InBodyType $body User-defined HTTP body value
+     *
+     * @return OutMutableBodyType Returned formatted (and validated) HTTP body
+     * @throws InvalidBodyException in case of body creation error occurs
      */
     public static function createMutable(string|\Stringable $body): string
     {

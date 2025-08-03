@@ -9,6 +9,12 @@ use Boson\Component\Http\Exception\InvalidHeaderValueException;
 use Boson\Contracts\Http\Component\HeadersInterface;
 
 /**
+ * Representation of a single header line: Header name and value pair.
+ *
+ * Currently, it only implements methods for type-casting and validating
+ * a specific header line and does not allow creating instances; this
+ * behavior may be added in the future.
+ *
  * @phpstan-import-type InHeaderNameType from HeadersInterface
  * @phpstan-import-type OutHeaderNameType from HeadersInterface
  * @phpstan-import-type InHeaderValueType from HeadersInterface
@@ -21,28 +27,43 @@ use Boson\Contracts\Http\Component\HeadersInterface;
 final readonly class Header
 {
     /**
+     * PCRE pattern to validate HTTP header name.
+     *
      * @var non-empty-string
      */
     private const string PATTERN_RFC7230_HEADER_NAME = '/^[!#$%&\'*+.^_`|~0-9A-Za-z-]+$/D';
 
     /**
+     * PCRE pattern to validate HTTP header value.
+     *
      * @var non-empty-string
      */
     private const string PATTERN_RFC7230_HEADER_VALUE = '/^[ \t\x21-\x7E\x80-\xFF]*$/D';
 
+    private function __construct() {}
+
     /**
-     * @param InHeaderNameType $name
+     * Cast a header name to valid HTTP header name string.
      *
-     * @return OutHeaderNameType
+     * You may pass additional argument "$validate" to enable or disable name
+     * validation according to RFC 7230.
      *
-     * @throws InvalidHeaderNameException
+     * Validation MUST be enabled when storing a name within a header list
+     * and for further use. Validation MAY be disabled if the name is used
+     * only to retrieve data from a header list.
+     *
+     * @param InHeaderNameType $name Expected user-defined header name to cast
+     *
+     * @return OutHeaderNameType Returned formatted (and validated) header name
+     * @throws InvalidHeaderNameException in case of passed user-defined header
+     *         name is invalid or contain invalid characters
      */
     public static function castHeaderName(string|\Stringable $name, bool $validate = true): string
     {
         if ($name instanceof \Stringable) {
             try {
                 $scalar = (string) $name;
-            /** @phpstan-ignore-next-line : PHPStan false-positive, this is not "dead catch" */
+                /** @phpstan-ignore-next-line : PHPStan false-positive, this is not "dead catch" */
             } catch (\Throwable $e) {
                 throw InvalidHeaderNameException::becauseStringCastingErrorOccurs($name, $e);
             }
@@ -63,9 +84,12 @@ final readonly class Header
     }
 
     /**
+     * Validates a header name for compliance with the RFC 7230
+     *
      * @link http://tools.ietf.org/html/rfc7230#section-3.2
      *
-     * @throws InvalidHeaderNameException
+     * @throws InvalidHeaderNameException in case of passed header name
+     *         contain invalid characters
      */
     private static function validateHeaderNameOrFail(string $name): void
     {
@@ -77,18 +101,28 @@ final readonly class Header
     }
 
     /**
-     * @param InHeaderValueType $value
+     * Cast a header value to valid HTTP header value string.
      *
-     * @return OutHeaderValueType
+     * You may pass additional argument "$validate" to enable or disable value
+     * validation according to RFC 7230.
      *
-     * @throws InvalidHeaderValueException
+     * Validation MUST be enabled when storing a value within a header list
+     * and for further use. Validation MAY be disabled if the value is used
+     * only to retrieve data from a header list (For example, when specified
+     * as a default value in {@see HeadersInterface::first()} method).
+     *
+     * @param InHeaderValueType $value Expected user-defined header value to cast
+     *
+     * @return OutHeaderValueType Returned formatted (and validated) header value
+     * @throws InvalidHeaderValueException in case of passed user-defined header
+     *         value is not valid or contain invalid characters
      */
     public static function castHeaderValue(string|\Stringable $value, bool $validate = true): string
     {
         if ($value instanceof \Stringable) {
             try {
                 $scalar = (string) $value;
-            /** @phpstan-ignore-next-line : PHPStan false-positive, this is not "dead catch" */
+                /** @phpstan-ignore-next-line : PHPStan false-positive, this is not "dead catch" */
             } catch (\Throwable $e) {
                 throw InvalidHeaderValueException::becauseStringCastingErrorOccurs($value, $e);
             }
@@ -114,9 +148,12 @@ final readonly class Header
     }
 
     /**
+     * Validates a header value for compliance with the RFC 7230
+     *
      * @link http://tools.ietf.org/html/rfc7230#section-3.2
      *
-     * @throws InvalidHeaderValueException
+     * @throws InvalidHeaderValueException in case of passed user-defined header
+     *         value contain invalid characters
      */
     public static function validateHeaderValueOrFail(string $value): void
     {

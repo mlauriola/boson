@@ -30,6 +30,7 @@ interface HeadersInterface extends \Traversable, \Countable
      *
      * @param InHeaderNameType $name case-insensitive header field name to find
      * @param InHeaderValueType|null $default Default value if header is not defined
+     *
      * @return ($default is null ? OutHeaderValueType|null : OutHeaderValueType)
      * @throws InvalidComponentArgumentExceptionInterface in case of header name
      *         or default value is not valid
