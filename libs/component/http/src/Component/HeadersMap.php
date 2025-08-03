@@ -52,7 +52,7 @@ class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
      *
      * @return OutHeaderValuesType
      */
-    public static function castHeaderValues(string|\Stringable|iterable $values, bool $validate = true): array
+    public static function castHeaderValues(\Stringable|string|iterable $values, bool $validate = true): array
     {
         $result = [];
 
@@ -141,7 +141,7 @@ class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
      * @param InHeaderNameType $name
      * @param InHeaderValuesType $values
      */
-    protected function set(\Stringable|string $name, iterable|\Stringable|string $values): void
+    protected function set(\Stringable|string $name, \Stringable|string|iterable $values): void
     {
         $this->lines[Header::castHeaderName($name)] = self::castHeaderValues($values);
     }
@@ -172,7 +172,7 @@ class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
         $this->lines = [];
     }
 
-    public function first(\Stringable|string $name, string|\Stringable|null $default = null): ?string
+    public function first(\Stringable|string $name, \Stringable|string|null $default = null): ?string
     {
         $normalizedName = Header::castHeaderName($name, false);
         $lines = $this->lines;

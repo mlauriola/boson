@@ -32,7 +32,7 @@ interface EvolvableHeadersInterface extends HeadersInterface
      *
      * @throws InvalidComponentArgumentExceptionInterface
      */
-    public function withHeader(\Stringable|string $name, string|\Stringable|iterable $values): self;
+    public function withHeader(\Stringable|string $name, \Stringable|string|iterable $values): self;
 
     /**
      * @param InHeaderNameType $name

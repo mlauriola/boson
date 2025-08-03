@@ -44,7 +44,7 @@ class Response implements MutableResponseInterface
     /**
      * @var InStatusCodeType
      */
-    final public const int|StatusCodeInterface DEFAULT_STATUS_CODE = StatusCode::Ok;
+    final public const StatusCodeInterface|int DEFAULT_STATUS_CODE = StatusCode::Ok;
 
     /**
      * @var InHeadersType
@@ -78,7 +78,7 @@ class Response implements MutableResponseInterface
         /**
          * @param InStatusCodeType $status
          */
-        set(int|StatusCodeInterface $status) => static::castStatusCode($status);
+        set(StatusCodeInterface|int $status) => static::castStatusCode($status);
     }
 
     /**
@@ -104,7 +104,7 @@ class Response implements MutableResponseInterface
      */
     public function __construct(
         \Stringable|string $body = self::DEFAULT_BODY,
-        int|StatusCodeInterface $status = self::DEFAULT_STATUS_CODE,
+        StatusCodeInterface|int $status = self::DEFAULT_STATUS_CODE,
         iterable $headers = self::DEFAULT_HEADERS,
     ) {
         $this->body = $body;
@@ -131,7 +131,7 @@ class Response implements MutableResponseInterface
      *
      * @return OutMutableStatusCodeType
      */
-    public static function castStatusCode(int|StatusCodeInterface $status, ?string $reason = null): StatusCodeInterface
+    public static function castStatusCode(StatusCodeInterface|int $status, ?string $reason = null): StatusCodeInterface
     {
         return StatusCode::createMutable($status, $reason);
     }

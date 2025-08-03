@@ -239,7 +239,7 @@ final class CompatibilityTest extends TestCase
     public function testHeadersInterfaceCompatibility(): void
     {
         new class implements HeadersInterface, \IteratorAggregate {
-            public function first(\Stringable|string $name, string|\Stringable|null $default = null): ?string {}
+            public function first(\Stringable|string $name, \Stringable|string|null $default = null): ?string {}
 
             public function all(\Stringable|string $name): array {}
 
@@ -259,7 +259,7 @@ final class CompatibilityTest extends TestCase
     public function testMutableHeadersInterfaceCompatibility(): void
     {
         new class implements MutableHeadersInterface, \IteratorAggregate {
-            public function first(\Stringable|string $name, string|\Stringable|null $default = null): ?string {}
+            public function first(\Stringable|string $name, \Stringable|string|null $default = null): ?string {}
 
             public function all(\Stringable|string $name): array {}
 
@@ -287,7 +287,7 @@ final class CompatibilityTest extends TestCase
     public function testEvolvableHeadersInterfaceCompatibility(): void
     {
         new class implements EvolvableHeadersInterface, \IteratorAggregate {
-            public function first(\Stringable|string $name, string|\Stringable|null $default = null): ?string {}
+            public function first(\Stringable|string $name, \Stringable|string|null $default = null): ?string {}
 
             public function all(\Stringable|string $name): array {}
 
@@ -303,7 +303,7 @@ final class CompatibilityTest extends TestCase
 
             public function withAddedHeader(\Stringable|string $name, \Stringable|string $value): self {}
 
-            public function withHeader(\Stringable|string $name, string|\Stringable|iterable $values): self {}
+            public function withHeader(\Stringable|string $name, \Stringable|string|iterable $values): self {}
 
             public function withoutHeader(\Stringable|string $name): self {}
         };
