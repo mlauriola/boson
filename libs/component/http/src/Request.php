@@ -67,6 +67,7 @@ class Request implements EvolvableRequestInterface
         get => $this->method;
         /**
          * @param InMethodType $method
+         *
          * @return OutMethodType
          */
         set(string|\Stringable $method) => static::castMethod($method);
@@ -82,6 +83,7 @@ class Request implements EvolvableRequestInterface
         get => $this->url;
         /**
          * @param InUrlType $url
+         *
          * @return OutUrlType
          */
         set(string|\Stringable $url) => static::castUrl($url);
@@ -99,6 +101,7 @@ class Request implements EvolvableRequestInterface
         get => $this->headers;
         /**
          * @param InHeadersType $headers
+         *
          * @throws InvalidHeadersException
          */
         set(iterable $headers) => static::castHeaders($headers);
@@ -114,6 +117,7 @@ class Request implements EvolvableRequestInterface
         get => $this->body;
         /**
          * @param InBodyType $body
+         *
          * @throws InvalidBodyException
          */
         set(string|\Stringable $body) => static::castBody($body);
@@ -139,6 +143,7 @@ class Request implements EvolvableRequestInterface
 
     /**
      * @param InMethodType $method
+     *
      * @return OutMethodType
      */
     public static function castMethod(string|\Stringable $method): MethodInterface
@@ -148,6 +153,7 @@ class Request implements EvolvableRequestInterface
 
     /**
      * @param InUrlType $url
+     *
      * @return OutUrlType
      */
     public static function castUrl(string|\Stringable $url): UriInterface
@@ -159,6 +165,7 @@ class Request implements EvolvableRequestInterface
 
     /**
      * @param InHeadersType $headers
+     *
      * @return OutHeadersType
      * @throws InvalidHeadersException
      */
@@ -169,6 +176,7 @@ class Request implements EvolvableRequestInterface
 
     /**
      * @param InBodyType $body
+     *
      * @return OutBodyType
      * @throws InvalidBodyException
      */

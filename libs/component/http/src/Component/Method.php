@@ -683,6 +683,7 @@ final readonly class Method implements MethodInterface
 
     /**
      * @param InMethodType $method
+     *
      * @return OutMethodType
      * @throws InvalidMethodException
      */
@@ -708,6 +709,7 @@ final readonly class Method implements MethodInterface
 
     /**
      * @param InMethodType $method
+     *
      * @return OutMutableMethodType
      * @throws InvalidMethodException
      */

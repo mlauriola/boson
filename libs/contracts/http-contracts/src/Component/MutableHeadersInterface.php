@@ -20,6 +20,7 @@ interface MutableHeadersInterface extends HeadersInterface
      *
      * @param InHeaderNameType $name
      * @param InHeaderValuesType $values
+     *
      * @throws InvalidComponentArgumentExceptionInterface
      */
     public function set(string|\Stringable $name, iterable|string|\Stringable $values): void;
@@ -31,6 +32,7 @@ interface MutableHeadersInterface extends HeadersInterface
      *
      * @param InHeaderNameType $name
      * @param InHeaderValueType $value
+     *
      * @throws InvalidComponentArgumentExceptionInterface
      */
     public function add(string|\Stringable $name, string|\Stringable $value): void;
@@ -41,6 +43,7 @@ interface MutableHeadersInterface extends HeadersInterface
      * Note: Header resolution MUST be done without case-sensitivity.
      *
      * @param InHeaderNameType $name
+     *
      * @throws InvalidComponentArgumentExceptionInterface
      */
     public function remove(string|\Stringable $name): void;

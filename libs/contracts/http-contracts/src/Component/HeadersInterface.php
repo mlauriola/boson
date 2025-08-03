@@ -25,6 +25,7 @@ interface HeadersInterface extends \Traversable, \Countable
      *
      * @param InHeaderNameType $name case-insensitive header field name to find
      * @param InHeaderValueType|null $default Default value if header is not defined
+     *
      * @throws InvalidComponentArgumentExceptionInterface
      */
     public function first(string|\Stringable $name, string|\Stringable|null $default = null): ?string;
@@ -43,6 +44,7 @@ interface HeadersInterface extends \Traversable, \Countable
      * Returns {@see true} if the HTTP header is defined.
      *
      * @param InHeaderNameType $name case-insensitive header field name to find
+     *
      * @throws InvalidComponentArgumentExceptionInterface
      */
     public function has(string|\Stringable $name): bool;
@@ -53,6 +55,7 @@ interface HeadersInterface extends \Traversable, \Countable
      *
      * @param InHeaderNameType $name case-insensitive header field name to find
      * @param InHeaderValueType $value header's value to find
+     *
      * @throws InvalidComponentArgumentExceptionInterface
      */
     public function contains(string|\Stringable $name, string|\Stringable $value): bool;

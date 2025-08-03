@@ -13,6 +13,7 @@ interface EvolvableMethodProviderInterface extends MethodProviderInterface
 {
     /**
      * @param InMethodType $method
+     *
      * @throws InvalidComponentArgumentExceptionInterface
      */
     public function withMethod(string|\Stringable $method): self;

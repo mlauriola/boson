@@ -13,6 +13,7 @@ interface EvolvableUrlProviderInterface extends UrlProviderInterface
 {
     /**
      * @param InUrlType $url
+     *
      * @throws InvalidComponentArgumentExceptionInterface
      */
     public function withUrl(string|\Stringable $url): self;

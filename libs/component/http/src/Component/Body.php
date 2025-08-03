@@ -20,6 +20,7 @@ final readonly class Body
 
     /**
      * @param InBodyType $body
+     *
      * @return OutBodyType
      * @throws InvalidBodyException
      */
@@ -40,6 +41,7 @@ final readonly class Body
 
     /**
      * @param InBodyType $body
+     *
      * @return OutMutableBodyType
      * @throws InvalidBodyException
      */

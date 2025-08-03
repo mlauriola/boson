@@ -9,7 +9,6 @@ use Boson\Contracts\Http\Component\StatusCode\EvolvableStatusCodeProviderInterfa
 use Boson\Contracts\Http\Component\StatusCode\MutableStatusCodeProviderInterface;
 use Boson\Contracts\Http\Component\StatusCode\StatusCodeProviderInterface;
 use Boson\Contracts\Http\Component\StatusCodeInterface;
-use Boson\Contracts\Http\MutableResponseInterface;
 
 require_once __DIR__ . '/StatusCode/constants.php';
 
@@ -1705,6 +1704,7 @@ final readonly class StatusCode implements StatusCodeInterface
     /**
      * @param InStatusCodeType $status
      * @param string|null $reason Reason phrase for new non-standard status-code
+     *
      * @return OutStatusCodeType
      */
     public static function create(int|StatusCodeInterface $status, ?string $reason = null): StatusCodeInterface
@@ -1719,6 +1719,7 @@ final readonly class StatusCode implements StatusCodeInterface
 
     /**
      * @param InStatusCodeType $status
+     *
      * @return OutMutableStatusCodeType
      */
     public static function createMutable(int|StatusCodeInterface $status, ?string $reason = null): StatusCodeInterface

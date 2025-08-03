@@ -13,6 +13,7 @@ interface EvolvableBodyProviderInterface extends BodyProviderInterface
 {
     /**
      * @param InBodyType $body
+     *
      * @throws InvalidComponentArgumentExceptionInterface
      */
     public function withBody(string|\Stringable $body): self;

@@ -10,6 +10,7 @@ use Boson\Contracts\Http\Exception\InvalidComponentArgumentExceptionInterface;
 /**
  * @phpstan-import-type InMethodType from EvolvableMethodProviderInterface
  * @phpstan-import-type OutMethodType from MethodProviderInterface
+ *
  * @phpstan-type OutMutableMethodType OutMethodType
  */
 interface MutableMethodProviderInterface extends MethodProviderInterface
@@ -26,6 +27,7 @@ interface MutableMethodProviderInterface extends MethodProviderInterface
          * string or object.
          *
          * @param InMethodType $method
+         *
          * @throws InvalidComponentArgumentExceptionInterface
          */
         set(string|\Stringable $method);

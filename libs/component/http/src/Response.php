@@ -61,6 +61,7 @@ class Response implements MutableResponseInterface
         get => $this->body;
         /**
          * @param InBodyType $body
+         *
          * @throws InvalidBodyException
          */
         set(string|\Stringable $body) => static::castBody($body);
@@ -90,6 +91,7 @@ class Response implements MutableResponseInterface
         get => $this->headers;
         /**
          * @param InHeadersType $headers
+         *
          * @throws InvalidHeadersException
          */
         set(iterable $headers) => static::castHeaders($headers);
@@ -114,6 +116,7 @@ class Response implements MutableResponseInterface
 
     /**
      * @param InBodyType $body
+     *
      * @return OutMutableBodyType
      * @throws InvalidBodyException
      */
@@ -125,6 +128,7 @@ class Response implements MutableResponseInterface
     /**
      * @param InStatusCodeType $status
      * @param string|null $reason Reason phrase for new non-standard status-code
+     *
      * @return OutMutableStatusCodeType
      */
     public static function castStatusCode(int|StatusCodeInterface $status, ?string $reason = null): StatusCodeInterface
@@ -134,6 +138,7 @@ class Response implements MutableResponseInterface
 
     /**
      * @param InHeadersType $headers
+     *
      * @return OutMutableHeadersType
      * @throws InvalidHeadersException
      */

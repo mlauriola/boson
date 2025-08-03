@@ -10,6 +10,7 @@ use Boson\Contracts\Http\Exception\InvalidComponentArgumentExceptionInterface;
 /**
  * @phpstan-import-type InHeadersType from EvolvableHeadersProviderInterface
  * @phpstan-import-type OutHeadersType from HeadersProviderInterface
+ *
  * @phpstan-type OutMutableHeadersType OutHeadersType&MutableHeadersInterface
  */
 interface MutableHeadersProviderInterface extends HeadersProviderInterface
@@ -26,6 +27,7 @@ interface MutableHeadersProviderInterface extends HeadersProviderInterface
          * Allows to set any headers list, including immutable.
          *
          * @param InHeadersType $headers
+         *
          * @throws InvalidComponentArgumentExceptionInterface
          */
         set(iterable $headers);

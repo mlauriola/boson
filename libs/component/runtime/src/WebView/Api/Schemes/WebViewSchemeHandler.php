@@ -5,15 +5,8 @@ declare(strict_types=1);
 namespace Boson\WebView\Api\Schemes;
 
 use Boson\ApplicationPollerInterface;
-use Boson\Component\Http\Component\BodyFactory;
-use Boson\Component\Http\Component\HeadersFactory;
-use Boson\Component\Http\Component\MethodFactory;
-use Boson\Contracts\Http\Factory\Component\BodyFactoryInterface;
-use Boson\Contracts\Http\Factory\Component\HeadersFactoryInterface;
-use Boson\Contracts\Http\Factory\Component\MethodFactoryInterface;
 use Boson\Contracts\Http\RequestInterface;
 use Boson\Contracts\Http\ResponseInterface;
-use Boson\Contracts\Uri\Factory\UriFactoryInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Internal\Saucer\LibSaucer;
 use Boson\Internal\Saucer\SaucerLaunch;

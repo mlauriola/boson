@@ -9,6 +9,7 @@ use Boson\Contracts\Http\Exception\InvalidComponentArgumentExceptionInterface;
 /**
  * @phpstan-import-type InBodyType from EvolvableBodyProviderInterface
  * @phpstan-import-type OutBodyType from BodyProviderInterface
+ *
  * @phpstan-type OutMutableBodyType OutBodyType
  */
 interface MutableBodyProviderInterface extends BodyProviderInterface
@@ -24,6 +25,7 @@ interface MutableBodyProviderInterface extends BodyProviderInterface
          * Allows to set any string or string-like body value.
          *
          * @param InBodyType $body
+         *
          * @throws InvalidComponentArgumentExceptionInterface
          */
         set(string|\Stringable $body);

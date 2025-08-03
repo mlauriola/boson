@@ -16,6 +16,7 @@ interface EvolvableHeadersProviderInterface extends HeadersProviderInterface
 {
     /**
      * @param InHeadersType $headers
+     *
      * @throws InvalidComponentArgumentExceptionInterface
      */
     public function withHeaders(iterable $headers): self;

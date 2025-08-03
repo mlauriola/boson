@@ -16,6 +16,7 @@ interface EvolvableStatusCodeProviderInterface extends StatusCodeProviderInterfa
      * Allows to set any integer status code value.
      *
      * @param InStatusCodeType $status
+     *
      * @throws InvalidComponentArgumentExceptionInterface
      */
     public function withStatus(StatusCodeInterface|int $status): self;
