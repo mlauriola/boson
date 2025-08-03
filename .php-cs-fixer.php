@@ -26,7 +26,6 @@ $files = PhpCsFixer\Finder::create()
         // Contracts
         __DIR__ . '/libs/contracts/event-listener-contracts/src',
         __DIR__ . '/libs/contracts/http-contracts/src',
-        __DIR__ . '/libs/contracts/http-factory-contracts/src',
         __DIR__ . '/libs/contracts/id-contracts/src',
         __DIR__ . '/libs/contracts/uri-contracts/src',
         __DIR__ . '/libs/contracts/uri-factory-contracts/src',

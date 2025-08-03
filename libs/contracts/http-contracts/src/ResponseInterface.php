@@ -7,14 +7,14 @@ namespace Boson\Contracts\Http;
 use Boson\Contracts\Http\Component\StatusCodeInterface;
 
 /**
- * @phpstan-type StatusCodeOutputType StatusCodeInterface
+ * @phpstan-type OutStatusCodeType StatusCodeInterface
  */
 interface ResponseInterface extends MessageInterface
 {
     /**
-     * Gets status code integer value of HTTP response.
+     * Gets status code integer value of the HTTP Response instance.
      *
-     * @var StatusCodeOutputType
+     * @var OutStatusCodeType
      */
     public StatusCodeInterface $status {
         get;

@@ -8,26 +8,26 @@ use Boson\Contracts\Http\Component\MethodInterface;
 use Boson\Contracts\Uri\UriInterface;
 
 /**
- * @phpstan-type MethodOutputType MethodInterface
- * @phpstan-type UrlOutputType UriInterface
+ * @phpstan-type OutMethodType MethodInterface
+ * @phpstan-type OutUrlType UriInterface
  */
 interface RequestInterface extends MessageInterface
 {
     /**
-     * Gets HTTP method of HTTP request instance.
+     * Gets HTTP method of the HTTP Request instance.
      *
      * @link https://httpwg.org/specs/rfc9110.html#method.definitions
      *
-     * @var MethodOutputType
+     * @var OutMethodType
      */
     public MethodInterface $method {
         get;
     }
 
     /**
-     * Gets URI instance of HTTP requestt instance.
+     * Gets URI string of the HTTP Request instance.
      *
-     * @var UrlOutputType
+     * @var OutUrlType
      */
     public UriInterface $url {
         get;

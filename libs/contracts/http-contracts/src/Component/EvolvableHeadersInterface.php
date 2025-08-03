@@ -4,27 +4,35 @@ declare(strict_types=1);
 
 namespace Boson\Contracts\Http\Component;
 
+use Boson\Contracts\Http\Exception\InvalidComponentArgumentExceptionInterface;
+
 /**
- * @phpstan-import-type HeaderInputNameType from HeadersInterface
- * @phpstan-import-type HeaderInputLineValueType from HeadersInterface
- * @phpstan-import-type HeaderInputValueType from HeadersInterface
+ * @phpstan-import-type InHeaderNameType from HeadersInterface
+ * @phpstan-import-type InHeaderValueType from HeadersInterface
+ * @phpstan-import-type InHeaderValuesType from HeadersInterface
  */
 interface EvolvableHeadersInterface extends HeadersInterface
 {
     /**
-     * @param HeaderInputNameType $name
-     * @param HeaderInputLineValueType $value
+     * @param InHeaderNameType $name
+     * @param InHeaderValueType $value
+     *
+     * @throws InvalidComponentArgumentExceptionInterface
      */
     public function withAddedHeader(string|\Stringable $name, string|\Stringable $value): self;
 
     /**
-     * @param HeaderInputNameType $name
-     * @param HeaderInputValueType $values
+     * @param InHeaderNameType $name
+     * @param InHeaderValuesType $values
+     *
+     * @throws InvalidComponentArgumentExceptionInterface
      */
     public function withHeader(string|\Stringable $name, string|\Stringable|iterable $values): self;
 
     /**
-     * @param HeaderInputNameType $name
+     * @param InHeaderNameType $name
+     *
+     * @throws InvalidComponentArgumentExceptionInterface
      */
     public function withoutHeader(string|\Stringable $name): self;
 }

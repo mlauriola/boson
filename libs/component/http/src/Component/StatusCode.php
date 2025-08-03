@@ -6,6 +6,11 @@ namespace Boson\Component\Http\Component;
 
 use Boson\Component\Http\Component\StatusCode\StatusCodeImpl;
 use Boson\Contracts\Http\Component\StatusCodeInterface;
+use Boson\Contracts\Http\EvolvableRequestInterface;
+use Boson\Contracts\Http\EvolvableResponseInterface;
+use Boson\Contracts\Http\MutableResponseInterface;
+use Boson\Contracts\Http\RequestInterface;
+use Boson\Contracts\Http\ResponseInterface;
 
 require_once __DIR__ . '/StatusCode/constants.php';
 
@@ -14,6 +19,10 @@ require_once __DIR__ . '/StatusCode/constants.php';
  *
  * Note: Impossible to implement via native PHP enum due to lack of support
  *       for properties: https://externals.io/message/126332
+ *
+ * @phpstan-import-type InStatusCodeType from EvolvableResponseInterface
+ * @phpstan-import-type OutStatusCodeType from ResponseInterface
+ * @phpstan-import-type OutMutableStatusCodeType from MutableResponseInterface
  */
 final readonly class StatusCode implements StatusCodeInterface
 {
@@ -1692,5 +1701,30 @@ final readonly class StatusCode implements StatusCodeInterface
     public static function cases(): array
     {
         return \array_values(self::CASES);
+    }
+
+    /**
+     * @param InStatusCodeType $status
+     * @param string|null $reason Reason phrase for new non-standard status-code
+     * @return OutStatusCodeType
+     */
+    public static function create(int|StatusCodeInterface $status, ?string $reason = null): StatusCodeInterface
+    {
+        if ($status instanceof StatusCodeInterface) {
+            return $status;
+        }
+
+        return self::tryFrom($status)
+            ?? new self($status, (string) $reason);
+    }
+
+    /**
+     * @param InStatusCodeType $status
+     * @return OutMutableStatusCodeType
+     */
+    public static function createMutable(int|StatusCodeInterface $status, ?string $reason = null): StatusCodeInterface
+    {
+        // Mutable HTTP status code is similar to immutable
+        return self::create($status, $reason);
     }
 }

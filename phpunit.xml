@@ -35,7 +35,6 @@
         <testsuite name="contracts">
             <directory>libs/contracts/event-listener-contracts/tests</directory>
             <directory>libs/contracts/http-contracts/tests</directory>
-            <directory>libs/contracts/http-factory-contracts/tests</directory>
             <directory>libs/contracts/id-contracts/tests</directory>
             <directory>libs/contracts/uri-contracts/tests</directory>
             <directory>libs/contracts/uri-factory-contracts/tests</directory>
@@ -71,7 +70,6 @@
             <!-- contracts -->
             <directory>libs/contracts/event-listener-contracts/src</directory>
             <directory>libs/contracts/http-contracts/src</directory>
-            <directory>libs/contracts/http-factory-contracts/src</directory>
             <directory>libs/contracts/id-contracts/src</directory>
             <directory>libs/contracts/uri-contracts/src</directory>
             <directory>libs/contracts/uri-factory-contracts/src</directory>

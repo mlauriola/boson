@@ -4,30 +4,30 @@ declare(strict_types=1);
 
 namespace Boson\Component\Http\Component;
 
-use Boson\Component\Http\Component\Headers\HeadersNormalizer;
+use Boson\Component\Http\Exception\InvalidHeaderValueException;
 use Boson\Contracts\Http\Component\EvolvableHeadersInterface;
 use Boson\Contracts\Http\Component\HeadersInterface;
 
 /**
  * An implementation of immutable headers list.
  *
- * @phpstan-import-type HeaderInputNameType from HeadersInterface
- * @phpstan-import-type HeaderOutputNameType from HeadersInterface
- * @phpstan-import-type HeaderInputLineValueType from HeadersInterface
- * @phpstan-import-type HeaderOutputLineValueType from HeadersInterface
- * @phpstan-import-type HeaderInputValueType from HeadersInterface
- * @phpstan-import-type HeaderOutputValueType from HeadersInterface
- * @phpstan-import-type HeadersListInputType from HeadersInterface
- * @phpstan-import-type HeadersListOutputType from HeadersInterface
+ * @phpstan-import-type InHeaderNameType from HeadersInterface
+ * @phpstan-import-type OutHeaderNameType from HeadersInterface
+ * @phpstan-import-type InHeaderValueType from HeadersInterface
+ * @phpstan-import-type OutHeaderValueType from HeadersInterface
+ * @phpstan-import-type InHeaderValuesType from HeadersInterface
+ * @phpstan-import-type OutHeaderValuesType from HeadersInterface
+ * @phpstan-import-type InHeadersListType from HeadersInterface
+ * @phpstan-import-type OutHeadersListType from HeadersInterface
  *
- * @template-implements \IteratorAggregate<non-empty-lowercase-string, string>
+ * @template-implements \IteratorAggregate<OutHeaderNameType, OutHeaderValueType>
  */
 class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
 {
     /**
-     * @var HeadersListOutputType
+     * @var OutHeadersListType
      */
-    protected readonly array $lines;
+    protected array $lines;
 
     /**
      * Expects list of header values in format:
@@ -39,11 +39,55 @@ class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
      * ]
      * ```
      *
-     * @param HeadersListInputType $headers
+     * @param InHeadersListType $headers
      */
     final public function __construct(iterable $headers = [])
     {
-        $this->lines = HeadersNormalizer::normalizeHeadersList($headers);
+        $this->lines = $this->castHeadersList($headers);
+    }
+
+    /**
+     * @param InHeaderValuesType $values
+     *
+     * @return OutHeaderValuesType
+     */
+    public static function castHeaderValues(string|\Stringable|iterable $values, bool $validate = true): array
+    {
+        $result = [];
+
+        if (!\is_iterable($values)) {
+            $values = [$values];
+        }
+
+        foreach ($values as $value) {
+            $result[] = Header::castHeaderValue(match (true) {
+                \is_string($value), $value instanceof \Stringable => $value,
+                default => throw InvalidHeaderValueException::becauseHeaderValueIsNotString($value),
+            }, $validate);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param InHeadersListType $headers
+     *
+     * @return OutHeadersListType
+     */
+    public static function castHeadersList(iterable $headers, bool $validate = true): array
+    {
+        $result = [];
+
+        foreach ($headers as $name => $values) {
+            $normalizedName = Header::castHeaderName($name, $validate);
+            $normalizedValues = self::castHeaderValues($values, $validate);
+
+            $result[$normalizedName] = isset($result[$normalizedName])
+                ? \array_merge($result[$normalizedName], $normalizedValues)
+                : $normalizedValues;
+        }
+
+        return $result;
     }
 
     /**
@@ -66,20 +110,18 @@ class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
             return $this;
         }
 
-        $headers = $this->lines;
-        $headers[HeadersNormalizer::normalizeHeaderName($name)][]
-            = HeadersNormalizer::normalizeHeaderLineValue($value);
+        $self = clone $this;
+        $self->add($name, $value);
 
-        return new self($headers);
+        return $self;
     }
 
-    public function withHeader(\Stringable|string $name, iterable|\Stringable|string $values): EvolvableHeadersInterface
+    public function withHeader(\Stringable|string $name, iterable|\Stringable|string $values): self
     {
-        $headers = $this->lines;
-        $headers[HeadersNormalizer::normalizeHeaderName($name)]
-            = HeadersNormalizer::normalizeHeaderValue($values);
+        $self = clone $this;
+        $self->set($name, $values);
 
-        return new self($headers);
+        return $self;
     }
 
     public function withoutHeader(string|\Stringable $name): self
@@ -88,17 +130,50 @@ class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
             return $this;
         }
 
-        $headers = $this->lines;
-        unset($headers[HeadersNormalizer::normalizeHeaderName($name, false)]);
+        $self = clone $this;
+        $self->remove($name);
 
-        return new self($headers);
+        return $self;
+    }
+
+    /**
+     * @param InHeaderNameType $name
+     * @param InHeaderValuesType $values
+     */
+    protected function set(\Stringable|string $name, iterable|\Stringable|string $values): void
+    {
+        $this->lines[Header::castHeaderName($name)] = self::castHeaderValues($values);
+    }
+
+    /**
+     * @param InHeaderNameType $name
+     * @param InHeaderValueType $value
+     */
+    protected function add(\Stringable|string $name, \Stringable|string $value): void
+    {
+        $this->lines[Header::castHeaderName($name)][] = Header::castHeaderValue($value);
+    }
+
+    /**
+     * @param InHeaderNameType $name
+     */
+    protected function remove(\Stringable|string $name): void
+    {
+        if ($name === '') {
+            return;
+        }
+
+        unset($this->lines[Header::castHeaderName($name, false)]);
+    }
+
+    protected function removeAll(): void
+    {
+        $this->lines = [];
     }
 
     public function first(string|\Stringable $name, string|\Stringable|null $default = null): ?string
     {
-        $normalizedName = HeadersNormalizer::normalizeHeaderName($name, false);
-
-        // Stack Allocation optimization
+        $normalizedName = Header::castHeaderName($name, false);
         $lines = $this->lines;
 
         if (\array_key_exists($normalizedName, $lines)) {
@@ -107,32 +182,32 @@ class HeadersMap implements EvolvableHeadersInterface, \IteratorAggregate
             if ($first !== null) {
                 return $first;
             }
+
+            if ($default === null) {
+                return null;
+            }
+
+            return Header::castHeaderValue($default, false);
         }
 
-        if ($default === null) {
-            return null;
-        }
-
-        return HeadersNormalizer::normalizeHeaderLineValue($default, false);
+        return $default;
     }
 
     public function all(string|\Stringable $name): array
     {
-        return $this->lines[HeadersNormalizer::normalizeHeaderName($name, false)]
+        return $this->lines[Header::castHeaderName($name, false)]
             ?? [];
     }
 
     public function has(string|\Stringable $name): bool
     {
-        $normalizedName = HeadersNormalizer::normalizeHeaderName($name, false);
-
-        return \array_key_exists($normalizedName, $this->lines);
+        return \array_key_exists(Header::castHeaderName($name, false), $this->lines);
     }
 
     public function contains(string|\Stringable $name, string|\Stringable $value): bool
     {
-        $normalizedName = HeadersNormalizer::normalizeHeaderName($name, false);
-        $normalizedValue = HeadersNormalizer::normalizeHeaderLineValue($value, false);
+        $normalizedName = Header::castHeaderName($name, false);
+        $normalizedValue = Header::castHeaderValue($value, false);
 
         return \in_array($normalizedValue, $this->lines[$normalizedName] ?? [], true);
     }

@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace Boson\Component\Http;
 
-use Boson\Component\Http\Component\BodyFactory;
-use Boson\Component\Http\Component\HeadersFactory;
-use Boson\Component\Http\Component\HeadersMap;
-use Boson\Component\Http\Component\StatusCodeFactory;
+use Boson\Component\Http\Component\MutableHeadersMap;
 use Boson\Contracts\Http\Component\StatusCodeInterface;
-use Boson\Contracts\Http\Factory\Component\BodyFactoryInterface;
-use Boson\Contracts\Http\Factory\Component\HeadersFactoryInterface;
-use Boson\Contracts\Http\Factory\Component\StatusCodeFactoryInterface;
-use Boson\Contracts\Http\Factory\MessageFactoryInterface;
-use Boson\Contracts\Http\Factory\ResponseFactoryInterface;
+use Boson\Contracts\Http\EvolvableMessageInterface;
+use Boson\Contracts\Http\EvolvableResponseInterface;
+use Boson\Contracts\Http\MessageInterface;
+use Boson\Contracts\Http\ResponseInterface;
 
 /**
- * @phpstan-import-type StatusCodeInputType from ResponseFactoryInterface
- * @phpstan-import-type BodyInputType from MessageFactoryInterface
- * @phpstan-import-type HeadersInputType from MessageFactoryInterface
+ * @phpstan-import-type InStatusCodeType from ResponseInterface
+ * @phpstan-import-type OutStatusCodeType from EvolvableResponseInterface
+ * @phpstan-import-type InHeadersType from EvolvableMessageInterface
+ * @phpstan-import-type OutHeadersType from MessageInterface
+ * @phpstan-import-type InBodyType from EvolvableMessageInterface
+ * @phpstan-import-type OutBodyType from MessageInterface
  */
-readonly class JsonResponse extends Response
+class JsonResponse extends Response
 {
     /**
      * @var non-empty-lowercase-string
@@ -37,30 +36,24 @@ readonly class JsonResponse extends Response
         | \JSON_HEX_QUOT;
 
     /**
-     * @param HeadersInputType $headers
-     * @param StatusCodeInputType|StatusCodeInterface $status
+     * @param InHeadersType $headers
+     * @param InStatusCodeType $status
      *
      * @throws \JsonException
      */
     public function __construct(
         mixed $data = null,
-        iterable $headers = ResponseFactoryInterface::DEFAULT_HEADERS,
-        int|StatusCodeInterface $status = ResponseFactoryInterface::DEFAULT_STATUS_CODE,
+        int|StatusCodeInterface $status = self::DEFAULT_STATUS_CODE,
+        iterable $headers = self::DEFAULT_HEADERS,
         /**
          * JSON body encoding flags bit-mask.
          */
         protected int $jsonEncodingFlags = self::DEFAULT_JSON_ENCODING_FLAGS,
-        BodyFactoryInterface $bodyFactory = new BodyFactory(),
-        HeadersFactoryInterface $headersFactory = new HeadersFactory(),
-        StatusCodeFactoryInterface $statusCodeFactory = new StatusCodeFactory(),
     ) {
         parent::__construct(
             body: $this->formatJsonBody($data),
-            headers: $headers,
             status: $status,
-            bodyFactory: $bodyFactory,
-            headersFactory: $headersFactory,
-            statusCodeFactory: $statusCodeFactory,
+            headers: $headers,
         );
     }
 
@@ -69,19 +62,19 @@ readonly class JsonResponse extends Response
      * in case of content-type header has not been defined.
      */
     #[\Override]
-    protected function extendHeaders(HeadersMap $headers): HeadersMap
+    protected function extendHeaders(MutableHeadersMap $headers): void
     {
         if (!$headers->has('content-type')) {
-            $headers = $headers->withAddedHeader('content-type', self::DEFAULT_JSON_CONTENT_TYPE);
+            $headers->add('content-type', self::DEFAULT_JSON_CONTENT_TYPE);
         }
 
-        return parent::extendHeaders($headers);
+        parent::extendHeaders($headers);
     }
 
     /**
      * Encode passed data payload to a json string.
      *
-     * @return BodyInputType
+     * @return InBodyType
      * @throws \JsonException
      */
     protected function formatJsonBody(mixed $data): string|\Stringable

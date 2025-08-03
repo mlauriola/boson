@@ -34,14 +34,6 @@ final class WebViewSchemeHandler extends WebViewExtension implements SchemesApiI
 
     private readonly ApplicationPollerInterface $poller;
 
-    private readonly MethodFactoryInterface $methodFactory;
-
-    private readonly UriFactoryInterface $uriFactory;
-
-    private readonly HeadersFactoryInterface $headersFactory;
-
-    private readonly BodyFactoryInterface $bodyFactory;
-
     public function __construct(
         LibSaucer $api,
         WebView $context,
@@ -54,13 +46,6 @@ final class WebViewSchemeHandler extends WebViewExtension implements SchemesApiI
         );
 
         $this->mimeTypes = new MimeTypeReader();
-
-        $this->uriFactory = $context->info->uriFactory;
-        // TODO: Should be moved into configs
-        $this->methodFactory = new MethodFactory();
-        $this->headersFactory = new HeadersFactory();
-        $this->bodyFactory = new BodyFactory();
-
         $this->poller = $context->window->app->poller;
         $this->schemes = $context->window->app->info->schemes;
 
@@ -131,10 +116,6 @@ final class WebViewSchemeHandler extends WebViewExtension implements SchemesApiI
         return new LazyInitializedRequest(
             api: $this->api,
             ptr: $request,
-            methodFactory: $this->methodFactory,
-            uriFactory: $this->uriFactory,
-            headersFactory: $this->headersFactory,
-            bodyFactory: $this->bodyFactory,
         );
     }
 
