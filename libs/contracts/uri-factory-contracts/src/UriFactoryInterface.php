@@ -32,5 +32,5 @@ interface UriFactoryInterface
      *
      * @throws InvalidUriExceptionInterface in case of invalid URI is passed
      */
-    public function createUriFromString(string|\Stringable $uri): UriInterface;
+    public function createUriFromString(\Stringable|string $uri): UriInterface;
 }

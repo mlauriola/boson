@@ -16,7 +16,7 @@ final readonly class UriPathFactory implements UriPathFactoryInterface
      */
     private const string SEGMENT_DELIMITER = Path::PATH_SEGMENT_DELIMITER;
 
-    public function createPathFromString(string|\Stringable $path): PathInterface
+    public function createPathFromString(\Stringable|string $path): PathInterface
     {
         if ($path instanceof PathInterface) {
             return clone $path;

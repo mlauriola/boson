@@ -13,10 +13,10 @@ interface UriSchemeFactoryInterface
      * Returns {@see SchemeInterface} instance from passed
      * non-empty {@see string} or {@see \Stringable} argument.
      *
-     * @param non-empty-string|\Stringable $scheme
+     * @param non-empty-\Stringable|string $scheme
      *
      * @throws InvalidUriComponentExceptionInterface in case of invalid scheme
      *         argument is passed
      */
-    public function createSchemeFromString(string|\Stringable $scheme): SchemeInterface;
+    public function createSchemeFromString(\Stringable|string $scheme): SchemeInterface;
 }

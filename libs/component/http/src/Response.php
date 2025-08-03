@@ -39,7 +39,7 @@ class Response implements MutableResponseInterface
     /**
      * @var InBodyType
      */
-    final public const string|\Stringable DEFAULT_BODY = '';
+    final public const \Stringable|string DEFAULT_BODY = '';
 
     /**
      * @var InStatusCodeType
@@ -64,7 +64,7 @@ class Response implements MutableResponseInterface
          *
          * @throws InvalidBodyException
          */
-        set(string|\Stringable $body) => static::castBody($body);
+        set(\Stringable|string $body) => static::castBody($body);
     }
 
     /**
@@ -103,7 +103,7 @@ class Response implements MutableResponseInterface
      * @param InHeadersType $headers
      */
     public function __construct(
-        string|\Stringable $body = self::DEFAULT_BODY,
+        \Stringable|string $body = self::DEFAULT_BODY,
         int|StatusCodeInterface $status = self::DEFAULT_STATUS_CODE,
         iterable $headers = self::DEFAULT_HEADERS,
     ) {
@@ -120,7 +120,7 @@ class Response implements MutableResponseInterface
      * @return OutMutableBodyType
      * @throws InvalidBodyException
      */
-    public static function castBody(string|\Stringable $body): string
+    public static function castBody(\Stringable|string $body): string
     {
         return Body::createMutable($body);
     }

@@ -11,7 +11,7 @@ use Boson\Contracts\Uri\Factory\Component\UriSchemeFactoryInterface;
 
 final readonly class UriSchemeFactory implements UriSchemeFactoryInterface
 {
-    public function createSchemeFromString(string|\Stringable $scheme): SchemeInterface
+    public function createSchemeFromString(\Stringable|string $scheme): SchemeInterface
     {
         if ($scheme instanceof SchemeInterface) {
             return $scheme;

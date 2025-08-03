@@ -55,7 +55,7 @@ final readonly class UriFactory implements UriFactoryInterface
         private UriQueryFactoryInterface $queries = new UriQueryFactory(),
     ) {}
 
-    public function createUriFromString(string|\Stringable $uri): UriInterface
+    public function createUriFromString(\Stringable|string $uri): UriInterface
     {
         if ($uri instanceof UriInterface) {
             return clone $uri;

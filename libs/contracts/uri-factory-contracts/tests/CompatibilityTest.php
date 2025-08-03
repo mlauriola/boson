@@ -26,7 +26,7 @@ final class CompatibilityTest extends TestCase
     public function testUriFactoryInterfaceCompatibility(): void
     {
         new class implements UriFactoryInterface {
-            public function createUriFromString(string|\Stringable $uri): UriInterface {}
+            public function createUriFromString(\Stringable|string $uri): UriInterface {}
         };
     }
 
@@ -34,7 +34,7 @@ final class CompatibilityTest extends TestCase
     public function testSchemeFactoryInterfaceCompatibility(): void
     {
         new class implements UriSchemeFactoryInterface {
-            public function createSchemeFromString(string|\Stringable $scheme): SchemeInterface {}
+            public function createSchemeFromString(\Stringable|string $scheme): SchemeInterface {}
         };
     }
 
@@ -42,7 +42,7 @@ final class CompatibilityTest extends TestCase
     public function testQueryFactoryInterfaceCompatibility(): void
     {
         new class implements UriQueryFactoryInterface {
-            public function createQueryFromString(string|\Stringable $query): QueryInterface {}
+            public function createQueryFromString(\Stringable|string $query): QueryInterface {}
         };
     }
 
@@ -50,7 +50,7 @@ final class CompatibilityTest extends TestCase
     public function testPathFactoryInterfaceCompatibility(): void
     {
         new class implements UriPathFactoryInterface {
-            public function createPathFromString(string|\Stringable $path): PathInterface {}
+            public function createPathFromString(\Stringable|string $path): PathInterface {}
         };
     }
 }

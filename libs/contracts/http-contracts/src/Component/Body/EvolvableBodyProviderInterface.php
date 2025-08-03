@@ -28,5 +28,5 @@ interface EvolvableBodyProviderInterface extends BodyProviderInterface
      * @throws InvalidComponentArgumentExceptionInterface in case of new passed
      *         body value is invalid
      */
-    public function withBody(string|\Stringable $body): self;
+    public function withBody(\Stringable|string $body): self;
 }

@@ -16,5 +16,5 @@ interface UriPathFactoryInterface
      * @throws InvalidUriComponentExceptionInterface in case of invalid path
      *         argument is passed
      */
-    public function createPathFromString(string|\Stringable $path): PathInterface;
+    public function createPathFromString(\Stringable|string $path): PathInterface;
 }

@@ -11,7 +11,7 @@ use Boson\Contracts\Uri\Factory\Component\UriQueryFactoryInterface;
 
 final readonly class UriQueryFactory implements UriQueryFactoryInterface
 {
-    public function createQueryFromString(string|\Stringable $query): QueryInterface
+    public function createQueryFromString(\Stringable|string $query): QueryInterface
     {
         if ($query instanceof QueryInterface) {
             return clone $query;
