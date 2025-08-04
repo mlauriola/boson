@@ -35,6 +35,7 @@ use Boson\Window\Manager\WindowManager;
 use Boson\Window\Window;
 use FFI\CData;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Revolt\EventLoop;
 
 /**
  * @template-implements IdentifiableInterface<ApplicationId>
@@ -150,12 +151,6 @@ final class Application implements
     public readonly LibSaucer $api;
 
     /**
-     * Gets an internal application poller to unlock the
-     * webview process workflow.
-     */
-    public readonly ApplicationPollerInterface $poller;
-
-    /**
      * @param EventDispatcherInterface|null $dispatcher an optional event
      *        dispatcher for handling application events
      */
@@ -191,7 +186,6 @@ final class Application implements
         $this->isDebug = self::createIsDebugParameter($info->debug);
         $this->listener = self::createEventListener($dispatcher);
         $this->id = self::createApplicationId($this->api, $this->info->name, $this->info->threads);
-        $this->poller = self::createApplicationPoller($this->api, $this);
         $this->windows = self::createWindowManager($this->api, $this, $info, $this->listener);
 
         // Initialization of Application's API
@@ -246,15 +240,6 @@ final class Application implements
         }
 
         return $debug;
-    }
-
-    /**
-     * Creates a new instance of {@see ApplicationPollerInterface} that manages
-     * the application's event loop and process workflow.
-     */
-    private function createApplicationPoller(LibSaucer $api, Application $ctx): ApplicationPollerInterface
-    {
-        return new ApplicationPoller($api, $ctx);
     }
 
     /**
@@ -508,9 +493,16 @@ final class Application implements
 
         $this->listener->dispatch(new ApplicationStarted($this));
 
-        while ($this->poller->next()) {
-            \usleep(1);
-        }
+        EventLoop::repeat(0, function (string $id): void {
+            if ($this->isRunning === false) {
+                EventLoop::cancel($id);
+                return;
+            }
+
+            $this->api->saucer_application_run_once($this->id->ptr);
+        });
+
+        EventLoop::run();
     }
 
     /**
