@@ -170,7 +170,7 @@ final class WebViewData extends WebViewExtension implements DataApiInterface
 
         $timeout ??= $this->timeout;
 
-        $delayId = EventLoop::delay($timeout ?? $this->timeout, function () use ($code, $timeout): void {
+        $delayId = EventLoop::delay($timeout, function () use ($code, $timeout): void {
             throw StalledRequestException::becauseRequestIsStalled($code, $timeout);
         });
 

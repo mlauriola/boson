@@ -17,7 +17,6 @@ use Boson\Event\ApplicationStarting;
 use Boson\Event\ApplicationStopped;
 use Boson\Event\ApplicationStopping;
 use Boson\Exception\NoDefaultWindowException;
-use Boson\Internal\ApplicationPoller;
 use Boson\Internal\BootHandler\BootHandlerInterface;
 use Boson\Internal\BootHandler\WindowsDetachConsoleBootHandler;
 use Boson\Internal\DeferRunner\DeferRunnerInterface;
@@ -496,6 +495,7 @@ final class Application implements
         EventLoop::repeat(0, function (string $id): void {
             if ($this->isRunning === false) {
                 EventLoop::cancel($id);
+
                 return;
             }
 
