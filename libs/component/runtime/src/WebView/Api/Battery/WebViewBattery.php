@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Boson\WebView\Api\Battery;
 
 use Boson\Dispatcher\EventListener;
-use Boson\Internal\Saucer\LibSaucer;
+use Boson\Internal\Saucer\SaucerInterface;
 use Boson\Shared\Marker\ExpectsSecurityContext;
 use Boson\WebView\Api\Battery\Event\BatteryChargingStateChanged;
 use Boson\WebView\Api\Battery\Event\BatteryChargingTimeChanged;

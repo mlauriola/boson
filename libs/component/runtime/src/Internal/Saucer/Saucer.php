@@ -13,12 +13,10 @@ use Boson\Exception\Environment\UnsupportedOperatingSystemException;
 use FFI\Env\Runtime;
 
 /**
- * @mixin \FFI
- *
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Boson
  */
-final readonly class LibSaucer
+final readonly class Saucer implements SaucerInterface
 {
     /**
      * @var non-empty-string

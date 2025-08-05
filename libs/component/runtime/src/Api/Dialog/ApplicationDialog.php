@@ -8,7 +8,7 @@ use Boson\Api\ApplicationExtension;
 use Boson\Api\DialogApiInterface;
 use Boson\Application;
 use Boson\Dispatcher\EventListener;
-use Boson\Internal\Saucer\LibSaucer;
+use Boson\Internal\Saucer\SaucerInterface;
 use FFI\CData;
 
 /**
@@ -23,7 +23,7 @@ final class ApplicationDialog extends ApplicationExtension implements DialogApiI
     }
 
     public function __construct(
-        private readonly LibSaucer $api,
+        private readonly SaucerInterface $api,
         Application $application,
         EventListener $listener,
     ) {

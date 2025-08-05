@@ -12,7 +12,7 @@ use Boson\Dispatcher\DelegateEventListener;
 use Boson\Dispatcher\EventListener;
 use Boson\Dispatcher\EventListenerProvider;
 use Boson\Exception\BosonException;
-use Boson\Internal\Saucer\LibSaucer;
+use Boson\Internal\Saucer\SaucerInterface;
 use Boson\Shared\Marker\BlockingOperation;
 use Boson\WebView\Api\Battery\WebViewBattery;
 use Boson\WebView\Api\BatteryApiInterface;
@@ -159,7 +159,7 @@ final class WebView implements
     public private(set) WebViewState $state = WebViewState::Loading;
 
     /**
-     * Contains an internal bridge between {@see LibSaucer} events system
+     * Contains an internal bridge between {@see SaucerInterface} events system
      * and the PSR {@see WebView::$events} dispatcher.
      *
      * @phpstan-ignore property.onlyWritten
@@ -185,7 +185,7 @@ final class WebView implements
         /**
          * Contains shared WebView API library.
          */
-        private readonly LibSaucer $api,
+        private readonly SaucerInterface $api,
         /**
          * Gets parent application window instance to which
          * this webview instance belongs.

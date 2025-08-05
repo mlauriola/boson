@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Boson\WebView\Api\Scripts;
 
 use Boson\Dispatcher\EventListener;
-use Boson\Internal\Saucer\LibSaucer;
+use Boson\Internal\Saucer\SaucerInterface;
 use Boson\Internal\Saucer\SaucerLoadTime;
 use Boson\WebView\Api\ScriptsApiInterface;
 use Boson\WebView\Api\WebViewExtension;
@@ -30,7 +30,7 @@ final class WebViewScriptsSet extends WebViewExtension implements
     private readonly \SplObjectStorage $scripts;
 
     public function __construct(
-        private readonly LibSaucer $api,
+        private readonly SaucerInterface $api,
         WebView $context,
         EventListener $listener,
     ) {
