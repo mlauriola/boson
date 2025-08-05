@@ -138,11 +138,11 @@ class Request implements EvolvableRequestInterface
     }
 
     /**
-     * @internal This method is not covered by the backward compatibility promise for boson-php/http
-     *
      * @param InMethodType $method
      *
      * @return OutMethodType
+     *
+     * @internal This method is not covered by the backward compatibility promise for boson-php/http
      */
     public static function castMethod(\Stringable|string $method): MethodInterface
     {
@@ -150,11 +150,11 @@ class Request implements EvolvableRequestInterface
     }
 
     /**
-     * @internal This method is not covered by the backward compatibility promise for boson-php/http
-     *
      * @param InUrlType $url
      *
      * @return OutUrlType
+     *
+     * @internal This method is not covered by the backward compatibility promise for boson-php/http
      */
     public static function castUrl(\Stringable|string $url): UriInterface
     {
@@ -164,12 +164,12 @@ class Request implements EvolvableRequestInterface
     }
 
     /**
-     * @internal This method is not covered by the backward compatibility promise for boson-php/http
-     *
      * @param InHeadersType $headers
      *
      * @return OutHeadersType
      * @throws InvalidHeadersException
+     *
+     * @internal This method is not covered by the backward compatibility promise for boson-php/http
      */
     public static function castHeaders(iterable $headers): HeadersInterface
     {
@@ -177,12 +177,12 @@ class Request implements EvolvableRequestInterface
     }
 
     /**
-     * @internal This method is not covered by the backward compatibility promise for boson-php/http
-     *
      * @param InBodyType $body
      *
      * @return OutBodyType
      * @throws InvalidBodyException
+     *
+     * @internal This method is not covered by the backward compatibility promise for boson-php/http
      */
     public static function castBody(\Stringable|string $body): string
     {
