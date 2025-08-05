@@ -42,6 +42,8 @@ final readonly class LibSaucer
      */
     public function __construct(
         ?string $library = null,
+        private ?OperatingSystem $os = null,
+        private ?CentralProcessor $cpu = null,
     ) {
         Runtime::assertAvailable();
 
@@ -58,8 +60,8 @@ final readonly class LibSaucer
      */
     private function getLibrary(): string
     {
-        $os = OperatingSystem::createFromGlobals();
-        $cpu = CentralProcessor::createFromGlobals();
+        $os = $this->os ?? OperatingSystem::createFromGlobals();
+        $cpu = $this->cpu ?? CentralProcessor::createFromGlobals();
 
         $result = match (true) {
             $os->family->is(Family::Windows) => match ($cpu->arch) {

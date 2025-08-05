@@ -74,11 +74,6 @@ final class Application implements
     public readonly WindowManager $windows;
 
     /**
-     * Application-aware event listener & dispatcher.
-     */
-    private readonly EventListener $listener;
-
-    /**
      * Gets access to the Dialog API of the application.
      */
     public readonly DialogApiInterface $dialog;
@@ -148,6 +143,11 @@ final class Application implements
      *           this low-level API at your own risk!
      */
     public readonly LibSaucer $api;
+
+    /**
+     * Application-aware event listener & dispatcher.
+     */
+    private readonly EventListener $listener;
 
     /**
      * @param EventDispatcherInterface|null $dispatcher an optional event
