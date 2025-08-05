@@ -44,6 +44,4 @@ final class ApplicationOperatingSystem extends ApplicationExtension implements
     public iterable $standards {
         get => $this->os->standards;
     }
-
-
 }
