@@ -43,7 +43,7 @@ final readonly class LinuxProcCpuInfoVendorFactory implements VendorFactoryInter
 
         return new VendorInfo(
             name: $name,
-            vendor: $this->getProcessorVendor($processors)
+            vendor: $this->getFirstProcessorVendor($processors)
                 ?? $fallback->vendor,
             physicalCores: $this->getProcessorPhysicalCores($processors)
                 ?? $fallback->physicalCores,
@@ -59,17 +59,19 @@ final readonly class LinuxProcCpuInfoVendorFactory implements VendorFactoryInter
      */
     private function getProcessorPhysicalCores(array $processors): ?int
     {
-        $result = [];
+        $physicalCores = [];
 
         foreach ($processors as $processor) {
             // Key is "<CPU ID> : <PHYSICAL CORE ID> : <LOGICAL CORE ID>"
             $index = ($processor['physical id'] ?? '0') . ':'
                 . ($processor['core id'] ?? '0');
 
-            $result[$index] = true;
+            $physicalCores[$index] = true;
         }
 
-        return \max(1, \count($result));
+        $result = \count($physicalCores);
+
+        return $result === 0 ? null : $result;
     }
 
     /**
@@ -79,17 +81,19 @@ final readonly class LinuxProcCpuInfoVendorFactory implements VendorFactoryInter
      */
     private function getProcessorLogicalCores(array $processors): ?int
     {
-        $result = [];
+        $logicalCores = [];
 
         foreach ($processors as $processor) {
             // Key is "<CPU ID> : <PHYSICAL CORE ID>"
             $index = ($processor['processor'] ?? '0') . ':'
                 . ($processor['physical id'] ?? '0');
 
-            $result[$index] = true;
+            $logicalCores[$index] = true;
         }
 
-        return \max(1, \count($result));
+        $result = \count($logicalCores);
+
+        return $result === 0 ? null : $result;
     }
 
     /**
@@ -119,7 +123,7 @@ final readonly class LinuxProcCpuInfoVendorFactory implements VendorFactoryInter
      *
      * @return non-empty-string|null
      */
-    private function getProcessorVendor(array $processors): ?string
+    private function getFirstProcessorVendor(array $processors): ?string
     {
         foreach ($processors as $processor) {
             $vendor = $processor['vendor_id'] ?? null;

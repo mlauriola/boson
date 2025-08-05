@@ -8,7 +8,7 @@ use Boson\Component\CpuInfo\Factory\DefaultCentralProcessorFactory;
 use Boson\Component\CpuInfo\Factory\InMemoryCentralProcessorFactory;
 use Boson\Component\CpuInfo\Vendor\VendorInfo;
 
-final readonly class CentralProcessor extends VendorInfo
+final readonly class CentralProcessor extends VendorInfo implements CentralProcessorInterface
 {
     /**
      * @var list<InstructionSetInterface>
@@ -23,9 +23,6 @@ final readonly class CentralProcessor extends VendorInfo
      * @param iterable<mixed, InstructionSetInterface> $instructionSets
      */
     public function __construct(
-        /**
-         * Gets current CPU architecture type
-         */
         public ArchitectureInterface $arch,
         string $name,
         ?string $vendor = null,
