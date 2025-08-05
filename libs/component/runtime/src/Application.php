@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Boson;
 
+use Boson\Api\CentralProcessor\ApplicationCentralProcessor;
+use Boson\Api\CentralProcessorApiInterface;
 use Boson\Api\Dialog\ApplicationDialog;
 use Boson\Api\DialogApiInterface;
 use Boson\Contracts\EventListener\EventListenerInterface;
@@ -77,6 +79,11 @@ class Application implements
      * Gets access to the Dialog API of the application.
      */
     public readonly DialogApiInterface $dialog;
+
+    /**
+     * Gets access to the CPU API of the application.
+     */
+    public readonly CentralProcessorApiInterface $cpu;
 
     /**
      * Provides more convenient and faster access to the
@@ -181,9 +188,14 @@ class Application implements
         ],
     ) {
         // Initialization Application's fields and properties
-        $this->api = $this->createLibSaucer($info->library);
         $this->isDebug = $this->createIsDebugParameter($info->debug);
         $this->listener = $this->createEventListener($dispatcher);
+
+        // Initialization of Software Application's API
+        $this->cpu = new ApplicationCentralProcessor($this, $this->listener);
+
+        // Kernel initialization
+        $this->api = $this->createLibSaucer($info->library);
         $this->id = $this->createApplicationId($this->api, $this->info->name, $this->info->threads);
         $this->windows = $this->createWindowManager($this->api, $this, $info, $this->listener);
 
@@ -512,6 +524,7 @@ class Application implements
             return;
         }
 
+        $this->wasEverRunning = true;
         $this->isRunning = false;
         $this->api->saucer_application_quit($this->id->ptr);
 
