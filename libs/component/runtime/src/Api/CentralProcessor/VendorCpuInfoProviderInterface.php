@@ -8,6 +8,13 @@ use Boson\Component\CpuInfo\Vendor\VendorInfoInterface;
 
 /**
  * Provides general CPU information provided by the CPU manufacturer.
+ *
+ * For example:
+ *  - Name
+ *  - Vendor (manufacturer)
+ *  - Physical cores count
+ *  - Logical cores count
+ *  - etc...
  */
-interface CentralProcessorVendorInfoProviderInterface extends
+interface VendorCpuInfoProviderInterface extends
     VendorInfoInterface {}
