@@ -26,15 +26,11 @@ final class WebViewSchemeHandler extends WebViewExtension implements SchemesApiI
     private readonly MimeTypeReader $mimeTypes;
 
     public function __construct(
-        LibSaucer $api,
+        private readonly LibSaucer $api,
         WebView $context,
         EventListener $listener,
     ) {
-        parent::__construct(
-            api: $api,
-            context: $context,
-            listener: $listener,
-        );
+        parent::__construct($context, $listener);
 
         $this->mimeTypes = new MimeTypeReader();
         $this->schemes = $context->window->app->info->schemes;

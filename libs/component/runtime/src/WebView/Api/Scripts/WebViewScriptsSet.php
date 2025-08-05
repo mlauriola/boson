@@ -30,15 +30,11 @@ final class WebViewScriptsSet extends WebViewExtension implements
     private readonly \SplObjectStorage $scripts;
 
     public function __construct(
-        LibSaucer $api,
+        private readonly LibSaucer $api,
         WebView $context,
         EventListener $listener,
     ) {
-        parent::__construct(
-            api: $api,
-            context: $context,
-            listener: $listener,
-        );
+        parent::__construct($context, $listener);
 
         $this->scripts = new \SplObjectStorage();
     }

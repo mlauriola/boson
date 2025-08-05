@@ -51,16 +51,9 @@ final class WebViewBindingsMap extends WebViewExtension implements
      */
     private array $functions = [];
 
-    public function __construct(
-        LibSaucer $api,
-        WebView $context,
-        EventListener $listener,
-    ) {
-        parent::__construct(
-            api: $api,
-            context: $context,
-            listener: $listener,
-        );
+    public function __construct(WebView $context, EventListener $listener)
+    {
+        parent::__construct($context, $listener);
 
         $this->packer = new WebViewContextPacker(
             delimiter: $context->info->bindings->functionDelimiter,

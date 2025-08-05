@@ -69,9 +69,9 @@ final class WebViewBattery extends WebViewExtension implements BatteryApiInterfa
      */
     private readonly bool $isEventsEnabled;
 
-    public function __construct(LibSaucer $api, WebView $context, EventListener $listener)
+    public function __construct(WebView $context, EventListener $listener)
     {
-        parent::__construct($api, $context, $listener);
+        parent::__construct($context, $listener);
 
         $this->isEventsEnabled = $this->context->info->battery->enableEvents;
 

@@ -188,7 +188,7 @@ final class Application implements
         $this->windows = self::createWindowManager($this->api, $this, $info, $this->listener);
 
         // Initialization of Application's API
-        $this->dialog = $this->createApplicationExtension(ApplicationDialog::class);
+        $this->dialog = new ApplicationDialog($this->api, $this, $this->listener);
 
         // Register Application's subsystems
         $this->registerSchemes();
@@ -239,22 +239,6 @@ final class Application implements
         }
 
         return $debug;
-    }
-
-    /**
-     * @template TArgApiProvider of ApplicationExtension
-     *
-     * @param class-string<TArgApiProvider> $class
-     *
-     * @return TArgApiProvider
-     */
-    private function createApplicationExtension(string $class): ApplicationExtension
-    {
-        return new $class(
-            api: $this->api,
-            context: $this,
-            listener: $this->listener,
-        );
     }
 
     /**

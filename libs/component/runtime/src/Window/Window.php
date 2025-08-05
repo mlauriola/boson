@@ -557,24 +557,6 @@ final class Window implements
     }
 
     /**
-     * @template TArgApiProvider of WindowExtension
-     *
-     * @param class-string<TArgApiProvider> $class
-     *
-     * @return TArgApiProvider
-     *
-     * @phpstan-ignore-next-line TODO will be used later
-     */
-    private function createWindowExtension(string $class): WindowExtension
-    {
-        return new $class(
-            api: $this->api,
-            context: $this,
-            listener: $this->listener,
-        );
-    }
-
-    /**
      * Creates WebView instance of the window.
      *
      * This method initializes and returns a {@see WebView} object

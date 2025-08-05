@@ -122,22 +122,15 @@ final class WebViewWebComponents extends WebViewExtension implements
 
     private readonly WebViewComponentBuilder $builder;
 
-    public function __construct(
-        LibSaucer $api,
-        WebView $context,
-        EventListener $listener,
-    ) {
-        parent::__construct(
-            api: $api,
-            context: $context,
-            listener: $listener,
-        );
+    public function __construct(WebView $context, EventListener $listener)
+    {
+        parent::__construct($context, $listener);
 
         $this->classNamePrefix = $context->info->webComponents->classNamePrefix;
 
         $this->instances = new WebViewComponentInstances(
             webview: $context,
-            instantiator: $this->context->info->webComponents->instantiator,
+            instantiator: $context->info->webComponents->instantiator,
         );
 
         $this->builder = new WebViewComponentBuilder(
