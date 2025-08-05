@@ -6,6 +6,7 @@ namespace Boson\Component\CpuInfo\Vendor\Factory;
 
 use Boson\Component\CpuInfo\Internal\LinuxProcCpuInfoReader;
 use Boson\Component\CpuInfo\Vendor\VendorInfo;
+use Boson\Component\CpuInfo\Vendor\VendorInfoInterface;
 use Boson\Component\OsInfo\Family;
 use Boson\Component\OsInfo\Family\Factory\FamilyFactoryInterface as OsFamilyFactoryInterface;
 
@@ -16,7 +17,7 @@ final readonly class LinuxProcCpuInfoVendorFactory implements VendorFactoryInter
         private ?OsFamilyFactoryInterface $osFamilyFactory = null,
     ) {}
 
-    public function createVendor(): VendorInfo
+    public function createVendor(): VendorInfoInterface
     {
         $family = $this->osFamilyFactory?->createFamily()
             ?? Family::createFromGlobals();
@@ -30,7 +31,7 @@ final readonly class LinuxProcCpuInfoVendorFactory implements VendorFactoryInter
         return $this->tryCreateFromProcCpuInfo($fallback);
     }
 
-    private function tryCreateFromProcCpuInfo(VendorInfo $fallback): VendorInfo
+    private function tryCreateFromProcCpuInfo(VendorInfoInterface $fallback): VendorInfoInterface
     {
         $processors = new LinuxProcCpuInfoReader()
             ->read();
