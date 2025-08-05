@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Boson\Contracts\Id;
 
 /**
- * @template-covariant T of IdInterface =  IdInterface
+ * @template-covariant T of IdInterface = IdInterface
  */
 interface IdentifiableInterface
 {
