@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Api\CentralProcessor;
 
-use Boson\Component\CpuInfo\Architecture\ArchitectureProviderInterface;
+use Boson\Component\CpuInfo\InstructionSet\InstructionSetProviderInterface;
 
 /**
  * Provides advanced detailed CPU information.
@@ -14,4 +14,4 @@ use Boson\Component\CpuInfo\Architecture\ArchitectureProviderInterface;
  *  - etc...
  */
 interface AdvancedCpuInfoProviderInterface extends
-    ArchitectureProviderInterface {}
+    InstructionSetProviderInterface {}

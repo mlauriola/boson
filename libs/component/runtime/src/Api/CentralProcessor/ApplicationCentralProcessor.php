@@ -8,11 +8,16 @@ use Boson\Api\ApplicationExtension;
 use Boson\Api\CentralProcessorApiInterface;
 use Boson\Component\CpuInfo\ArchitectureInterface;
 use Boson\Component\CpuInfo\CentralProcessor;
+use Boson\Component\CpuInfo\CentralProcessorInterface;
 
+/**
+ * @internal this is an internal library class, please do not use it in your code
+ * @psalm-internal Boson
+ */
 final class ApplicationCentralProcessor extends ApplicationExtension implements
     CentralProcessorApiInterface
 {
-    private CentralProcessor $cpu {
+    private CentralProcessorInterface $cpu {
         get => $this->cpu ??= CentralProcessor::createFromGlobals();
     }
 
