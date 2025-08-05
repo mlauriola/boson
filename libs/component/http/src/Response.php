@@ -115,6 +115,8 @@ class Response implements MutableResponseInterface
     }
 
     /**
+     * @internal This method is not covered by the backward compatibility promise for boson-php/http
+     *
      * @param InBodyType $body
      *
      * @return OutMutableBodyType
@@ -126,6 +128,8 @@ class Response implements MutableResponseInterface
     }
 
     /**
+     * @internal This method is not covered by the backward compatibility promise for boson-php/http
+     *
      * @param InStatusCodeType $status
      * @param string|null $reason Reason phrase for new non-standard status-code
      *
@@ -137,6 +141,8 @@ class Response implements MutableResponseInterface
     }
 
     /**
+     * @internal This method is not covered by the backward compatibility promise for boson-php/http
+     *
      * @param InHeadersType $headers
      *
      * @return OutMutableHeadersType

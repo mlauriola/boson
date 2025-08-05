@@ -138,6 +138,8 @@ class Request implements EvolvableRequestInterface
     }
 
     /**
+     * @internal This method is not covered by the backward compatibility promise for boson-php/http
+     *
      * @param InMethodType $method
      *
      * @return OutMethodType
@@ -148,6 +150,8 @@ class Request implements EvolvableRequestInterface
     }
 
     /**
+     * @internal This method is not covered by the backward compatibility promise for boson-php/http
+     *
      * @param InUrlType $url
      *
      * @return OutUrlType
@@ -160,6 +164,8 @@ class Request implements EvolvableRequestInterface
     }
 
     /**
+     * @internal This method is not covered by the backward compatibility promise for boson-php/http
+     *
      * @param InHeadersType $headers
      *
      * @return OutHeadersType
@@ -171,6 +177,8 @@ class Request implements EvolvableRequestInterface
     }
 
     /**
+     * @internal This method is not covered by the backward compatibility promise for boson-php/http
+     *
      * @param InBodyType $body
      *
      * @return OutBodyType
