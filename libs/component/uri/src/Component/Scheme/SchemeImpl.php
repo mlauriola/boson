@@ -28,7 +28,7 @@ trait SchemeImpl
     public function equals(mixed $other): bool
     {
         return $other === $this
-            || ($other instanceof static
+            || ($other instanceof SchemeInterface
                 && $other->name === $this->name);
     }
 
