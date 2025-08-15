@@ -36,6 +36,7 @@
             <directory>libs/contracts/event-listener-contracts/tests</directory>
             <directory>libs/contracts/http-contracts/tests</directory>
             <directory>libs/contracts/id-contracts/tests</directory>
+            <directory>libs/contracts/os-info-contracts/tests</directory>
             <directory>libs/contracts/uri-contracts/tests</directory>
             <directory>libs/contracts/uri-factory-contracts/tests</directory>
             <directory>libs/contracts/value-object-contracts/tests</directory>
