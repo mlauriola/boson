@@ -27,9 +27,14 @@ final class CompatibilityTest extends TestCase
             public string $name {
                 get {}
             }
+
             public ?StandardInterface $parent {
                 get {}
             }
+
+            public function toString(): string {}
+
+            public function equals(mixed $other): bool {}
 
             public function is(StandardInterface $standard): bool {}
 
@@ -44,32 +49,19 @@ final class CompatibilityTest extends TestCase
             public string $name {
                 get {}
             }
+
             public ?FamilyInterface $parent {
                 get {}
             }
 
+            public function toString(): string {}
+
+            public function equals(mixed $other): bool {}
+
+
             public function is(FamilyInterface $family): bool {}
 
             public function __toString(): string {}
-        };
-    }
-
-    #[DoesNotPerformAssertions]
-    public function testVendorInfoInterfaceCompatibility(): void
-    {
-        new class implements VendorInfoInterface {
-            public string $name {
-                get {}
-            }
-            public string $version {
-                get {}
-            }
-            public ?string $codename {
-                get {}
-            }
-            public ?string $edition {
-                get {}
-            }
         };
     }
 
@@ -121,4 +113,4 @@ final class CompatibilityTest extends TestCase
             public function isSupports(StandardInterface $standard): bool {}
         };
     }
-} 
+}
