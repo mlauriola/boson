@@ -39,7 +39,7 @@
     },
     "require-dev": {
         "ffi/var-dumper": "^1.0",
-        "friendsofphp/php-cs-fixer": "^3.84",
+        "friendsofphp/php-cs-fixer": "^3.86",
         "jetbrains/phpstorm-attributes": "^1.2",
         "nyholm/psr7": "^1.8",
         "phpstan/phpstan": "^2.1",
