@@ -16,7 +16,6 @@
     ],
     "require": {
         "php": "^8.4",
-        "boson-php/os-info-factory-contracts": "^0.16",
         "boson-php/value-object-contracts": "^0.16"
     },
     "autoload": {
