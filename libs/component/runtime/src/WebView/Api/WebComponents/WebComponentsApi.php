@@ -152,13 +152,13 @@ final class WebComponentsApi extends WebViewExtension implements
 
     private function registerDefaultFunctions(): void
     {
-        $this->webview->bind('boson.components.created', $this->onCreated(...));
-        $this->webview->bind('boson.components.connected', $this->onConnected(...));
-        $this->webview->bind('boson.components.disconnected', $this->onDisconnected(...));
-        $this->webview->bind('boson.components.attributeChanged', $this->onAttributeChanged(...));
-        $this->webview->bind('boson.components.propertyChanged', $this->onPropertyChanged(...));
-        $this->webview->bind('boson.components.invoke', $this->onInvoke(...));
-        $this->webview->bind('boson.components.fire', $this->onFire(...));
+        $this->webview->bindings->bind('boson.components.created', $this->onCreated(...));
+        $this->webview->bindings->bind('boson.components.connected', $this->onConnected(...));
+        $this->webview->bindings->bind('boson.components.disconnected', $this->onDisconnected(...));
+        $this->webview->bindings->bind('boson.components.attributeChanged', $this->onAttributeChanged(...));
+        $this->webview->bindings->bind('boson.components.propertyChanged', $this->onPropertyChanged(...));
+        $this->webview->bindings->bind('boson.components.invoke', $this->onInvoke(...));
+        $this->webview->bindings->bind('boson.components.fire', $this->onFire(...));
     }
 
     private function onCreated(string $tag, string $id): ?string

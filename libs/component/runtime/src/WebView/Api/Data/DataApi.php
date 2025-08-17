@@ -95,8 +95,8 @@ final class DataApi extends WebViewExtension implements DataApiInterface
         $this->callback = $context->info->data->callback;
         $this->failureCallback = $context->info->data->failureCallback;
 
-        $this->webview->bind($this->callback, $this->onResponseReceived(...));
-        $this->webview->bind($this->failureCallback, $this->onFailureReceived(...));
+        $this->webview->bindings->bind($this->callback, $this->onResponseReceived(...));
+        $this->webview->bindings->bind($this->failureCallback, $this->onFailureReceived(...));
     }
 
     /**
