@@ -16,8 +16,8 @@
     ],
     "require": {
         "php": "^8.4",
-        "boson-php/uri": "^0.17",
-        "boson-php/uri-factory-contracts": "^0.17"
+        "boson-php/uri": "^0.18",
+        "boson-php/uri-factory-contracts": "^0.18"
     },
     "autoload": {
         "psr-4": {
@@ -33,12 +33,12 @@
         }
     },
     "provide": {
-        "boson-php/uri-factory-contracts-implementation": "^0.17"
+        "boson-php/uri-factory-contracts-implementation": "^0.18"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.17.x-dev",
-            "dev-main": "0.17.x-dev"
+            "dev-master": "0.18.x-dev",
+            "dev-main": "0.18.x-dev"
         }
     },
     "config": {
