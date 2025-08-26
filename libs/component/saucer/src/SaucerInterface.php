@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boson\Api;
+namespace Boson\Component\Saucer;
 
 /**
  * @seal-methods

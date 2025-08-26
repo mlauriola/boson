@@ -11,17 +11,18 @@ parameters:
     - libs/component/pasm/resources/stubs/kernel32.stub.php
     - libs/component/pasm/resources/stubs/libc.stub.php
     - libs/component/runtime/resources/stubs/aliases.stub.php
-    - libs/component/runtime/resources/stubs/saucer.stub.php
     - libs/component/runtime/resources/stubs/saucer-webview-events.stub.php
     - libs/component/runtime/resources/stubs/saucer-window-events.stub.php
     - libs/component/runtime/resources/stubs/kernel32.stub.php
+    - libs/component/saucer/resources/stubs/saucer.stub.php
     - libs/component/uri/resources/stubs/constants.stub
   excludePaths:
     - libs/component/os-info/src/Factory/Driver/WindowsRegistry/Advapi32.php
     - libs/component/pasm/src/Driver/Win32/Kernel32.php
     - libs/component/pasm/src/Driver/Nix/Libc.php
-    - libs/component/runtime/src/Internal/Saucer/Saucer.php
     - libs/component/runtime/src/Internal/Win32/Kernel32.php
+    - libs/component/saucer/src/Saucer.php
+    - libs/component/saucer/src/SaucerTestingStub.php
   strictRules:
     allRules: true
   fileExtensions:
@@ -45,6 +46,7 @@ parameters:
     - libs/component/os-info/src
     - libs/component/pasm/src
     - libs/component/runtime/src
+    - libs/component/saucer/src
     - libs/component/uri/src
     - libs/component/uri-factory/src
     - libs/component/weak-types/src

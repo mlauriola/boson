@@ -2,13 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Boson\Internal\Saucer;
+namespace Boson\Component\Saucer;
 
-/**
- * @internal this is an internal library class, please do not use it in your code
- * @psalm-internal Boson
- */
-final readonly class SaucerWindowEdge
+final readonly class WindowEdge
 {
     public const int SAUCER_WINDOW_EDGE_TOP = 1 << 0;
     public const int SAUCER_WINDOW_EDGE_BOTTOM = 1 << 1;

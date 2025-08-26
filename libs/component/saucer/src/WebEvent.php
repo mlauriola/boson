@@ -2,13 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Boson\Internal\Saucer;
+namespace Boson\Component\Saucer;
 
-/**
- * @internal this is an internal library class, please do not use it in your code
- * @psalm-internal Boson
- */
-final readonly class SaucerWebEvent
+final readonly class WebEvent
 {
     /**
      * Called when the DOM Content loaded.

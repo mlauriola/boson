@@ -53,6 +53,8 @@ jobs:
             split_repository: 'pasm'
           - local_path: 'component/runtime'
             split_repository: 'runtime'
+          - local_path: 'component/saucer'
+            split_repository: 'saucer'
           - local_path: 'component/uri'
             split_repository: 'uri'
           - local_path: 'component/uri-factory'

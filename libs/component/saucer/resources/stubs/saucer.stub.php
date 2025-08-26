@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Boson\Api;
+namespace Boson\Component\Saucer;
 
 use FFI\CData;
 use FFI\CType;
 
 /**
+ * @internal this is an INTERNAL CLASS for PHPStan and IDE autocomplete only,
+ *           please do not use it in your code
+ *
  * @mixin \FFI
  *
  * @phpstan-type SaucerOptionsType CData
@@ -367,7 +370,7 @@ interface SaucerInterface
 
     /**
      * @param SaucerHandleType $handle
-     * @param SaucerWindowEdge::SAUCER_WINDOW_EDGE_*|int-mask-of<SaucerWindowEdge::SAUCER_WINDOW_EDGE_*> $edge
+     * @param WindowEdge::SAUCER_WINDOW_EDGE_*|int-mask-of<WindowEdge::SAUCER_WINDOW_EDGE_*> $edge
      */
     public function saucer_window_start_resize(CData $handle, int $edge): void;
 
@@ -435,25 +438,25 @@ interface SaucerInterface
 
     /**
      * @param SaucerHandleType $handle
-     * @param SaucerWindowEvent::SAUCER_WINDOW_EVENT_* $event
+     * @param WindowEvent::SAUCER_WINDOW_EVENT_* $event
      */
     public function saucer_window_clear(CData $handle, int $event): void;
 
     /**
      * @param SaucerHandleType $handle
-     * @param SaucerWindowEvent::SAUCER_WINDOW_EVENT_* $event
+     * @param WindowEvent::SAUCER_WINDOW_EVENT_* $event
      */
     public function saucer_window_remove(CData $handle, int $event, int $id): void;
 
     /**
      * @param SaucerHandleType $handle
-     * @param SaucerWindowEvent::SAUCER_WINDOW_EVENT_* $event
+     * @param WindowEvent::SAUCER_WINDOW_EVENT_* $event
      */
     public function saucer_window_once(CData $handle, int $event, callable|CData $callback): void;
 
     /**
      * @param SaucerHandleType $handle
-     * @param SaucerWindowEvent::SAUCER_WINDOW_EVENT_* $event
+     * @param WindowEvent::SAUCER_WINDOW_EVENT_* $event
      */
     public function saucer_window_on(CData $handle, int $event, callable|CData $callback): int;
 
@@ -530,12 +533,12 @@ interface SaucerInterface
 
     /**
      * @param SaucerSchemeExecutorType $executor
-     * @param SaucerSchemeError::SAUCER_REQUEST_ERROR_* $error
+     * @param SchemeError::SAUCER_REQUEST_ERROR_* $error
      */
     public function saucer_scheme_executor_reject(CData $executor, int $error): void;
 
     /**
-     * @param SaucerLoadTime::SAUCER_LOAD_TIME_* $time
+     * @param LoadTime::SAUCER_LOAD_TIME_* $time
      *
      * @return SaucerScriptType
      */
@@ -548,13 +551,13 @@ interface SaucerInterface
 
     /**
      * @param SaucerScriptType $script
-     * @param SaucerWebFrame::SAUCER_WEB_FRAME_* $frame
+     * @param WebFrame::SAUCER_WEB_FRAME_* $frame
      */
     public function saucer_script_set_frame(CData $script, int $frame): void;
 
     /**
      * @param SaucerScriptType $script
-     * @param SaucerLoadTime::SAUCER_LOAD_TIME_* $time
+     * @param LoadTime::SAUCER_LOAD_TIME_* $time
      */
     public function saucer_script_set_time(CData $script, int $time): void;
 
@@ -697,7 +700,7 @@ interface SaucerInterface
     /**
      * @param SaucerHandleType $handle
      * @param SaucerEmbeddedFileType $file
-     * @param SaucerLaunch::SAUCER_LAUNCH_* $policy
+     * @param Launch::SAUCER_LAUNCH_* $policy
      */
     public function saucer_webview_embed_file(CData $handle, string $name, CData $file, int $policy): void;
 
@@ -735,7 +738,7 @@ interface SaucerInterface
     /**
      * @param SaucerHandleType $handle
      * @param SaucerSchemeHandlerType $handler
-     * @param SaucerLaunch::SAUCER_LAUNCH_* $policy
+     * @param Launch::SAUCER_LAUNCH_* $policy
      */
     public function saucer_webview_handle_scheme(CData $handle, string $name, callable $handler, int $policy): void;
 
@@ -746,25 +749,25 @@ interface SaucerInterface
 
     /**
      * @param SaucerHandleType $handle
-     * @param SaucerWebEvent::SAUCER_WEB_EVENT_* $event
+     * @param WebEvent::SAUCER_WEB_EVENT_* $event
      */
     public function saucer_webview_clear(CData $handle, int $event): void;
 
     /**
      * @param SaucerHandleType $handle
-     * @param SaucerWebEvent::SAUCER_WEB_EVENT_* $event
+     * @param WebEvent::SAUCER_WEB_EVENT_* $event
      */
     public function saucer_webview_remove(CData $handle, int $event, int $id): void;
 
     /**
      * @param SaucerHandleType $handle
-     * @param SaucerWebEvent::SAUCER_WEB_EVENT_* $event
+     * @param WebEvent::SAUCER_WEB_EVENT_* $event
      */
     public function saucer_webview_once(CData $handle, int $event, callable|CData $callback): void;
 
     /**
      * @param SaucerHandleType $handle
-     * @param SaucerWebEvent::SAUCER_WEB_EVENT_* $event
+     * @param WebEvent::SAUCER_WEB_EVENT_* $event
      */
     public function saucer_webview_on(CData $handle, int $event, callable|CData $callback): int;
 

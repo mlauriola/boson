@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Boson\Exception\Environment;
+namespace Boson\Component\Saucer\Exception\Environment;
 
-final class UnsupportedArchitectureException extends EnvironmentException
+class UnsupportedArchitectureException extends EnvironmentException
 {
     public static function becauseArchitectureIsInvalid(string $architecture, ?\Throwable $previous = null): self
     {

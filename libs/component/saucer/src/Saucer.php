@@ -2,23 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Boson\Internal\Saucer;
+namespace Boson\Component\Saucer;
 
-use Boson\Api\SaucerInterface;
-use Boson\Component\CpuInfo\Architecture;
-use Boson\Component\CpuInfo\ArchitectureInterface;
-use Boson\Component\CpuInfo\CentralProcessor;
-use Boson\Component\OsInfo\Family;
-use Boson\Component\OsInfo\OperatingSystem;
-use Boson\Contracts\OsInfo\FamilyInterface;
-use Boson\Exception\Environment\UnsupportedArchitectureException;
-use Boson\Exception\Environment\UnsupportedOperatingSystemException;
+use Boson\Component\Saucer\Exception\Environment\UnsupportedArchitectureException;
+use Boson\Component\Saucer\Exception\Environment\UnsupportedOperatingSystemException;
+use Boson\Component\Saucer\Exception\Environment\UnsupportedVersionException;
+use Boson\Component\Saucer\Loader\CpuArchitecture;
+use Boson\Component\Saucer\Loader\OperatingSystem;
 use FFI\Env\Runtime;
 
-/**
- * @internal this is an internal library class, please do not use it in your code
- * @psalm-internal Boson
- */
 final readonly class Saucer implements SaucerInterface
 {
     /**
@@ -34,23 +26,20 @@ final readonly class Saucer implements SaucerInterface
     /**
      * @var non-empty-string
      */
-    private const string DEFAULT_BIN_DIR = __DIR__ . '/../../../bin';
+    private const string DEFAULT_BIN_DIR = __DIR__ . '/../bin';
 
     private \FFI $ffi;
 
     /**
-     * @param non-empty-string|null $library
+     * @param non-empty-string $library
      */
-    public function __construct(
-        ?string $library = null,
-        private ?FamilyInterface $os = null,
-        private ?ArchitectureInterface $cpu = null,
-    ) {
+    public function __construct(string $library)
+    {
         Runtime::assertAvailable();
 
         $this->ffi = \FFI::cdef(
             code: (string) \file_get_contents(__FILE__, offset: __COMPILER_HALT_OFFSET__),
-            lib: $library ?? $this->getLibrary(),
+            lib: $library,
         );
 
         $this->assertVersionCompatibility();
@@ -59,45 +48,55 @@ final readonly class Saucer implements SaucerInterface
     /**
      * @return non-empty-string
      */
-    private function getLibrary(): string
+    private static function getLibraryName(OperatingSystem $os, CpuArchitecture $cpu): string
     {
-        $os = $this->os ?? OperatingSystem::createFromGlobals()
-            ->family;
-
-        $cpu = $this->cpu ?? CentralProcessor::createFromGlobals()
-            ->arch;
-
-        $result = match (true) {
-            $os->is(Family::Windows) => match ($cpu) {
-                Architecture::x86,
-                Architecture::Amd64 => 'libboson-windows-x86_64.dll',
+        return match ($os) {
+            OperatingSystem::Windows => match ($cpu) {
+                CpuArchitecture::x86,
+                CpuArchitecture::Amd64 => 'libboson-windows-x86_64.dll',
                 default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid(
-                    architecture: $cpu->name,
+                    architecture: \php_uname('m'),
                 ),
             },
-            $os->is(Family::Linux) => match ($cpu) {
-                Architecture::x86,
-                Architecture::Amd64 => 'libboson-linux-x86_64.so',
-                Architecture::Arm64 => 'libboson-linux-aarch64.so',
+            OperatingSystem::Linux,
+            OperatingSystem::BSD => match ($cpu) {
+                CpuArchitecture::x86,
+                CpuArchitecture::Amd64 => 'libboson-linux-x86_64.so',
+                CpuArchitecture::Arm64 => 'libboson-linux-aarch64.so',
                 default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid(
-                    architecture: $cpu->name,
+                    architecture: \php_uname('m'),
                 ),
             },
-            $os->is(Family::Darwin) => match ($cpu) {
-                Architecture::x86,
-                Architecture::Amd64,
-                Architecture::Arm64 => 'libboson-darwin-universal.dylib',
+            OperatingSystem::MacOS => match ($cpu) {
+                CpuArchitecture::x86,
+                CpuArchitecture::Amd64,
+                CpuArchitecture::Arm64 => 'libboson-darwin-universal.dylib',
                 default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid(
-                    architecture: $cpu->name,
+                    architecture: \php_uname('m'),
                 ),
             },
             default => throw UnsupportedOperatingSystemException::becauseOperatingSystemIsInvalid(
-                os: $os->name,
+                os: \PHP_OS_FAMILY,
             ),
         };
+    }
 
-        return $this->getPharAwareLibrary($result)
-            ?? self::DEFAULT_BIN_DIR . '/' . $result;
+    public static function createFromGlobals(): self
+    {
+        return self::createFromEnvironment(null, null);
+    }
+
+    public static function createFromEnvironment(?OperatingSystem $os, ?CpuArchitecture $cpu): self
+    {
+        $library = self::getLibraryName(
+            os: $os ?? OperatingSystem::createFromGlobals(),
+            cpu: $cpu ?? CpuArchitecture::createFromGlobals(),
+        );
+
+        return new self(
+            library: self::getPharAwareLibrary($library)
+                ?? self::DEFAULT_BIN_DIR . '/' . $library,
+        );
     }
 
     /**
@@ -105,7 +104,7 @@ final readonly class Saucer implements SaucerInterface
      *
      * @return non-empty-string|null
      */
-    private function getPharAwareLibrary(string $pathname): ?string
+    private static function getPharAwareLibrary(string $pathname): ?string
     {
         // Skip in case the PHAR is not available
         // or the project is launched outside the PHAR
@@ -134,13 +133,11 @@ final readonly class Saucer implements SaucerInterface
             return;
         }
 
-        throw new \OutOfRangeException(\sprintf(
-            'The current version of the library is %s, '
-                . 'but at least %s (but not higher than %s) is supported',
-            $version,
-            self::MINIMAL_REQUIRED_VERSION,
-            self::MAXIMAL_SUPPORTED_VERSION,
-        ));
+        throw UnsupportedVersionException::becauseVersionIsInvalid(
+            version: $version,
+            min: self::MINIMAL_REQUIRED_VERSION,
+            max: self::MAXIMAL_SUPPORTED_VERSION,
+        );
     }
 
     /**

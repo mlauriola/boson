@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Boson\Exception\Environment;
+namespace Boson\Component\Saucer\Exception\Environment;
 
-final class UnsupportedOperatingSystemException extends EnvironmentException
+class UnsupportedOperatingSystemException extends EnvironmentException
 {
     public static function becauseOperatingSystemIsInvalid(string $os, ?\Throwable $previous = null): self
     {

@@ -2,17 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Boson\Tests\Stub;
-
-use Boson\Api\SaucerInterface;
+namespace Boson\Component\Saucer;
 
 /**
- * @api
- *
- * @internal this is an internal library class, please do not use it in your code
- * @psalm-internal Boson\Tests
+ * An {@see SaucerInterface} implementation for testing purposes only
  */
-class TestingSaucerStub implements SaucerInterface
+class SaucerTestingStub implements SaucerInterface
 {
     /**
      * @var array<non-empty-string, callable>
