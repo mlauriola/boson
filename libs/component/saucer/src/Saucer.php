@@ -93,32 +93,19 @@ final readonly class Saucer implements SaucerInterface
             cpu: $cpu ?? CpuArchitecture::createFromGlobals(),
         );
 
-        return new self(
-            library: self::getPharAwareLibrary($library)
-                ?? self::DEFAULT_BIN_DIR . '/' . $library,
-        );
+        return new self(self::getBinaryDirectory() . '/' . $library);
     }
 
     /**
-     * @param non-empty-string $pathname
-     *
-     * @return non-empty-string|null
+     * @return non-empty-string
      */
-    private static function getPharAwareLibrary(string $pathname): ?string
+    private static function getBinaryDirectory(): string
     {
-        // Skip in case the PHAR is not available
-        // or the project is launched outside the PHAR
         if (!\extension_loaded('phar') || \Phar::running() === '') {
-            return null;
+            return self::DEFAULT_BIN_DIR;
         }
 
-        $pathname = \realpath($pathname);
-
-        if ($pathname === false) {
-            return null;
-        }
-
-        return $pathname;
+        return \dirname(\Phar::running(false));
     }
 
     private function assertVersionCompatibility(): void
