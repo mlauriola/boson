@@ -506,8 +506,8 @@ final class Window implements
      * @template TArgService of object
      *
      * @param class-string<TArgService> $id
-     * @return TArgService
      *
+     * @return TArgService
      * @throws ExtensionNotFoundException
      */
     public function get(string $id): object

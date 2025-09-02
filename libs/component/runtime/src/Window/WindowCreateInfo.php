@@ -30,7 +30,6 @@ final readonly class WindowCreateInfo
     /**
      * @param iterable<mixed, ExtensionProviderInterface<Window>> $extensions
      *        list of enabled window extensions
-     *
      */
     public function __construct(
         /**

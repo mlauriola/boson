@@ -153,6 +153,7 @@ final class DependencyGraph implements \IteratorAggregate
      * Build a class-name keyed map of providers, ensuring uniqueness.
      *
      * @param iterable<mixed, ProviderType> $providers
+     *
      * @return ProvidersMapType
      */
     private function createProvidersMap(iterable $providers): array
