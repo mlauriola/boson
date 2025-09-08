@@ -121,6 +121,8 @@ final class WebView implements
 
     /**
      * List of webview extensions.
+     *
+     * @var Registry<WebView>
      */
     private readonly Registry $extensions;
 
@@ -164,7 +166,7 @@ final class WebView implements
         foreach ($this->extensions->boot() as $property => $extension) {
             // Direct access to dynamic property is 5+ times
             // faster than magic `__get` call.
-            $this->$property = $extension;
+            $this->__set($property, $extension);
         }
 
         // Register WebView's subsystems
@@ -176,9 +178,9 @@ final class WebView implements
     /**
      * @template TArgService of object
      *
-     * @param class-string<TArgService>|non-empty-string $id
+     * @param class-string<TArgService>|string $id
      *
-     * @return TArgService
+     * @return ($id is class-string<TArgService> ? TArgService : object)
      * @throws ExtensionNotFoundException
      */
     public function get(string $id): object
@@ -186,9 +188,6 @@ final class WebView implements
         return $this->extensions->get($id);
     }
 
-    /**
-     * @param class-string|non-empty-string $id
-     */
     public function has(string $id): bool
     {
         return $this->extensions->has($id);
@@ -242,6 +241,7 @@ final class WebView implements
                 throw new BosonException(\sprintf('Unable to read %s', $script->getPathname()));
             }
 
+            /** @phpstan-ignore-next-line : Allow second parameter */
             $scripts->preload($code, true);
         }
     }
@@ -265,6 +265,7 @@ final class WebView implements
      */
     public function bind(string $function, \Closure $callback): void
     {
+        /** @phpstan-ignore-next-line : Allow dynamic property access */
         $this->bindings->bind($function, $callback);
     }
 
@@ -285,6 +286,7 @@ final class WebView implements
      */
     public function eval(#[Language('JavaScript')] string $code): void
     {
+        /** @phpstan-ignore-next-line : Allow dynamic property access */
         $this->scripts->eval($code);
     }
 
@@ -306,6 +308,7 @@ final class WebView implements
     #[BlockingOperation]
     public function data(#[Language('JavaScript')] string $code, ?float $timeout = null): mixed
     {
+        /** @phpstan-ignore-next-line : Allow dynamic property access */
         return $this->data->get($code, $timeout);
     }
 
@@ -326,6 +329,7 @@ final class WebView implements
      */
     public function defineComponent(string $name, string $component): void
     {
+        /** @phpstan-ignore-next-line : Allow dynamic property access */
         $this->components->add($name, $component);
     }
 
@@ -377,6 +381,7 @@ final class WebView implements
             throw new \Error(\sprintf('Cannot create dynamic property %s::$%s', static::class, $name));
         }
 
+        /** @phpstan-ignore property.dynamicName */
         $this->$name = $value;
     }
 }

@@ -47,7 +47,7 @@ abstract class ExtensionProvider implements ExtensionProviderInterface
     }
 
     /**
-     * @return list<AliasType>
+     * @return list<DependencyType>
      */
     private function getDependenciesFromAttributes(): array
     {

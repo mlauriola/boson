@@ -168,6 +168,8 @@ class Application implements
 
     /**
      * List of application extensions.
+     *
+     * @var Registry<Application>
      */
     private readonly Registry $extensions;
 
@@ -222,7 +224,7 @@ class Application implements
         foreach ($this->extensions->boot() as $property => $extension) {
             // Direct access to dynamic property is 5+ times
             // faster than magic `__get` call.
-            $this->$property = $extension;
+            $this->__set($property, $extension);
         }
 
         // Register Application's subsystems
@@ -238,9 +240,9 @@ class Application implements
     /**
      * @template TArgService of object
      *
-     * @param class-string<TArgService>|non-empty-string $id
+     * @param class-string<TArgService>|string $id
      *
-     * @return TArgService
+     * @return ($id is class-string<TArgService> ? TArgService : object)
      * @throws ExtensionNotFoundException
      */
     public function get(string $id): object
@@ -248,9 +250,6 @@ class Application implements
         return $this->extensions->get($id);
     }
 
-    /**
-     * @param class-string|non-empty-string $id
-     */
     public function has(string $id): bool
     {
         return $this->extensions->has($id);
@@ -610,6 +609,7 @@ class Application implements
             throw new \Error(\sprintf('Cannot create dynamic property %s::$%s', static::class, $name));
         }
 
+        /** @phpstan-ignore property.dynamicName */
         $this->$name = $value;
     }
 }

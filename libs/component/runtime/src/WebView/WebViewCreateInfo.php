@@ -161,7 +161,7 @@ final readonly class WebViewCreateInfo
      */
     private static function flagsToList(iterable $flags): array
     {
-        return \iterator_to_array($flags, false);
+        return \iterator_to_array($flags, true);
     }
 
     /**

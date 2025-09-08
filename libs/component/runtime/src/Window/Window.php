@@ -469,14 +469,14 @@ final class Window implements
 
     /**
      * List of window extensions.
+     *
+     * @var Registry<Window>
      */
     private readonly Registry $extensions;
 
     /**
      * Contains an internal bridge between system {@see SaucerInterface} events
      * and the PSR {@see Window::$events} dispatcher.
-     *
-     * @phpstan-ignore property.onlyWritten
      */
     private readonly SaucerWindowEventHandler $handler;
 
@@ -521,7 +521,7 @@ final class Window implements
         foreach ($this->extensions->boot() as $property => $extension) {
             // Direct access to dynamic property is 5+ times
             // faster than magic `__get` call.
-            $this->$property = $extension;
+            $this->__set($property, $extension);
         }
 
         // Register Window's subsystems
@@ -534,9 +534,9 @@ final class Window implements
     /**
      * @template TArgService of object
      *
-     * @param class-string<TArgService>|non-empty-string $id
+     * @param class-string<TArgService>|string $id
      *
-     * @return TArgService
+     * @return ($id is class-string<TArgService> ? TArgService : object)
      * @throws ExtensionNotFoundException
      */
     public function get(string $id): object
@@ -544,9 +544,6 @@ final class Window implements
         return $this->extensions->get($id);
     }
 
-    /**
-     * @param class-string|non-empty-string $id
-     */
     public function has(string $id): bool
     {
         return $this->extensions->has($id);
@@ -1023,6 +1020,7 @@ final class Window implements
             throw new \Error(\sprintf('Cannot create dynamic property %s::$%s', static::class, $name));
         }
 
+        /** @phpstan-ignore property.dynamicName */
         $this->$name = $value;
     }
 }

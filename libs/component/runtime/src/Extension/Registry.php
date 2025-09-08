@@ -18,7 +18,7 @@ use Psr\Container\ContainerInterface;
 final class Registry implements ContainerInterface
 {
     /**
-     * @var list<object>
+     * @var array<non-empty-string, object>
      */
     private array $extensions = [];
 
@@ -58,7 +58,6 @@ final class Registry implements ContainerInterface
             return $this->properties;
         }
 
-        /** @var ExtensionProviderInterface $provider */
         foreach (new DependencyGraph($this->providers) as $provider) {
             try {
                 $extension = $provider->load($this->context, $this->listener);
@@ -101,9 +100,9 @@ final class Registry implements ContainerInterface
     /**
      * @template TArgService of object
      *
-     * @param class-string<TArgService>|non-empty-string $id
+     * @param class-string<TArgService>|string $id
      *
-     * @return TArgService
+     * @return ($id is class-string<TArgService> ? TArgService : object)
      * @throws ExtensionNotFoundException
      */
     public function get(string $id): object
@@ -112,9 +111,6 @@ final class Registry implements ContainerInterface
             ?? throw ExtensionNotFoundException::becauseExtensionNotFound($id);
     }
 
-    /**
-     * @param class-string|non-empty-string $id
-     */
     public function has(string $id): bool
     {
         return isset($this->extensions[$id]);
