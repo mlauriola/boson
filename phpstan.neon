@@ -58,6 +58,8 @@ parameters:
     - libs/contracts/uri-contracts/src
     - libs/contracts/uri-factory-contracts/src
     - libs/contracts/value-object-contracts/src
+    # Extensions
+    - libs/extension/webview-ext-battery/src
   tmpDir: vendor/.cache.phpstan
   reportUnmatchedIgnoredErrors: true
   treatPhpDocTypesAsCertain: false

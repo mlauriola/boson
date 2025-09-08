@@ -6,7 +6,6 @@ namespace Boson\WebView;
 
 use Boson\Application;
 use Boson\Extension\ExtensionProviderInterface;
-use Boson\WebView\Api\Battery\BatteryExtensionProvider;
 use Boson\WebView\Api\Bindings\BindingsExtensionProvider;
 use Boson\WebView\Api\Data\DataExtensionProvider;
 use Boson\WebView\Api\LifecycleEvents\LifecycleEventsExtensionProvider;
@@ -130,7 +129,6 @@ final readonly class WebViewCreateInfo
             new BindingsExtensionProvider(),
             new DataExtensionProvider(),
             new SecurityExtensionProvider(),
-            new BatteryExtensionProvider(),
             new WebComponentsExtensionProvider(),
             new NetworkExtensionProvider(),
             new SchemesExtensionProvider(),

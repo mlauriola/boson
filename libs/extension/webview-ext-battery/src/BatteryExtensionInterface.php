@@ -4,11 +4,21 @@ declare(strict_types=1);
 
 namespace Boson\WebView\Api\Battery;
 
+use Boson\Shared\Marker\ExpectsSecurityContext;
 use Boson\WebView\Api\Battery\Exception\BatteryNotAvailableException;
 use Boson\WebView\Api\Battery\Exception\BatteryNotReadyException;
 
-interface BatteryInfoProviderInterface
+#[ExpectsSecurityContext]
+interface BatteryExtensionInterface
 {
+    /**
+     * Contains {@see true} if the Battery API is available,
+     * otherwise contains {@see false}.
+     */
+    public bool $isAvailable {
+        get;
+    }
+
     /**
      * The level read-only property of interface indicates the current
      * battery charge level as a value between 0.0 and 1.0.

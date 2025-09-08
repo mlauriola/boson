@@ -30,8 +30,13 @@ use Boson\WebView\WebView;
  * }
  */
 #[ExpectsSecurityContext]
-final class BatteryExtension extends WebViewExtension implements BatteryExtensionInterface
+final class ClientBatteryExtension extends WebViewExtension implements
+    BatteryExtensionInterface
 {
+    public bool $isAvailable {
+        get => (bool) $this->data->get('navigator.getBattery instanceof Function');
+    }
+
     public float $level {
         /** @phpstan-ignore-next-line : data can never be null */
         get => (float) $this->clientBatteryInfo['level'];
@@ -61,20 +66,13 @@ final class BatteryExtension extends WebViewExtension implements BatteryExtensio
     private ?array $clientBatteryInfo = null {
         get => match (true) {
             $this->clientBatteryInfo === null => $this->clientBatteryInfo = $this->fetchClientInfo(),
-            $this->isEventsEnabled => $this->clientBatteryInfo,
             default => $this->fetchClientInfo(),
         };
     }
 
-    /**
-     * Whether to enable battery-related events.
-     */
-    private readonly bool $isEventsEnabled;
-
     public function __construct(
         WebView $context,
         EventListener $listener,
-        BatteryExtensionCreateInfo $info,
         private readonly BindingsExtensionInterface $bindings,
         private readonly DataExtensionInterface $data,
         private readonly ScriptsExtensionInterface $scripts,
@@ -82,14 +80,13 @@ final class BatteryExtension extends WebViewExtension implements BatteryExtensio
     ) {
         parent::__construct($context, $listener);
 
-        $this->isEventsEnabled = $info->enableEvents;
-
-        if ($this->isEventsEnabled) {
-            $this->registerDefaultFunctions();
-            $this->registerDefaultClientEventListeners();
-        }
+        $this->registerDefaultFunctions();
+        $this->registerDefaultClientEventListeners();
     }
 
+    /**
+     * Registers default callbacks for client-side event listener.
+     */
     private function registerDefaultFunctions(): void
     {
         $this->bindings->bind('boson.battery.onLevelChange', $this->onLevelChange(...));
@@ -103,7 +100,7 @@ final class BatteryExtension extends WebViewExtension implements BatteryExtensio
      */
     private function registerDefaultClientEventListeners(): void
     {
-        $this->scripts->add(<<<'JS'
+        $this->scripts->preload(<<<'JS'
             document.addEventListener('levelchange', () => boson.battery.onLevelChange());
             document.addEventListener('chargingchange', () => boson.battery.onChargingChange());
             document.addEventListener('chargingtimechange', () => boson.battery.onChargingTimeChange());
@@ -166,7 +163,7 @@ final class BatteryExtension extends WebViewExtension implements BatteryExtensio
         }
 
         try {
-            if ($this->data->get('navigator.getBattery instanceof Function') !== true) {
+            if (!$this->isAvailable) {
                 throw BatteryNotAvailableException::becauseBatteryNotAvailable();
             }
         } catch (WebViewIsNotReadyException $e) {
@@ -174,12 +171,14 @@ final class BatteryExtension extends WebViewExtension implements BatteryExtensio
         }
 
         /** @var BatteryInfoType */
-        return $this->data->get('navigator.getBattery()
-            .then((manager) => ({
-                level: manager.level,
-                charging: manager.charging,
-                chargingTime: manager.chargingTime,
-                dischargingTime: manager.dischargingTime,
-            })) || {}');
+        return $this->data->get(<<<'JS'
+            navigator.getBattery()
+                .then((manager) => ({
+                    level: manager.level,
+                    charging: manager.charging,
+                    chargingTime: manager.chargingTime,
+                    dischargingTime: manager.dischargingTime,
+                })) || {}
+            JS);
     }
 }

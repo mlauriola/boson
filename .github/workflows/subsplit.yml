@@ -76,6 +76,9 @@ jobs:
             split_repository: 'uri-factory-contracts'
           - local_path: 'contracts/value-object-contracts'
             split_repository: 'value-object-contracts'
+          # Extensions
+          - local_path: 'extension/webview-ext-battery'
+            split_repository: 'webview-ext-battery'
     steps:
       - uses: actions/checkout@v4
 

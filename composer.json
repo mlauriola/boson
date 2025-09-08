@@ -6,7 +6,8 @@
     "repositories": [
         {"type": "path", "url": "libs/bridge/*"},
         {"type": "path", "url": "libs/component/*"},
-        {"type": "path", "url": "libs/contracts/*"}
+        {"type": "path", "url": "libs/contracts/*"},
+        {"type": "path", "url": "libs/extension/*"}
     ],
     "require": {
         "php": "^8.4",
@@ -36,7 +37,8 @@
         "boson-php/uri-factory": "^0.18",
         "boson-php/uri-factory-contracts": "^0.18",
         "boson-php/value-object-contracts": "^0.18",
-        "boson-php/weak-types": "^0.18"
+        "boson-php/weak-types": "^0.18",
+        "boson-php/webview-ext-battery": "^0.18"
     },
     "require-dev": {
         "ffi/var-dumper": "^1.0",
@@ -77,7 +79,8 @@
             "Boson\\Contracts\\OsInfo\\Tests\\": "libs/contracts/os-info-contracts/tests",
             "Boson\\Contracts\\Uri\\Tests\\": "libs/contracts/uri-contracts/tests",
             "Boson\\Contracts\\Uri\\Factory\\Tests\\": "libs/contracts/uri-factory-contracts/tests",
-            "Boson\\Contracts\\ValueObject\\Tests\\": "libs/contracts/value-object-contracts/tests"
+            "Boson\\Contracts\\ValueObject\\Tests\\": "libs/contracts/value-object-contracts/tests",
+            "Boson\\WebView\\Api\\Battery\\Tests\\": "libs/extension/webview-extension-battery/tests"
         }
     },
     "extra": {
@@ -90,7 +93,7 @@
         "sort-packages": true,
         "platform-check": true,
         "bin-compat": "full",
-        "optimize-autoloader": true,
+        "optimize-autoloader": false,
         "preferred-install": {
             "*": "dist"
         },

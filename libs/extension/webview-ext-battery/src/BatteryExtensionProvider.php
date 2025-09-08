@@ -29,16 +29,11 @@ final class BatteryExtensionProvider implements ExtensionProviderInterface
         SecurityExtensionProvider::class,
     ];
 
-    public function __construct(
-        private readonly BatteryExtensionCreateInfo $info = new BatteryExtensionCreateInfo(),
-    ) {}
-
-    public function load(IdentifiableInterface $ctx, EventListener $listener): BatteryExtension
+    public function load(IdentifiableInterface $ctx, EventListener $listener): ClientBatteryExtension
     {
-        return new BatteryExtension(
+        return new ClientBatteryExtension(
             context: $ctx,
             listener: $listener,
-            info: $this->info,
             bindings: $ctx->get(BindingsExtension::class),
             data: $ctx->get(DataExtension::class),
             scripts: $ctx->get(ScriptsExtension::class),

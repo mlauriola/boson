@@ -16,7 +16,7 @@ use Boson\Exception\BosonException;
 use Boson\Extension\Exception\ExtensionNotFoundException;
 use Boson\Extension\Registry;
 use Boson\Shared\Marker\BlockingOperation;
-use Boson\WebView\Api\Battery\BatteryExtension;
+use Boson\WebView\Api\Battery\ClientBatteryExtension;
 use Boson\WebView\Api\Battery\BatteryExtensionInterface;
 use Boson\WebView\Api\Bindings\BindingsExtension;
 use Boson\WebView\Api\Bindings\BindingsExtensionInterface;
@@ -123,7 +123,7 @@ final class WebView implements
      * Gets access to the Battery API of the webview.
      */
     public BatteryExtensionInterface $battery {
-        get => $this->battery ??= $this->extensions->get(BatteryExtension::class);
+        get => $this->battery ??= $this->extensions->get(ClientBatteryExtension::class);
     }
 
     /**

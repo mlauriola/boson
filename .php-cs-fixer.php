@@ -31,6 +31,8 @@ $files = PhpCsFixer\Finder::create()
         __DIR__ . '/libs/contracts/uri-contracts/src',
         __DIR__ . '/libs/contracts/uri-factory-contracts/src',
         __DIR__ . '/libs/contracts/value-object-contracts/src',
+        // Extensions
+        __DIR__ . '/libs/extension/webview-ext-battery/src',
     ])
     ->filter(static fn (\SplFileInfo $file): bool
         => !\in_array(\realpath($file->getPathname()), [
