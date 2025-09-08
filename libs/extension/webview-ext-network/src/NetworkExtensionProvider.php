@@ -26,16 +26,11 @@ use Boson\WebView\WebView;
 #[DependsOn(DataExtensionProvider::class)]
 final class NetworkExtensionProvider extends ExtensionProvider
 {
-    public function __construct(
-        public readonly NetworkExtensionCreateInfo $info = new NetworkExtensionCreateInfo(),
-    ) {}
-
     public function load(IdentifiableInterface $ctx, EventListener $listener): NetworkExtension
     {
         return new NetworkExtension(
             context: $ctx,
             listener: $listener,
-            info: $this->info,
             bindings: $ctx->get(BindingsExtension::class),
             scripts: $ctx->get(ScriptsExtension::class),
             data: $ctx->get(DataExtension::class),

@@ -60,6 +60,7 @@ parameters:
     - libs/contracts/value-object-contracts/src
     # Extensions
     - libs/extension/webview-ext-battery/src
+    - libs/extension/webview-ext-network/src
   tmpDir: vendor/.cache.phpstan
   reportUnmatchedIgnoredErrors: true
   treatPhpDocTypesAsCertain: false

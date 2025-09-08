@@ -28,9 +28,12 @@ use Boson\WebView\WebView;
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Boson\WebView
  */
-final class NetworkExtension extends WebViewExtension implements
-    NetworkExtensionInterface
+final class NetworkExtension extends WebViewExtension implements NetworkExtensionInterface
 {
+    public bool $isAvailable {
+        get => (bool) $this->data->get('navigator.connection instanceof NetworkInformation');
+    }
+
     /**
      * @var NetworkInfoType
      */
@@ -40,7 +43,6 @@ final class NetworkExtension extends WebViewExtension implements
          */
         get => match (true) {
             $this->clientNetworkInfo === null => $this->clientNetworkInfo = $this->fetchClientInfo(),
-            $this->isEventsEnabled => $this->clientNetworkInfo,
             default => $this->fetchClientInfo(),
         };
     }
@@ -100,27 +102,17 @@ final class NetworkExtension extends WebViewExtension implements
         };
     }
 
-    /**
-     * Whether to enable network-related events.
-     */
-    private readonly bool $isEventsEnabled;
-
     public function __construct(
         WebView $context,
         EventListener $listener,
-        NetworkExtensionCreateInfo $info,
         private readonly BindingsExtensionInterface $bindings,
         private readonly ScriptsExtensionInterface $scripts,
         private readonly DataExtensionInterface $data,
     ) {
         parent::__construct($context, $listener);
 
-        $this->isEventsEnabled = $info->enableEvents;
-
-        if ($this->isEventsEnabled) {
-            $this->registerDefaultFunctions();
-            $this->registerDefaultClientEventListeners();
-        }
+        $this->registerDefaultFunctions();
+        $this->registerDefaultClientEventListeners();
     }
 
     private function registerDefaultFunctions(): void
@@ -158,7 +150,7 @@ final class NetworkExtension extends WebViewExtension implements
     private function fetchClientInfo(): array
     {
         try {
-            if ($this->data->get('navigator.connection instanceof NetworkInformation') !== true) {
+            if (!$this->isAvailable) {
                 throw NetworkNotAvailableException::becauseNetworkNotAvailable();
             }
         } catch (WebViewIsNotReadyException) {

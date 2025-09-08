@@ -42,6 +42,10 @@
             <directory>libs/contracts/uri-factory-contracts/tests</directory>
             <directory>libs/contracts/value-object-contracts/tests</directory>
         </testsuite>
+        <testsuite name="extensions">
+            <directory>libs/extension/webview-ext-battery/tests</directory>
+            <directory>libs/extension/webview-ext-network/tests</directory>
+        </testsuite>
     </testsuites>
 
     <coverage/>
@@ -77,6 +81,9 @@
             <directory>libs/contracts/uri-contracts/src</directory>
             <directory>libs/contracts/uri-factory-contracts/src</directory>
             <directory>libs/contracts/value-object-contracts/src</directory>
+            <!-- extensions -->
+            <directory>libs/extension/webview-ext-battery/src</directory>
+            <directory>libs/extension/webview-ext-network/src</directory>
         </include>
     </source>
 

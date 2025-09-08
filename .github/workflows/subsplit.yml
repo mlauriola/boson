@@ -79,6 +79,8 @@ jobs:
           # Extensions
           - local_path: 'extension/webview-ext-battery'
             split_repository: 'webview-ext-battery'
+          - local_path: 'extension/webview-ext-network'
+            split_repository: 'webview-ext-network'
     steps:
       - uses: actions/checkout@v4
 

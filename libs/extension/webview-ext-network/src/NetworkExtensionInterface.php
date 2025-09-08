@@ -7,8 +7,16 @@ namespace Boson\WebView\Api\Network;
 use Boson\WebView\Api\Network\Exception\NetworkNotAvailableException;
 use Boson\WebView\Api\Network\Exception\NetworkNotReadyException;
 
-interface NetworkInfoProviderInterface
+interface NetworkExtensionInterface
 {
+    /**
+     * Contains {@see true} if the Network API is available,
+     * otherwise contains {@see false}.
+     */
+    public bool $isAvailable {
+        get;
+    }
+
     /**
      * Gets the effective bandwidth estimate in megabits per second,
      * rounded to the nearest multiple of 25 kilobits per seconds.
