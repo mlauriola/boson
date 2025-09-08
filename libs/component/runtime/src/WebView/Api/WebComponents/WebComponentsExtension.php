@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Boson\WebView\Api\WebComponents;
 
 use Boson\Dispatcher\EventListener;
+use Boson\Extension\Attribute\AvailableAs;
 use Boson\WebView\Api\Bindings\BindingsExtensionInterface;
 use Boson\WebView\Api\Scripts\ScriptsExtensionInterface;
 use Boson\WebView\Api\WebComponents\Component\HasAttributesInterface;
@@ -27,6 +28,7 @@ use Boson\WebView\WebView;
 /**
  * @template-implements \IteratorAggregate<non-empty-string, class-string>
  */
+#[AvailableAs(['components', WebComponentsExtensionInterface::class])]
 final class WebComponentsExtension extends WebViewExtension implements
     WebComponentsExtensionInterface,
     \IteratorAggregate

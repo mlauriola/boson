@@ -80,7 +80,7 @@
             "Boson\\Contracts\\Uri\\Tests\\": "libs/contracts/uri-contracts/tests",
             "Boson\\Contracts\\Uri\\Factory\\Tests\\": "libs/contracts/uri-factory-contracts/tests",
             "Boson\\Contracts\\ValueObject\\Tests\\": "libs/contracts/value-object-contracts/tests",
-            "Boson\\WebView\\Api\\Battery\\Tests\\": "libs/extension/webview-extension-battery/tests"
+            "Boson\\WebView\\Api\\Battery\\Tests\\": "libs/extension/webview-ext-battery/tests"
         }
     },
     "extra": {

@@ -16,11 +16,34 @@ use Boson\WebView\Api\Security\SecurityExtensionProvider;
 use Boson\WebView\Api\WebComponents\WebComponentsExtensionProvider;
 use Boson\WebView\WebViewCreateInfo\StorageDirectoryResolver;
 
+//
+// Note:
+// 1) This "$_" assign hack removes these constants from IDE autocomplete.
+// 2) Only define-like constants allows object instances.
+//
+\define($_ = 'Boson\WebView\DEFAULT_WEBVIEW_EXTENSIONS', [
+    new ScriptsExtensionProvider(),
+    new BindingsExtensionProvider(),
+    new DataExtensionProvider(),
+    new SecurityExtensionProvider(),
+    new WebComponentsExtensionProvider(),
+    new NetworkExtensionProvider(),
+    new SchemesExtensionProvider(),
+    new LifecycleEventsExtensionProvider(),
+]);
+
 /**
  * Information (configuration) about creating a new webview object.
  */
 final readonly class WebViewCreateInfo
 {
+    /**
+     * @var list<ExtensionProviderInterface<WebView>>
+     *
+     * @noinspection PhpUndefinedConstantInspection
+     */
+    public const array DEFAULT_WEBVIEW_EXTENSIONS = DEFAULT_WEBVIEW_EXTENSIONS;
+
     /**
      * Path to directory with temporary files (WebView configuration
      * and session) files.
@@ -124,16 +147,7 @@ final readonly class WebViewCreateInfo
          *  - Dev Tools will bew disabled if debug mode is disabled.
          */
         public ?bool $devTools = null,
-        iterable $extensions = [
-            new ScriptsExtensionProvider(),
-            new BindingsExtensionProvider(),
-            new DataExtensionProvider(),
-            new SecurityExtensionProvider(),
-            new WebComponentsExtensionProvider(),
-            new NetworkExtensionProvider(),
-            new SchemesExtensionProvider(),
-            new LifecycleEventsExtensionProvider(),
-        ],
+        iterable $extensions = self::DEFAULT_WEBVIEW_EXTENSIONS,
     ) {
         $this->storage = StorageDirectoryResolver::resolve($storage);
         $this->flags = self::flagsToList($flags);
