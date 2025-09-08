@@ -64,6 +64,7 @@ abstract class ExtensionProvider implements ExtensionProviderInterface
      * @template TArgAttribute of object
      *
      * @param class-string<TArgAttribute> $class
+     *
      * @return iterable<array-key, TArgAttribute>
      */
     private function getClassAttributes(string $class): iterable

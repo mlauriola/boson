@@ -87,6 +87,7 @@ class Application implements
      * child {@see $windows} property.
      *
      * @uses WindowManager::$default Default (first) window of the windows list
+     *
      * @api
      */
     public Window $window {
@@ -105,6 +106,7 @@ class Application implements
      * subsystem from {@see $window} property.
      *
      * @uses Window::$webview The webview of the default (first) window
+     *
      * @api
      */
     public WebView $webview {
@@ -143,10 +145,10 @@ class Application implements
     /**
      * Shared WebView API library.
      *
+     * @api
+     *
      * @internal Not safe, you can get segfault, use
      *           this low-level API at your own risk!
-     *
-     * @api
      */
     public readonly SaucerInterface $saucer;
 

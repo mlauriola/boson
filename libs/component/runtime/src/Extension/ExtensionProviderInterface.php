@@ -42,6 +42,7 @@ interface ExtensionProviderInterface
      * ```
      *
      * @var list<class-string<ExtensionProviderInterface>>
+     *
      * @phpstan-var list<DependencyType>
      */
     public array $dependencies {
@@ -62,6 +63,7 @@ interface ExtensionProviderInterface
      * ```
      *
      * @var list<non-empty-string>
+     *
      * @phpstan-var list<AliasType>
      */
     public array $aliases {

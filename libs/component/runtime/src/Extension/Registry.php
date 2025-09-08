@@ -49,9 +49,8 @@ final class Registry implements ContainerInterface
     }
 
     /**
-     * @throws ExtensionLoadingException
-     *
      * @return array<non-empty-string, object>
+     * @throws ExtensionLoadingException
      */
     public function boot(): array
     {

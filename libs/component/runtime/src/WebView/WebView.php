@@ -259,7 +259,8 @@ final class WebView implements
      *
      * @throws FunctionAlreadyDefinedException in case of function binding error
      *
-     * @deprecated Please use `$webview->bindings->bind()` instead.
+     * @deprecated please use `$webview->bindings->bind()` instead
+     *
      * @uses BindingsExtensionInterface::bind() WebView Functions API
      */
     public function bind(string $function, \Closure $callback): void
@@ -278,7 +279,8 @@ final class WebView implements
      *
      * @param string $code A JavaScript code for execution
      *
-     * @deprecated Please use `$webview->scripts->eval()` instead.
+     * @deprecated please use `$webview->scripts->eval()` instead
+     *
      * @uses ScriptsExtensionInterface::eval() WebView Scripts API
      */
     public function eval(#[Language('JavaScript')] string $code): void
@@ -297,7 +299,8 @@ final class WebView implements
      *
      * @param string $code A JavaScript code for execution
      *
-     * @deprecated Please use `$webview->data->get()` instead.
+     * @deprecated please use `$webview->data->get()` instead
+     *
      * @uses DataExtensionInterface::get() WebView Requests API
      */
     #[BlockingOperation]
@@ -317,7 +320,8 @@ final class WebView implements
      * @throws ComponentAlreadyDefinedException if a component with the given name is already registered
      * @throws WebComponentsApiException if any other registration error occurs
      *
-     * @deprecated Please use `$webview->components->add()` instead.
+     * @deprecated please use `$webview->components->add()` instead
+     *
      * @uses WebComponentsExtensionInterface::add() WebView Web Components API
      */
     public function defineComponent(string $name, string $component): void
