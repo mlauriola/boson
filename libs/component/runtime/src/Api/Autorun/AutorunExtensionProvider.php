@@ -38,7 +38,7 @@ final class AutorunExtensionProvider extends ExtensionProvider
          * TODO The {@see ApplicationCreateInfo::$autorun} check should be
          *      removed after the flag is removed.
          */
-        if ($ctx->info->autorun === false) {
+        if (!$ctx->info->autorun) {
             return null;
         }
 
@@ -92,6 +92,8 @@ final class AutorunExtensionProvider extends ExtensionProvider
         }
 
         $this->shouldNotRunAnymore($app);
+
+        $app->run();
     }
 
     /**
