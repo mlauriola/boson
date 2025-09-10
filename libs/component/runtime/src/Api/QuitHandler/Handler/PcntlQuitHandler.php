@@ -13,7 +13,7 @@ namespace Boson\Api\QuitHandler\Handler;
 final class PcntlQuitHandler implements QuitHandlerInterface
 {
     /**
-     * @param callable():void $then Quit routine to be invoked on quit signal.
+     * @param callable():void $then quit routine to be invoked on quit signal
      */
     public function register(callable $then): bool
     {

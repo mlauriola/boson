@@ -23,10 +23,10 @@ final readonly class QuitOnCloseHandler
     /**
      * Initialize the extension and register event listeners.
      *
-     * @param Application $app Application instance whose lifecycle can be
-     *        controlled.
-     * @param EventListenerInterface $listener Event listener used to
-     *        subscribe to window events.
+     * @param Application $app application instance whose lifecycle can be
+     *        controlled
+     * @param EventListenerInterface $listener event listener used to
+     *        subscribe to window events
      */
     public function __construct(
         private Application $app,
@@ -53,7 +53,7 @@ final readonly class QuitOnCloseHandler
      * Check whether the application should quit.
      *
      * @return bool {@see true} when there are no open windows;
-     *              {@see false} otherwise.
+     *              {@see false} otherwise
      */
     private function shouldQuit(): bool
     {

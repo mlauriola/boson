@@ -187,13 +187,13 @@ class Application implements
         /**
          * @var array<array-key, mixed>
          *
-         * @deprecated Doesn't affect anything anymore and will be removed in future versions.
+         * @deprecated doesn't affect anything anymore and will be removed in future versions
          */
         private readonly array $bootHandlers = [],
         /**
          * @var array<array-key, mixed>
          *
-         * @deprecated Doesn't affect anything anymore and will be removed in future versions.
+         * @deprecated doesn't affect anything anymore and will be removed in future versions
          */
         private readonly array $quitHandlers = [],
         /**
