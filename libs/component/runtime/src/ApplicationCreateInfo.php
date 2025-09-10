@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Boson;
 
 use Boson\Api\CentralProcessor\CentralProcessorExtensionProvider;
+use Boson\Api\DetachConsole\DetachConsoleExtensionProvider;
 use Boson\Api\Dialog\DialogExtensionProvider;
 use Boson\Api\OperatingSystem\OperatingSystemExtensionProvider;
+use Boson\Api\QuitOnClose\QuitOnCloseExtensionProvider;
 use Boson\Extension\ExtensionProviderInterface;
 use Boson\Window\WindowCreateInfo;
 
@@ -19,6 +21,8 @@ use Boson\Window\WindowCreateInfo;
     new CentralProcessorExtensionProvider(),
     new OperatingSystemExtensionProvider(),
     new DialogExtensionProvider(),
+    new QuitOnCloseExtensionProvider(),
+    new DetachConsoleExtensionProvider(),
 ]);
 
 /**
@@ -90,6 +94,15 @@ final readonly class ApplicationCreateInfo
         /**
          * Automatically terminates the application if
          * all windows have been closed.
+         *
+         * @deprecated will be removed in future versions it and replaced by
+         *             the presence of the {@see QuitOnCloseExtensionProvider}
+         *             in the {@see $extensions} list.
+         *
+         *             To disable this functionality, you should remove the
+         *             {@see QuitOnCloseExtensionProvider} from the
+         *             {@see $extensions} list, instead of setting the field
+         *             to {@see false}.
          */
         public bool $quitOnClose = true,
         /**

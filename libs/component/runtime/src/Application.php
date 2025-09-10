@@ -18,8 +18,6 @@ use Boson\Event\ApplicationStopping;
 use Boson\Exception\NoDefaultWindowException;
 use Boson\Extension\Exception\ExtensionNotFoundException;
 use Boson\Extension\Registry;
-use Boson\Internal\BootHandler\BootHandlerInterface;
-use Boson\Internal\BootHandler\WindowsDetachConsoleBootHandler;
 use Boson\Internal\DeferRunner\DeferRunnerInterface;
 use Boson\Internal\DeferRunner\NativeShutdownFunctionRunner;
 use Boson\Internal\Poller\SaucerPoller;
@@ -190,11 +188,12 @@ class Application implements
         public readonly ApplicationCreateInfo $info = new ApplicationCreateInfo(),
         ?EventDispatcherInterface $dispatcher = null,
         /**
-         * @var list<BootHandlerInterface>
+         * @var array<array-key, mixed>
+         *
+         * @deprecated The field will be removed in future versions. Doesn't
+         *             affect anything anymore.
          */
-        private readonly array $bootHandlers = [
-            new WindowsDetachConsoleBootHandler(),
-        ],
+        private readonly array $bootHandlers = [],
         /**
          * @var list<QuitHandlerInterface>
          */
@@ -232,9 +231,6 @@ class Application implements
         $this->registerDefaultEventListeners();
         $this->registerQuitHandlers();
         $this->registerDeferRunner();
-
-        // Boot the Application
-        $this->boot();
     }
 
     /**
@@ -306,16 +302,6 @@ class Application implements
         }
 
         return $debug;
-    }
-
-    /**
-     * Boot the application.
-     */
-    private function boot(): void
-    {
-        foreach ($this->bootHandlers as $handler) {
-            $handler->boot();
-        }
     }
 
     /**
