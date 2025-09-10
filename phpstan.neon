@@ -14,6 +14,7 @@ parameters:
     - libs/component/runtime/resources/stubs/saucer-webview-events.stub.php
     - libs/component/runtime/resources/stubs/saucer-window-events.stub.php
     - libs/component/runtime/resources/stubs/kernel32.stub.php
+    - libs/component/runtime/resources/stubs/user32.stub.php
     - libs/component/saucer/resources/stubs/saucer.stub.php
     - libs/component/uri/resources/stubs/constants.stub
   excludePaths:
@@ -21,6 +22,7 @@ parameters:
     - libs/component/pasm/src/Driver/Win32/Kernel32.php
     - libs/component/pasm/src/Driver/Nix/Libc.php
     - libs/component/runtime/src/Api/DetachConsole/Driver/Windows/Kernel32.php
+    - libs/component/runtime/src/Api/MessageBox/Driver/Windows/User32.php
     - libs/component/saucer/src/Saucer.php
     - libs/component/saucer/src/SaucerTestingStub.php
   strictRules:
