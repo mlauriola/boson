@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boson\Api\DetachConsole\Windows;
+namespace Boson\Api\DetachConsole\Driver\Windows;
 
 use FFI\CData;
 use FFI\CType;

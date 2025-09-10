@@ -21,9 +21,6 @@ use Boson\Extension\Registry;
 use Boson\Internal\DeferRunner\DeferRunnerInterface;
 use Boson\Internal\DeferRunner\NativeShutdownFunctionRunner;
 use Boson\Internal\Poller\SaucerPoller;
-use Boson\Internal\QuitHandler\PcntlQuitHandler;
-use Boson\Internal\QuitHandler\QuitHandlerInterface;
-use Boson\Internal\QuitHandler\WindowsQuitHandler;
 use Boson\Internal\ThreadsCountResolver;
 use Boson\Poller\PollerInterface;
 use Boson\Shared\Marker\BlockingOperation;
@@ -190,17 +187,15 @@ class Application implements
         /**
          * @var array<array-key, mixed>
          *
-         * @deprecated The field will be removed in future versions. Doesn't
-         *             affect anything anymore.
+         * @deprecated Doesn't affect anything anymore and will be removed in future versions.
          */
         private readonly array $bootHandlers = [],
         /**
-         * @var list<QuitHandlerInterface>
+         * @var array<array-key, mixed>
+         *
+         * @deprecated Doesn't affect anything anymore and will be removed in future versions.
          */
-        private readonly array $quitHandlers = [
-            new WindowsQuitHandler(),
-            new PcntlQuitHandler(),
-        ],
+        private readonly array $quitHandlers = [],
         /**
          * @var list<DeferRunnerInterface>
          */
@@ -229,7 +224,6 @@ class Application implements
         // Register Application's subsystems
         $this->registerSchemes();
         $this->registerDefaultEventListeners();
-        $this->registerQuitHandlers();
         $this->registerDeferRunner();
     }
 
@@ -434,23 +428,6 @@ class Application implements
         }
 
         return $options;
-    }
-
-    /**
-     * Registers quit handlers if they haven't been registered yet.
-     *
-     * This ensures that the application can be properly terminated.
-     */
-    private function registerQuitHandlers(): void
-    {
-        foreach ($this->quitHandlers as $handler) {
-            if ($handler->isSupported === false) {
-                continue;
-            }
-
-            // Register EVERY quit handler
-            $handler->register($this->quit(...));
-        }
     }
 
     /**

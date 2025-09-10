@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Boson\Api\DetachConsole;
 
+use Boson\Api\DetachConsole\Driver\DetachConsoleDriverInterface;
+use Boson\Api\DetachConsole\Driver\WindowsDetachConsoleDriver;
 use Boson\Api\OperatingSystem\OperatingSystemExtensionInterface;
 use Boson\Api\OperatingSystem\OperatingSystemExtensionProvider;
 use Boson\Application;
@@ -22,26 +24,26 @@ final class DetachConsoleExtensionProvider extends ExtensionProvider
 {
     public function load(IdentifiableInterface $ctx, EventListener $listener): null
     {
-        $extension = $this->createExtension($ctx->get(OperatingSystemExtensionInterface::class));
+        $driver = $this->createDriver($ctx->get(OperatingSystemExtensionInterface::class));
 
         // Detach console in case of:
         // 1) Debug mode is disabled
         // 2) And application running in PHAR
         if ($ctx->isDebug && $this->isRunningInPhar()) {
-            $extension?->detach();
+            $driver?->detach();
         }
 
         return null;
     }
 
-    private function createExtension(OperatingSystemExtensionInterface $operatingSystem): ?DetachConsoleExtension
+    private function createDriver(OperatingSystemExtensionInterface $operatingSystem): ?DetachConsoleDriverInterface
     {
         if (!Runtime::isAvailable()) {
             return null;
         }
 
         if ($operatingSystem->family->is(Family::Windows)) {
-            return new WindowsDetachConsoleExtension();
+            return new WindowsDetachConsoleDriver();
         }
 
         return null;

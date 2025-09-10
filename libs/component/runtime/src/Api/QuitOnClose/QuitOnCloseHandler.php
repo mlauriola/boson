@@ -16,7 +16,7 @@ use Boson\Window\Event\WindowClosed;
  * {@see Application::quit()} when no windows remain and the `quitOnClose`
  * feature is enabled in the application info.
  */
-final readonly class QuitOnCloseExtension
+final readonly class QuitOnCloseHandler
 {
     private ?CancellableSubscriptionInterface $subscription;
 
