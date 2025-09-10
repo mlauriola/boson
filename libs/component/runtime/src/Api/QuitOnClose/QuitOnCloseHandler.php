@@ -18,7 +18,7 @@ use Boson\Window\Event\WindowClosed;
  */
 final readonly class QuitOnCloseHandler
 {
-    private ?CancellableSubscriptionInterface $subscription;
+    private CancellableSubscriptionInterface $subscription;
 
     /**
      * Initialize the extension and register event listeners.
@@ -38,7 +38,7 @@ final readonly class QuitOnCloseHandler
     /**
      * Subscribe to window close events if the feature is enabled.
      */
-    private function listenEvents(EventListenerInterface $listener): ?CancellableSubscriptionInterface
+    private function listenEvents(EventListenerInterface $listener): CancellableSubscriptionInterface
     {
         return $listener->addEventListener(WindowClosed::class, $this->onWindowClose(...));
     }
@@ -59,7 +59,7 @@ final readonly class QuitOnCloseHandler
      */
     private function onWindowClose(): void
     {
-        $this->subscription?->cancel();
+        $this->subscription->cancel();
 
         if (!$this->shouldQuit()) {
             return;
