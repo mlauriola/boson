@@ -18,8 +18,6 @@ use Boson\Event\ApplicationStopping;
 use Boson\Exception\NoDefaultWindowException;
 use Boson\Extension\Exception\ExtensionNotFoundException;
 use Boson\Extension\Registry;
-use Boson\Internal\DeferRunner\DeferRunnerInterface;
-use Boson\Internal\DeferRunner\NativeShutdownFunctionRunner;
 use Boson\Internal\Poller\SaucerPoller;
 use Boson\Internal\ThreadsCountResolver;
 use Boson\Poller\PollerInterface;
@@ -155,13 +153,6 @@ class Application implements
     public readonly PollerInterface $poller;
 
     /**
-     * Indicates whether the application was ever running.
-     *
-     * @api
-     */
-    private bool $wasEverRunning = false;
-
-    /**
      * List of application extensions.
      *
      * @var Registry<Application>
@@ -197,11 +188,11 @@ class Application implements
          */
         private readonly array $quitHandlers = [],
         /**
-         * @var list<DeferRunnerInterface>
+         * @var array<array-key, mixed>
+         *
+         * @deprecated doesn't affect anything anymore and will be removed in future versions
          */
-        private readonly array $deferRunners = [
-            new NativeShutdownFunctionRunner(),
-        ],
+        private readonly array $deferRunners = [],
     ) {
         // Initialization Application's fields and properties
         $this->isDebug = $this->createIsDebugParameter($info->debug);
@@ -224,7 +215,6 @@ class Application implements
         // Register Application's subsystems
         $this->registerSchemes();
         $this->registerDefaultEventListeners();
-        $this->registerDeferRunner();
     }
 
     /**
@@ -431,44 +421,6 @@ class Application implements
     }
 
     /**
-     * Registers a defer runner if none has been registered yet.
-     *
-     * This allows the application to be started automatically
-     * after script execution.
-     */
-    private function registerDeferRunner(): void
-    {
-        if ($this->info->autorun === false) {
-            return;
-        }
-
-        foreach ($this->deferRunners as $runner) {
-            if ($runner->isSupported === false) {
-                continue;
-            }
-
-            // Register FIRST supported deferred runner
-            $runner->register($this->runIfNotEverRunning(...));
-            break;
-        }
-    }
-
-    /**
-     * Runs the application if it has never been run before.
-     *
-     * This is used by the defer runner to start
-     * the application automatically.
-     */
-    private function runIfNotEverRunning(): void
-    {
-        if ($this->wasEverRunning) {
-            return;
-        }
-
-        $this->run();
-    }
-
-    /**
      * Dispatches an intention to launch an application and returns a {@see bool}
      * result: whether to start the application or not.
      */
@@ -502,7 +454,6 @@ class Application implements
         }
 
         $this->isRunning = true;
-        $this->wasEverRunning = true;
 
         $this->listener->dispatch(new ApplicationStarted($this));
 
@@ -535,7 +486,6 @@ class Application implements
             return;
         }
 
-        $this->wasEverRunning = true;
         $this->isRunning = false;
         $this->saucer->saucer_application_quit($this->id->ptr);
 

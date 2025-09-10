@@ -40,12 +40,6 @@ final readonly class QuitOnCloseHandler
      */
     private function listenEvents(EventListenerInterface $listener): ?CancellableSubscriptionInterface
     {
-        // Do no listen close events in case of
-        // this feature is disabled.
-        if (!$this->app->info->quitOnClose) {
-            return null;
-        }
-
         return $listener->addEventListener(WindowClosed::class, $this->onWindowClose(...));
     }
 
