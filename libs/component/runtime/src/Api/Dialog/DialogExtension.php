@@ -121,9 +121,9 @@ final class DialogExtension extends ApplicationExtension implements DialogExtens
         }
     }
 
-    public function open(string $url): void
+    public function open(string|\Stringable $url): void
     {
-        $this->app->saucer->saucer_desktop_open($this->ptr, $url);
+        $this->app->saucer->saucer_desktop_open($this->ptr, (string) $url);
     }
 
     public function selectDirectory(?string $directory = null, iterable $filter = []): ?string
