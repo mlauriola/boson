@@ -6,6 +6,8 @@ namespace Boson\Api\DetachConsole;
 
 use Boson\Api\DetachConsole\Driver\DetachConsoleDriverInterface;
 use Boson\Api\DetachConsole\Driver\WindowsDetachConsoleDriver;
+use Boson\Api\DetachConsole\Event\ConsoleDetached;
+use Boson\Api\DetachConsole\Event\ConsoleDetaching;
 use Boson\Api\OperatingSystem\OperatingSystemExtensionInterface;
 use Boson\Api\OperatingSystem\OperatingSystemExtensionProvider;
 use Boson\Application;
@@ -29,8 +31,16 @@ final class DetachConsoleExtensionProvider extends ExtensionProvider
         // Detach console in case of:
         // 1) Debug mode is disabled
         // 2) And application running in PHAR
-        if ($ctx->isDebug && $this->isRunningInPhar()) {
-            $driver?->detach();
+        if ($driver !== null && $ctx->isDebug && $this->isRunningInPhar()) {
+            $listener->dispatch($intention = new ConsoleDetaching($ctx, $driver));
+
+            if ($intention->isCancelled) {
+                return null;
+            }
+
+            $driver->detach();
+
+            $listener->dispatch(new ConsoleDetached($ctx, $driver));
         }
 
         return null;
