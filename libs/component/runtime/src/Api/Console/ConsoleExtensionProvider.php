@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Boson\Api\DetachConsole;
+namespace Boson\Api\Console;
 
-use Boson\Api\DetachConsole\Driver\DetachConsoleDriverInterface;
-use Boson\Api\DetachConsole\Driver\WindowsDetachConsoleDriver;
-use Boson\Api\DetachConsole\Event\ConsoleDetached;
-use Boson\Api\DetachConsole\Event\ConsoleDetaching;
+use Boson\Api\Console\Driver\ConsoleDriverInterface;
+use Boson\Api\Console\Driver\WindowsConsoleDriver;
+use Boson\Api\Console\Event\ConsoleDetached;
+use Boson\Api\Console\Event\ConsoleDetaching;
 use Boson\Api\OperatingSystem\OperatingSystemExtensionInterface;
 use Boson\Api\OperatingSystem\OperatingSystemExtensionProvider;
 use Boson\Application;
@@ -22,7 +22,7 @@ use FFI\Env\Runtime;
  * @template-extends ExtensionProvider<Application>
  */
 #[DependsOn(OperatingSystemExtensionProvider::class)]
-final class DetachConsoleExtensionProvider extends ExtensionProvider
+final class ConsoleExtensionProvider extends ExtensionProvider
 {
     public function load(IdentifiableInterface $ctx, EventListener $listener): null
     {
@@ -46,14 +46,14 @@ final class DetachConsoleExtensionProvider extends ExtensionProvider
         return null;
     }
 
-    private function createDriver(OperatingSystemExtensionInterface $operatingSystem): ?DetachConsoleDriverInterface
+    private function createDriver(OperatingSystemExtensionInterface $operatingSystem): ?ConsoleDriverInterface
     {
         if (!Runtime::isAvailable()) {
             return null;
         }
 
         if ($operatingSystem->family->is(Family::Windows)) {
-            return new WindowsDetachConsoleDriver();
+            return new WindowsConsoleDriver();
         }
 
         return null;
