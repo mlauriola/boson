@@ -461,7 +461,7 @@ class Application implements
             return;
         }
 
-        /** @phpstan-ignore while.alwaysTrue */
+        /** @phpstan-ignore while.alwaysFalse */
         while ($this->isRunning) {
             $this->poller->next();
         }

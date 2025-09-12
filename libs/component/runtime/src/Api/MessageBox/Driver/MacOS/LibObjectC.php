@@ -29,6 +29,7 @@ final readonly class LibObjectC
     /**
      * @param non-empty-string $return
      * @param non-empty-string ...$types
+     *
      * @return callable(CData,CData,...):mixed
      */
     public function getMessageSend(string $return, string ...$types): callable

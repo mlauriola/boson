@@ -21,7 +21,7 @@ parameters:
     - libs/component/os-info/src/Factory/Driver/WindowsRegistry/Advapi32.php
     - libs/component/pasm/src/Driver/Win32/Kernel32.php
     - libs/component/pasm/src/Driver/Nix/Libc.php
-    - libs/component/runtime/src/Api/DetachConsole/Driver/Windows/Kernel32.php
+    - libs/component/runtime/src/Api/Console/Driver/Windows/Kernel32.php
     - libs/component/runtime/src/Api/MessageBox/Driver/Windows/User32.php
     - libs/component/saucer/src/Saucer.php
     - libs/component/saucer/src/SaucerTestingStub.php

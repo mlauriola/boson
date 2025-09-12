@@ -135,9 +135,13 @@ final class DialogExtension extends ApplicationExtension implements DialogExtens
             return;
         }
 
-        $this->app->saucer->saucer_desktop_open($this->ptr, $formatted = (string) $uri);
+        if (($uri = (string) $uri) === '') {
+            throw new \InvalidArgumentException('URI cannot be empty');
+        }
 
-        $this->dispatch(new UriOpened($this->app, $formatted));
+        $this->app->saucer->saucer_desktop_open($this->ptr, $uri);
+
+        $this->dispatch(new UriOpened($this->app, $uri));
     }
 
     public function selectDirectory(?string $directory = null, iterable $filter = []): ?string
