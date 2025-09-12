@@ -1,0 +1,14 @@
+parameters:
+  level: max
+  scanFiles:
+    - resources/stubs/saucer.stub.php
+  excludePaths:
+    - src/Saucer.php
+    - src/SaucerTestingStub.php
+  strictRules:
+    allRules: true
+  fileExtensions:
+    - php
+  paths:
+    - src
+  tmpDir: vendor/.cache.phpstan

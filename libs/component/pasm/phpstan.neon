@@ -1,0 +1,15 @@
+parameters:
+  level: max
+  scanFiles:
+    - resources/stubs/kernel32.stub.php
+    - resources/stubs/libc.stub.php
+  excludePaths:
+    - src/Driver/Win32/Kernel32.php
+    - src/Driver/Nix/Libc.php
+  strictRules:
+    allRules: true
+  fileExtensions:
+    - php
+  paths:
+    - src
+  tmpDir: vendor/.cache.phpstan

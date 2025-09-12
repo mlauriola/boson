@@ -1,74 +1,45 @@
 includes:
   - phar://phpstan.phar/conf/bleedingEdge.neon
   - vendor/phpstan/phpstan-strict-rules/rules.neon
+  # Bridges
+  - libs/bridge/http-bridge/phpstan.neon
+  - libs/bridge/laravel-http-bridge/phpstan.neon
+  - libs/bridge/laravel-provider/phpstan.neon
+  - libs/bridge/psr-http-bridge/phpstan.neon
+  - libs/bridge/spiral-bridge/phpstan.neon
+  - libs/bridge/symfony-bundle/phpstan.neon
+  - libs/bridge/symfony-http-bridge/phpstan.neon
+  # Components
+  - libs/component/compiler/phpstan.neon
+  - libs/component/cpu-info/phpstan.neon
+  - libs/component/globals-provider/phpstan.neon
+  - libs/component/http/phpstan.neon
+  - libs/component/http-body-decoder/phpstan.neon
+  - libs/component/http-static-provider/phpstan.neon
+  - libs/component/os-info/phpstan.neon
+  - libs/component/pasm/phpstan.neon
+  - libs/component/runtime/phpstan.neon
+  - libs/component/saucer/phpstan.neon
+  - libs/component/uri/phpstan.neon
+  - libs/component/uri-factory/phpstan.neon
+  - libs/component/weak-types/phpstan.neon
+  # Contracts
+  - libs/contracts/event-listener-contracts/phpstan.neon
+  - libs/contracts/http-contracts/phpstan.neon
+  - libs/contracts/id-contracts/phpstan.neon
+  - libs/contracts/os-info-contracts/phpstan.neon
+  - libs/contracts/uri-contracts/phpstan.neon
+  - libs/contracts/uri-factory-contracts/phpstan.neon
+  - libs/contracts/value-object-contracts/phpstan.neon
+  # Extensions
+  - libs/extension/webview-ext-battery/phpstan.neon
+  - libs/extension/webview-ext-network/phpstan.neon
 parameters:
   level: max
-  scanFiles:
-    - libs/component/cpu-info/resources/stubs/constants.stub
-    - libs/component/http/resources/stubs/constants.stub
-    - libs/component/os-info/resources/stubs/advapi32.stub.php
-    - libs/component/os-info/resources/stubs/constants.stub
-    - libs/component/pasm/resources/stubs/kernel32.stub.php
-    - libs/component/pasm/resources/stubs/libc.stub.php
-    - libs/component/runtime/resources/stubs/aliases.stub.php
-    - libs/component/runtime/resources/stubs/saucer-webview-events.stub.php
-    - libs/component/runtime/resources/stubs/saucer-window-events.stub.php
-    - libs/component/runtime/resources/stubs/kernel32.stub.php
-    - libs/component/runtime/resources/stubs/user32.stub.php
-    - libs/component/saucer/resources/stubs/saucer.stub.php
-    - libs/component/uri/resources/stubs/constants.stub
-  excludePaths:
-    - libs/component/os-info/src/Factory/Driver/WindowsRegistry/Advapi32.php
-    - libs/component/pasm/src/Driver/Win32/Kernel32.php
-    - libs/component/pasm/src/Driver/Nix/Libc.php
-    - libs/component/runtime/src/Api/Console/Driver/Windows/Kernel32.php
-    - libs/component/runtime/src/Api/MessageBox/Driver/Windows/User32.php
-    - libs/component/saucer/src/Saucer.php
-    - libs/component/saucer/src/SaucerTestingStub.php
   strictRules:
     allRules: true
   fileExtensions:
     - php
-  paths:
-    # Bridges
-    - libs/bridge/http-bridge/src
-    - libs/bridge/laravel-http-bridge/src
-    - libs/bridge/laravel-provider/src
-    - libs/bridge/psr-http-bridge/src
-    - libs/bridge/spiral-bridge/src
-    - libs/bridge/symfony-bundle/src
-    - libs/bridge/symfony-http-bridge/src
-    # Components
-    - libs/component/compiler/src
-    - libs/component/cpu-info/src
-    - libs/component/globals-provider/src
-    - libs/component/http/src
-    - libs/component/http-body-decoder/src
-    - libs/component/http-static-provider/src
-    - libs/component/os-info/src
-    - libs/component/pasm/src
-    - libs/component/runtime/src
-    - libs/component/saucer/src
-    - libs/component/uri/src
-    - libs/component/uri-factory/src
-    - libs/component/weak-types/src
-    # Contracts
-    - libs/contracts/event-listener-contracts/src
-    - libs/contracts/http-contracts/src
-    - libs/contracts/id-contracts/src
-    - libs/contracts/os-info-contracts/src
-    - libs/contracts/uri-contracts/src
-    - libs/contracts/uri-factory-contracts/src
-    - libs/contracts/value-object-contracts/src
-    # Extensions
-    - libs/extension/webview-ext-battery/src
-    - libs/extension/webview-ext-network/src
   tmpDir: vendor/.cache.phpstan
   reportUnmatchedIgnoredErrors: true
   treatPhpDocTypesAsCertain: false
-  ignoreErrors:
-    # PHPStan does not support FFI
-    - '#^Access to an undefined property FFI\\CData#'
-    - '#does not accept FFI\\CData#'
-    # PHPStan does not support DbC invariants
-    - '#will always evaluate to true#'
