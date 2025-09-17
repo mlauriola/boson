@@ -462,9 +462,9 @@ class Application implements
         }
 
         /** @phpstan-ignore while.alwaysFalse */
-        while ($this->isRunning) {
+        do {
             $this->poller->next();
-        }
+        } while ($this->isRunning);
     }
 
     /**
