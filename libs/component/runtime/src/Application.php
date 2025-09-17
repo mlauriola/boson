@@ -463,7 +463,7 @@ class Application implements
 
         do {
             $this->poller->next();
-        /** @phpstan-ignore doWhile.alwaysFalse */
+            /** @phpstan-ignore doWhile.alwaysFalse */
         } while ($this->isRunning);
     }
 
