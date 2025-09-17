@@ -34,6 +34,7 @@ includes:
   # Extensions
   - libs/extension/webview-ext-battery/phpstan.neon
   - libs/extension/webview-ext-network/phpstan.neon
+  - libs/extension/webview-ext-web-components/phpstan.neon
 parameters:
   level: max
   strictRules:

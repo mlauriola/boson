@@ -45,6 +45,7 @@
         <testsuite name="extensions">
             <directory>libs/extension/webview-ext-battery/tests</directory>
             <directory>libs/extension/webview-ext-network/tests</directory>
+            <directory>libs/extension/webview-ext-web-components/tests</directory>
         </testsuite>
     </testsuites>
 
@@ -84,6 +85,7 @@
             <!-- extensions -->
             <directory>libs/extension/webview-ext-battery/src</directory>
             <directory>libs/extension/webview-ext-network/src</directory>
+            <directory>libs/extension/webview-ext-web-components/src</directory>
         </include>
     </source>
 

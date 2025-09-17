@@ -34,10 +34,11 @@ $files = PhpCsFixer\Finder::create()
         // Extensions
         __DIR__ . '/libs/extension/webview-ext-battery/src',
         __DIR__ . '/libs/extension/webview-ext-network/src',
+        __DIR__ . '/libs/extension/webview-ext-web-components/src',
     ])
     ->filter(static fn (\SplFileInfo $file): bool
         => !\in_array(\realpath($file->getPathname()), [
-            \realpath(__DIR__ . '/libs/component/runtime/src/WebView/Api/WebComponents/Internal/web-component.js.php'),
+            \realpath(__DIR__ . '/libs/extension/webview-ext-web-components/src/Internal/web-component.js.php'),
         ], true)
     )
 ;

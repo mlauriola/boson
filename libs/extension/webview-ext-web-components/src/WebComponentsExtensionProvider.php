@@ -26,18 +26,27 @@ use Boson\WebView\WebView;
 #[DependsOn(DataExtensionProvider::class)]
 final class WebComponentsExtensionProvider extends ExtensionProvider
 {
+    /**
+     * @var non-empty-string
+     */
+    private const string BOSON_CLIENT_API = __DIR__ . '/../resources/dist/main.js.php';
+
     public function __construct(
         private readonly WebComponentsExtensionCreateInfo $info = new WebComponentsExtensionCreateInfo(),
     ) {}
 
     public function load(IdentifiableInterface $ctx, EventListener $listener): WebComponentsExtension
     {
+        $scripts = $ctx->get(ScriptsExtensionInterface::class);
+        /** @phpstan-ignore-next-line : Allow to pass second parameter */
+        $scripts->preload((string) @\file_get_contents(self::BOSON_CLIENT_API), true);
+
         return new WebComponentsExtension(
             context: $ctx,
             listener: $listener,
             info: $this->info,
             bindings: $ctx->get(BindingsExtensionInterface::class),
-            scripts: $ctx->get(ScriptsExtensionInterface::class),
+            scripts: $scripts,
             data: $ctx->get(DataExtensionInterface::class),
         );
     }
