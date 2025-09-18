@@ -84,6 +84,7 @@ final class LibraryDetector implements \Stringable
                 return $directory . '/' . $this->pharDirectory;
             }
 
+            /** @var non-empty-string */
             return $directory;
         }
     }
