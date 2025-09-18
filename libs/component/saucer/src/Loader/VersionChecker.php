@@ -21,7 +21,10 @@ final readonly class VersionChecker
     public static function check(\FFI $saucer): void
     {
         try {
-            /** @var string $version */
+            /**
+             * @var string $version
+             * @phpstan-ignore-next-line : Method may not be found
+             */
             $version = $saucer->boson_version();
         } catch (\Throwable) {
             throw UnsupportedVersionException::becauseVersionIsInvalid(

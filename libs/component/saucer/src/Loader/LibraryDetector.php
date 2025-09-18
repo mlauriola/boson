@@ -83,6 +83,9 @@ final class LibraryDetector implements \Stringable
         }
     }
 
+    /**
+     * @phpstan-pure
+     */
     public function __construct(
         private readonly ?OperatingSystem $os = null,
         private readonly ?CpuArchitecture $arch = null,
