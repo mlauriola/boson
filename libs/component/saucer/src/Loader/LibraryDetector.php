@@ -10,7 +10,7 @@ use Boson\Component\Saucer\Exception\Environment\UnsupportedOperatingSystemExcep
 final class LibraryDetector implements \Stringable
 {
     private const string DEFAULT_BIN_DIR = __DIR__ . '/../../bin';
-    private const string DEFAULT_PHAR_DIR = '.';
+    private const ?string DEFAULT_PHAR_DIR = null;
 
     private const ?string DEFAULT_LIB_LINUX_X86 = 'libboson-linux-x86_64.so';
     private const ?string DEFAULT_LIB_LINUX_AMD64 = 'libboson-linux-x86_64.so';
@@ -78,8 +78,13 @@ final class LibraryDetector implements \Stringable
                 return $this->localDirectory;
             }
 
-            return $this->pharDirectory
-                . '/' . \dirname(\Phar::running(false));
+            $directory = \dirname(\Phar::running(false));
+
+            if ($this->pharDirectory !== null) {
+                return $directory . '/' . $this->pharDirectory;
+            }
+
+            return $directory;
         }
     }
 
@@ -94,9 +99,9 @@ final class LibraryDetector implements \Stringable
          */
         private readonly string $localDirectory = self::DEFAULT_BIN_DIR,
         /**
-         * @var non-empty-string
+         * @var non-empty-string|null
          */
-        private readonly string $pharDirectory = self::DEFAULT_PHAR_DIR,
+        private readonly ?string $pharDirectory = self::DEFAULT_PHAR_DIR,
     ) {}
 
     /**
