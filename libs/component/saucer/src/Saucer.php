@@ -4,36 +4,20 @@ declare(strict_types=1);
 
 namespace Boson\Component\Saucer;
 
-use Boson\Component\Saucer\Exception\Environment\UnsupportedArchitectureException;
-use Boson\Component\Saucer\Exception\Environment\UnsupportedOperatingSystemException;
-use Boson\Component\Saucer\Exception\Environment\UnsupportedVersionException;
 use Boson\Component\Saucer\Loader\CpuArchitecture;
+use Boson\Component\Saucer\Loader\LibraryDetector;
 use Boson\Component\Saucer\Loader\OperatingSystem;
+use Boson\Component\Saucer\Loader\VersionChecker;
 use FFI\Env\Runtime;
 
 final readonly class Saucer implements SaucerInterface
 {
-    /**
-     * @var non-empty-string
-     */
-    private const string MINIMAL_REQUIRED_VERSION = '0.3.0';
-
-    /**
-     * @var non-empty-string
-     */
-    private const string MAXIMAL_SUPPORTED_VERSION = '1.0.0';
-
-    /**
-     * @var non-empty-string
-     */
-    private const string DEFAULT_BIN_DIR = __DIR__ . '/../bin';
-
     private \FFI $ffi;
 
     /**
      * @param non-empty-string $library
      */
-    public function __construct(string $library)
+    public function __construct(string $library, bool $validateVersion = true)
     {
         Runtime::assertAvailable();
 
@@ -42,43 +26,9 @@ final readonly class Saucer implements SaucerInterface
             lib: $library,
         );
 
-        $this->assertVersionCompatibility();
-    }
-
-    /**
-     * @return non-empty-string
-     */
-    private static function getLibraryName(OperatingSystem $os, CpuArchitecture $cpu): string
-    {
-        return match ($os) {
-            OperatingSystem::Windows => match ($cpu) {
-                CpuArchitecture::x86,
-                CpuArchitecture::Amd64 => 'libboson-windows-x86_64.dll',
-                default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid(
-                    architecture: \php_uname('m'),
-                ),
-            },
-            OperatingSystem::Linux,
-            OperatingSystem::BSD => match ($cpu) {
-                CpuArchitecture::x86,
-                CpuArchitecture::Amd64 => 'libboson-linux-x86_64.so',
-                CpuArchitecture::Arm64 => 'libboson-linux-aarch64.so',
-                default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid(
-                    architecture: \php_uname('m'),
-                ),
-            },
-            OperatingSystem::MacOS => match ($cpu) {
-                CpuArchitecture::x86,
-                CpuArchitecture::Amd64,
-                CpuArchitecture::Arm64 => 'libboson-darwin-universal.dylib',
-                default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid(
-                    architecture: \php_uname('m'),
-                ),
-            },
-            default => throw UnsupportedOperatingSystemException::becauseOperatingSystemIsInvalid(
-                os: \PHP_OS_FAMILY,
-            ),
-        };
+        if ($validateVersion) {
+            VersionChecker::check($this->ffi);
+        }
     }
 
     public static function createFromGlobals(): self
@@ -86,45 +36,19 @@ final readonly class Saucer implements SaucerInterface
         return self::createFromEnvironment(null, null);
     }
 
-    public static function createFromEnvironment(?OperatingSystem $os, ?CpuArchitecture $cpu): self
+    public static function createFromEnvironment(?OperatingSystem $os, ?CpuArchitecture $arch): self
     {
-        $library = self::getLibraryName(
-            os: $os ?? OperatingSystem::createFromGlobals(),
-            cpu: $cpu ?? CpuArchitecture::createFromGlobals(),
-        );
+        $detector = new LibraryDetector($os, $arch);
 
-        return new self(self::getBinaryDirectory() . '/' . $library);
+        return new self($detector->directory . '/' . $detector->name);
     }
 
     /**
-     * @return non-empty-string
+     * @param non-empty-string $name
      */
-    private static function getBinaryDirectory(): string
+    public function __get(string $name): mixed
     {
-        if (!\extension_loaded('phar') || \Phar::running() === '') {
-            return self::DEFAULT_BIN_DIR;
-        }
-
-        return \dirname(\Phar::running(false));
-    }
-
-    private function assertVersionCompatibility(): void
-    {
-        /** @var string $version */
-        $version = $this->ffi->boson_version();
-
-        $isSupported = \version_compare($version, self::MINIMAL_REQUIRED_VERSION, '>=')
-            && \version_compare($version, self::MAXIMAL_SUPPORTED_VERSION, '<');
-
-        if ($isSupported) {
-            return;
-        }
-
-        throw UnsupportedVersionException::becauseVersionIsInvalid(
-            version: $version,
-            min: self::MINIMAL_REQUIRED_VERSION,
-            max: self::MAXIMAL_SUPPORTED_VERSION,
-        );
+        return $this->ffi->$name;
     }
 
     /**

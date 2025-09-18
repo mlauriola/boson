@@ -1,0 +1,106 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Boson\Component\Saucer\Loader;
+
+use Boson\Component\Saucer\Exception\Environment\UnsupportedArchitectureException;
+use Boson\Component\Saucer\Exception\Environment\UnsupportedOperatingSystemException;
+
+final class LibraryDetector implements \Stringable
+{
+    private const string DEFAULT_BIN_DIR = __DIR__ . '/../../bin';
+    private const string DEFAULT_PHAR_DIR = '.';
+
+    private const ?string DEFAULT_LIB_LINUX_X86 = 'libboson-linux-x86_64.so';
+    private const ?string DEFAULT_LIB_LINUX_AMD64 = 'libboson-linux-x86_64.so';
+    private const ?string DEFAULT_LIB_LINUX_ARM64 = 'libboson-linux-aarch64.so';
+    private const ?string DEFAULT_LIB_LINUX_ARM = null;
+    private const ?string DEFAULT_LIB_WINDOWS_X86 = 'libboson-windows-x86_64.dll';
+    private const ?string DEFAULT_LIB_WINDOWS_AMD64 = 'libboson-windows-x86_64.dll';
+    private const ?string DEFAULT_LIB_WINDOWS_ARM = null;
+    private const ?string DEFAULT_LIB_WINDOWS_ARM64 = null;
+    private const ?string DEFAULT_LIB_MAC_X86 = 'libboson-darwin-universal.dylib';
+    private const ?string DEFAULT_LIB_MAC_AMD64 = 'libboson-darwin-universal.dylib';
+    private const ?string DEFAULT_LIB_MAC_ARM = null;
+    private const ?string DEFAULT_LIB_MAC_ARM64 = 'libboson-darwin-universal.dylib';
+
+    /**
+     * @var non-empty-string
+     */
+    public string $name {
+        get {
+            $os = $this->os ?? OperatingSystem::createFromGlobals();
+            $arch = $this->arch ?? CpuArchitecture::createFromGlobals();
+
+            return match ($os) {
+                OperatingSystem::Windows => match ($arch) {
+                    CpuArchitecture::x86 => self::DEFAULT_LIB_WINDOWS_X86,
+                    CpuArchitecture::Amd64 => self::DEFAULT_LIB_WINDOWS_AMD64,
+                    CpuArchitecture::Arm => self::DEFAULT_LIB_WINDOWS_ARM,
+                    CpuArchitecture::Arm64 => self::DEFAULT_LIB_WINDOWS_ARM64,
+                    default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid(
+                        architecture: \php_uname('m'),
+                    ),
+                },
+                OperatingSystem::Linux,
+                OperatingSystem::BSD => match ($arch) {
+                    CpuArchitecture::x86 => self::DEFAULT_LIB_LINUX_X86,
+                    CpuArchitecture::Amd64 => self::DEFAULT_LIB_LINUX_AMD64,
+                    CpuArchitecture::Arm => self::DEFAULT_LIB_LINUX_ARM,
+                    CpuArchitecture::Arm64 => self::DEFAULT_LIB_LINUX_ARM64,
+                    default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid(
+                        architecture: \php_uname('m'),
+                    ),
+                },
+                OperatingSystem::MacOS => match ($arch) {
+                    CpuArchitecture::x86 => self::DEFAULT_LIB_MAC_X86,
+                    CpuArchitecture::Amd64 => self::DEFAULT_LIB_MAC_AMD64,
+                    CpuArchitecture::Arm => self::DEFAULT_LIB_MAC_ARM,
+                    CpuArchitecture::Arm64 => self::DEFAULT_LIB_MAC_ARM64,
+                    default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid(
+                        architecture: \php_uname('m'),
+                    ),
+                },
+                default => null,
+            } ?? throw UnsupportedOperatingSystemException::becauseOperatingSystemIsInvalid(
+                os: \PHP_OS_FAMILY,
+            );
+        }
+    }
+
+    /**
+     * @var non-empty-string
+     */
+    public string $directory {
+        get {
+            if (!\extension_loaded('phar') || \Phar::running() === '') {
+                return $this->directDirectory;
+            }
+
+            return $this->pharDirectory
+                . '/' . \dirname(\Phar::running(false));
+        }
+    }
+
+    public function __construct(
+        private readonly ?OperatingSystem $os = null,
+        private readonly ?CpuArchitecture $arch = null,
+        /**
+         * @var non-empty-string
+         */
+        private readonly string $directDirectory = self::DEFAULT_BIN_DIR,
+        /**
+         * @var non-empty-string
+         */
+        private readonly string $pharDirectory = self::DEFAULT_PHAR_DIR,
+    ) {}
+
+    /**
+     * @return non-empty-string
+     */
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+}
