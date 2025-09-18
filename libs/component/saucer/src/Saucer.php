@@ -38,9 +38,12 @@ final readonly class Saucer implements SaucerInterface
 
     public static function createFromEnvironment(?OperatingSystem $os, ?CpuArchitecture $arch): self
     {
-        $detector = new LibraryDetector($os, $arch);
+        return self::createWithLibraryDetector(new LibraryDetector($os, $arch));
+    }
 
-        return new self($detector->directory . '/' . $detector->name);
+    public static function createWithLibraryDetector(LibraryDetector $detector): self
+    {
+        return new self((string) $detector);
     }
 
     /**

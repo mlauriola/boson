@@ -75,7 +75,7 @@ final class LibraryDetector implements \Stringable
     public string $directory {
         get {
             if (!\extension_loaded('phar') || \Phar::running() === '') {
-                return $this->directDirectory;
+                return $this->localDirectory;
             }
 
             return $this->pharDirectory
@@ -89,7 +89,7 @@ final class LibraryDetector implements \Stringable
         /**
          * @var non-empty-string
          */
-        private readonly string $directDirectory = self::DEFAULT_BIN_DIR,
+        private readonly string $localDirectory = self::DEFAULT_BIN_DIR,
         /**
          * @var non-empty-string
          */
@@ -97,10 +97,70 @@ final class LibraryDetector implements \Stringable
     ) {}
 
     /**
+     * @api
+     * @phpstan-pure
+     */
+    public function withOperatingSystem(?OperatingSystem $os): self
+    {
+        return new self(
+            os: $os,
+            arch: $this->arch,
+            localDirectory: $this->localDirectory,
+            pharDirectory: $this->pharDirectory,
+        );
+    }
+
+    /**
+     * @api
+     * @phpstan-pure
+     */
+    public function withCpuArchitecture(?CpuArchitecture $arch): self
+    {
+        return new self(
+            os: $this->os,
+            arch: $arch,
+            localDirectory: $this->localDirectory,
+            pharDirectory: $this->pharDirectory,
+        );
+    }
+
+    /**
+     * @api
+     * @phpstan-pure
+     *
+     * @param non-empty-string $directory
+     */
+    public function withLocalDirectory(string $directory): self
+    {
+        return new self(
+            os: $this->os,
+            arch: $this->arch,
+            localDirectory: $directory,
+            pharDirectory: $this->pharDirectory,
+        );
+    }
+
+    /**
+     * @api
+     * @phpstan-pure
+     *
+     * @param non-empty-string $directory
+     */
+    public function withPharDirectory(string $directory): self
+    {
+        return new self(
+            os: $this->os,
+            arch: $this->arch,
+            localDirectory: $this->localDirectory,
+            pharDirectory: $directory,
+        );
+    }
+
+    /**
      * @return non-empty-string
      */
     public function __toString(): string
     {
-        return $this->name;
+        return $this->directory . '/' . $this->name;
     }
 }
