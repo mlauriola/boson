@@ -76,6 +76,9 @@ final class SaucerPoller implements PollerInterface
                 break;
         }
 
+        // Reduces CPU usage
+        \time_nanosleep(0, 1);
+
         $this->type = $this->type->next();
     }
 
