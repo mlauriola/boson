@@ -7,7 +7,7 @@ namespace Boson\Component\Saucer;
 use Boson\Component\Saucer\Loader\CpuArchitecture;
 use Boson\Component\Saucer\Loader\LibraryDetector;
 use Boson\Component\Saucer\Loader\OperatingSystem;
-use Boson\Component\Saucer\Loader\VersionChecker;
+use Boson\Component\Saucer\Validator\VersionChecker;
 use FFI\Env\Runtime;
 
 final readonly class Saucer implements SaucerInterface

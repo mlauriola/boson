@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boson\Component\Saucer\Loader;
+namespace Boson\Component\Saucer\Validator;
 
 use Boson\Component\Saucer\Exception\Environment\UnsupportedVersionException;
 
