@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Boson\Api\Alert\Driver;
 
-use Boson\Api\Alert\Driver\MacOS\LibObjectC;
 use Boson\Api\Alert\AlertButton;
 use Boson\Api\Alert\AlertCreateInfo;
 use Boson\Api\Alert\AlertExtensionInterface;
 use Boson\Api\Alert\AlertIcon;
+use Boson\Api\Alert\Driver\MacOS\LibObjectC;
 use FFI\CData;
 
 final readonly class MacOSAlertExtension implements AlertExtensionInterface
