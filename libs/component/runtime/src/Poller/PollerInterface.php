@@ -52,6 +52,17 @@ interface PollerInterface
     public function delay(float $delay, callable $task): int|string;
 
     /**
+     * Repeatedly execute a callback with delay.
+     *
+     * @param float $interval the amount of time, in seconds, to interval the execution for
+     * @param callable(TaskIdType):void $task the callback to execute
+     *
+     * @return TaskIdType a unique identifier that can be used to cancel
+     *         the callback
+     */
+    public function timer(float $interval, callable $task): int|string;
+
+    /**
      * Cancel a task.
      *
      * This will detach the event loop from all resources that are associated
