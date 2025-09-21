@@ -21,6 +21,14 @@ interface PollerInterface
     public function createSuspension(): SuspensionInterface;
 
     /**
+     * Sends an exception to the main execution thread.
+     *
+     * @return TaskIdType a unique identifier that can be used to cancel
+     *         an exception throwing
+     */
+    public function throw(\Throwable $e): int|string;
+
+    /**
      * Defer the execution of a callback.
      *
      * @param callable(TaskIdType):void $task the callback to defer

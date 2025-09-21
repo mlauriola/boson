@@ -60,6 +60,11 @@ final class SaucerPoller implements PollerInterface
         return new Suspension($this);
     }
 
+    public function throw(\Throwable $e): int|string
+    {
+        return $this->defer(static fn(): never => throw $e);
+    }
+
     public function next(): void
     {
         switch ($this->type) {
