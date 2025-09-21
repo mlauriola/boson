@@ -122,4 +122,22 @@ final readonly class WindowCreateInfo
     {
         return \iterator_to_array($extensions, false);
     }
+
+    /**
+     * @param list<ExtensionProviderInterface<Window>> $with
+     * @param list<class-string<ExtensionProviderInterface<Window>>> $except
+     * @return iterable<array-key, ExtensionProviderInterface<Window>>
+     */
+    public static function extensions(array $with = [], array $except = []): iterable
+    {
+        foreach (self::DEFAULT_WINDOW_EXTENSIONS as $extension) {
+            if (\in_array($extension::class, $except, true)) {
+                continue;
+            }
+
+            yield $extension;
+        }
+
+        yield from $with;
+    }
 }
