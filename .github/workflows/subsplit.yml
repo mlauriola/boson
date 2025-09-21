@@ -77,6 +77,8 @@ jobs:
           - local_path: 'contracts/value-object-contracts'
             split_repository: 'value-object-contracts'
           # Extensions
+          - local_path: 'extension/app-ext-alert'
+            split_repository: 'app-ext-alert'
           - local_path: 'extension/webview-ext-battery'
             split_repository: 'webview-ext-battery'
           - local_path: 'extension/webview-ext-network'

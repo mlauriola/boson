@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Boson\Api\MessageBox;
+namespace Boson\Api\Alert;
 
-final readonly class MessageBoxCreateInfo
+final readonly class AlertCreateInfo
 {
     public function __construct(
         public string $title = '',
         public string $text = '',
         public bool $cancel = false,
-        public ?MessageBoxIcon $icon = null,
+        public ?AlertIcon $icon = null,
     ) {}
 }

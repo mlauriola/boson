@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Boson\Api\MessageBox\Driver;
+namespace Boson\Api\Alert\Driver;
 
-use Boson\Api\MessageBox\Driver\Windows\User32;
-use Boson\Api\MessageBox\MessageBoxButton;
-use Boson\Api\MessageBox\MessageBoxCreateInfo;
-use Boson\Api\MessageBox\MessageBoxExtensionInterface;
-use Boson\Api\MessageBox\MessageBoxIcon;
+use Boson\Api\Alert\Driver\Windows\User32;
+use Boson\Api\Alert\AlertButton;
+use Boson\Api\Alert\AlertCreateInfo;
+use Boson\Api\Alert\AlertExtensionInterface;
+use Boson\Api\Alert\AlertIcon;
 use FFI\CData;
 
-final readonly class WindowsMessageBoxExtension implements MessageBoxExtensionInterface
+final readonly class WindowsAlertExtension implements AlertExtensionInterface
 {
     public function __construct(
         private User32 $user32 = new User32(),
@@ -34,15 +34,15 @@ final readonly class WindowsMessageBoxExtension implements MessageBoxExtensionIn
         return $result;
     }
 
-    public function create(MessageBoxCreateInfo $info): ?MessageBoxButton
+    public function create(AlertCreateInfo $info): ?AlertButton
     {
         $title = $this->string($info->title);
         $text = $this->string($info->text);
 
         $flags = match ($info->icon) {
-            MessageBoxIcon::Error => User32::MB_ICONERROR,
-            MessageBoxIcon::Warning => User32::MB_ICONWARNING,
-            MessageBoxIcon::Info => User32::MB_ICONINFORMATION,
+            AlertIcon::Error => User32::MB_ICONERROR,
+            AlertIcon::Warning => User32::MB_ICONWARNING,
+            AlertIcon::Info => User32::MB_ICONINFORMATION,
             default => 0,
         };
 
@@ -56,8 +56,8 @@ final readonly class WindowsMessageBoxExtension implements MessageBoxExtensionIn
         \FFI::free($text);
 
         return match ($result) {
-            User32::IDOK => MessageBoxButton::Ok,
-            User32::IDCANCEL => MessageBoxButton::Cancel,
+            User32::IDOK => AlertButton::Ok,
+            User32::IDCANCEL => AlertButton::Cancel,
             default => null,
         };
     }

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Boson\Api\MessageBox;
+namespace Boson\Api\Alert;
 
-enum MessageBoxIcon
+enum AlertIcon
 {
     case Info;
     case Warning;

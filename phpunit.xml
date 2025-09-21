@@ -43,6 +43,7 @@
             <directory>libs/contracts/value-object-contracts/tests</directory>
         </testsuite>
         <testsuite name="extensions">
+            <directory>libs/extension/app-ext-alert/tests</directory>
             <directory>libs/extension/webview-ext-battery/tests</directory>
             <directory>libs/extension/webview-ext-network/tests</directory>
             <directory>libs/extension/webview-ext-web-components/tests</directory>
@@ -83,6 +84,7 @@
             <directory>libs/contracts/uri-factory-contracts/src</directory>
             <directory>libs/contracts/value-object-contracts/src</directory>
             <!-- extensions -->
+            <directory>libs/extension/app-ext-alert/src</directory>
             <directory>libs/extension/webview-ext-battery/src</directory>
             <directory>libs/extension/webview-ext-network/src</directory>
             <directory>libs/extension/webview-ext-web-components/src</directory>

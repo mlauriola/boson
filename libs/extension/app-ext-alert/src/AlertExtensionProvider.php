@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Boson\Api\MessageBox;
+namespace Boson\Api\Alert;
 
-use Boson\Api\MessageBox\Driver\MacOSMessageBoxExtension;
-use Boson\Api\MessageBox\Driver\VoidMessageBoxExtension;
-use Boson\Api\MessageBox\Driver\WindowsMessageBoxExtension;
+use Boson\Api\Alert\Driver\MacOSAlertExtension;
+use Boson\Api\Alert\Driver\VoidAlertExtension;
+use Boson\Api\Alert\Driver\WindowsAlertExtension;
 use Boson\Api\OperatingSystem\OperatingSystemExtensionInterface;
 use Boson\Api\OperatingSystem\OperatingSystemExtensionProvider;
 use Boson\Application;
@@ -20,18 +20,18 @@ use Boson\Extension\ExtensionProvider;
 /**
  * @template-extends ExtensionProvider<Application>
  */
-#[AvailableAs(['msgbox', MessageBoxExtensionInterface::class])]
+#[AvailableAs(['alert', AlertExtensionInterface::class])]
 #[DependsOn(OperatingSystemExtensionProvider::class)]
-final class MessageBoxExtensionProvider extends ExtensionProvider
+final class AlertExtensionProvider extends ExtensionProvider
 {
-    public function load(IdentifiableInterface $ctx, EventListener $listener): MessageBoxExtensionInterface
+    public function load(IdentifiableInterface $ctx, EventListener $listener): AlertExtensionInterface
     {
         $os = $ctx->get(OperatingSystemExtensionInterface::class);
 
         return match (true) {
-            $os->family->is(Family::Darwin) => new MacOSMessageBoxExtension(),
-            $os->family->is(Family::Windows) => new WindowsMessageBoxExtension(),
-            default => new VoidMessageBoxExtension(),
+            $os->family->is(Family::Darwin) => new MacOSAlertExtension(),
+            $os->family->is(Family::Windows) => new WindowsAlertExtension(),
+            default => new VoidAlertExtension(),
         };
     }
 }

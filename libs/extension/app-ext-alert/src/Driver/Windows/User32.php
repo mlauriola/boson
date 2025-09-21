@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boson\Api\MessageBox\Driver\Windows;
+namespace Boson\Api\Alert\Driver\Windows;
 
 use FFI\Env\Runtime;
 

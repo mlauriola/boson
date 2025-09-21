@@ -38,6 +38,7 @@
         "boson-php/uri-factory-contracts": "^0.18",
         "boson-php/value-object-contracts": "^0.18",
         "boson-php/weak-types": "^0.18",
+        "boson-php/app-ext-alert": "^0.18",
         "boson-php/webview-ext-battery": "^0.18",
         "boson-php/webview-ext-network": "^0.18",
         "boson-php/webview-ext-web-components": "^0.18"
@@ -82,6 +83,7 @@
             "Boson\\Contracts\\Uri\\Tests\\": "libs/contracts/uri-contracts/tests",
             "Boson\\Contracts\\Uri\\Factory\\Tests\\": "libs/contracts/uri-factory-contracts/tests",
             "Boson\\Contracts\\ValueObject\\Tests\\": "libs/contracts/value-object-contracts/tests",
+            "Boson\\Api\\Alert\\Tests\\": "libs/extension/app-ext-alert/tests",
             "Boson\\WebView\\Api\\Battery\\Tests\\": "libs/extension/webview-ext-battery/tests",
             "Boson\\WebView\\Api\\Network\\Tests\\": "libs/extension/webview-ext-network/tests",
             "Boson\\WebView\\Api\\WebComponents\\Tests\\": "libs/extension/webview-ext-web-components/tests"

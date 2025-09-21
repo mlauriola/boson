@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Boson\Api\MessageBox\Driver;
+namespace Boson\Api\Alert\Driver;
 
-use Boson\Api\MessageBox\Driver\MacOS\LibObjectC;
-use Boson\Api\MessageBox\MessageBoxButton;
-use Boson\Api\MessageBox\MessageBoxCreateInfo;
-use Boson\Api\MessageBox\MessageBoxExtensionInterface;
-use Boson\Api\MessageBox\MessageBoxIcon;
+use Boson\Api\Alert\Driver\MacOS\LibObjectC;
+use Boson\Api\Alert\AlertButton;
+use Boson\Api\Alert\AlertCreateInfo;
+use Boson\Api\Alert\AlertExtensionInterface;
+use Boson\Api\Alert\AlertIcon;
 use FFI\CData;
 
-final readonly class MacOSMessageBoxExtension implements MessageBoxExtensionInterface
+final readonly class MacOSAlertExtension implements AlertExtensionInterface
 {
     private CData $msgSendId;
     private CData $msgSendStringGetId;
@@ -29,7 +29,7 @@ final readonly class MacOSMessageBoxExtension implements MessageBoxExtensionInte
         $this->msgSendVoidGetLong = $libobjc->getMessageSend('long');
     }
 
-    public function create(MessageBoxCreateInfo $info): ?MessageBoxButton
+    public function create(AlertCreateInfo $info): ?AlertButton
     {
         // NSString *titleStr = [NSString stringWithUTF8String:title]
         $titleStr = ($this->msgSendStringGetId)(
@@ -71,9 +71,9 @@ final readonly class MacOSMessageBoxExtension implements MessageBoxExtensionInte
                 $alert,
                 $this->libobjc->sel_registerName('setAlertStyle:'),
                 match ($info->icon) {
-                    MessageBoxIcon::Error => 2,   // NSAlertStyleCritical
-                    MessageBoxIcon::Warning => 0, // NSAlertStyleWarning
-                    MessageBoxIcon::Info => 1,    // NSAlertStyleInformational
+                    AlertIcon::Error => 2,   // NSAlertStyleCritical
+                    AlertIcon::Warning => 0, // NSAlertStyleWarning
+                    AlertIcon::Info => 1,    // NSAlertStyleInformational
                 },
             );
         }
@@ -110,8 +110,8 @@ final readonly class MacOSMessageBoxExtension implements MessageBoxExtensionInte
         );
 
         return match ($result) {
-            1000 => $info->cancel ? MessageBoxButton::Cancel : MessageBoxButton::Ok,
-            1001 => MessageBoxButton::Ok,
+            1000 => $info->cancel ? AlertButton::Cancel : AlertButton::Ok,
+            1001 => AlertButton::Ok,
             default => null,
         };
     }

@@ -32,6 +32,7 @@ includes:
   - libs/contracts/uri-factory-contracts/phpstan.neon
   - libs/contracts/value-object-contracts/phpstan.neon
   # Extensions
+  - libs/extension/app-ext-alert/phpstan.neon
   - libs/extension/webview-ext-battery/phpstan.neon
   - libs/extension/webview-ext-network/phpstan.neon
   - libs/extension/webview-ext-web-components/phpstan.neon

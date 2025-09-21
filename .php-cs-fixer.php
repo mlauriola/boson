@@ -32,6 +32,7 @@ $files = PhpCsFixer\Finder::create()
         __DIR__ . '/libs/contracts/uri-factory-contracts/src',
         __DIR__ . '/libs/contracts/value-object-contracts/src',
         // Extensions
+        __DIR__ . '/libs/extension/app-ext-alert/src',
         __DIR__ . '/libs/extension/webview-ext-battery/src',
         __DIR__ . '/libs/extension/webview-ext-network/src',
         __DIR__ . '/libs/extension/webview-ext-web-components/src',

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Boson\Api\MessageBox;
+namespace Boson\Api\Alert;
 
-enum MessageBoxButton
+enum AlertButton
 {
     case Ok;
     case Cancel;

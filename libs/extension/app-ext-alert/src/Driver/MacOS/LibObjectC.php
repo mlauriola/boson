@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boson\Api\MessageBox\Driver\MacOS;
+namespace Boson\Api\Alert\Driver\MacOS;
 
 use FFI\CData;
 use FFI\Env\Runtime;
