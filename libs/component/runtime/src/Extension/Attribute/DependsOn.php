@@ -18,15 +18,13 @@ final readonly class DependsOn
     public array $dependencies;
 
     /**
-     * @param DependencyType|iterable<mixed, DependencyType> $provider
+     * @param DependencyType $extension
+     * @param DependencyType ...$other
      */
     public function __construct(
-        string|iterable $provider,
+        string $extension,
+        string ...$other,
     ) {
-        $this->dependencies = match (true) {
-            \is_string($provider) => [$provider],
-            \is_array($provider) => \array_values($provider),
-            default => \iterator_to_array($provider, false),
-        };
+        $this->dependencies = \array_values([$extension, ...$other]);
     }
 }

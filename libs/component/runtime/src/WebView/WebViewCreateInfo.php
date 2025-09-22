@@ -6,12 +6,12 @@ namespace Boson\WebView;
 
 use Boson\Application;
 use Boson\Extension\ExtensionInterface;
-use Boson\WebView\Api\Bindings\BindingsExtensionProvider;
-use Boson\WebView\Api\Data\DataExtensionProvider;
-use Boson\WebView\Api\LifecycleEvents\LifecycleEventsExtensionProvider;
-use Boson\WebView\Api\Schemes\SchemesExtensionProvider;
-use Boson\WebView\Api\Scripts\ScriptsExtensionProvider;
-use Boson\WebView\Api\Security\SecurityExtensionProvider;
+use Boson\WebView\Api\Bindings\BindingsExtension;
+use Boson\WebView\Api\Data\DataExtension;
+use Boson\WebView\Api\LifecycleEvents\LifecycleEventsExtension;
+use Boson\WebView\Api\Schemes\SchemesExtension;
+use Boson\WebView\Api\Scripts\ScriptsExtension;
+use Boson\WebView\Api\Security\SecurityExtension;
 use Boson\WebView\WebViewCreateInfo\StorageDirectoryResolver;
 
 //
@@ -20,12 +20,12 @@ use Boson\WebView\WebViewCreateInfo\StorageDirectoryResolver;
 // 2) Only define-like constants allows object instances.
 //
 \define($_ = 'Boson\WebView\DEFAULT_WEBVIEW_EXTENSIONS', [
-    new ScriptsExtensionProvider(),
-    new BindingsExtensionProvider(),
-    new DataExtensionProvider(),
-    new SecurityExtensionProvider(),
-    new SchemesExtensionProvider(),
-    new LifecycleEventsExtensionProvider(),
+    new ScriptsExtension(),
+    new BindingsExtension(),
+    new DataExtension(),
+    new SecurityExtension(),
+    new SchemesExtension(),
+    new LifecycleEventsExtension(),
 ]);
 
 /**
