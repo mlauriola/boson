@@ -7,7 +7,7 @@ namespace Boson\Api\QuitHandler;
 use Boson\Application;
 use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 
 /**
  * Registers platform-specific quit handlers during application boot.
@@ -15,9 +15,9 @@ use Boson\Extension\ExtensionProvider;
  * An extension is responsible for processing signals such as `ctrl+c`
  * (in terminal) or `kill process-name`.
  *
- * @template-extends ExtensionProvider<Application>
+ * @template-extends Extension<Application>
  */
-final class QuitHandlerExtensionProvider extends ExtensionProvider
+final class QuitHandlerExtensionProvider extends Extension
 {
     public function __construct(
         private readonly QuitHandlerCreateInfo $info = new QuitHandlerCreateInfo(),

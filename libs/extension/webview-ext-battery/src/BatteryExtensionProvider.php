@@ -8,7 +8,7 @@ use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Extension\Attribute\AvailableAs;
 use Boson\Extension\Attribute\DependsOn;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 use Boson\WebView\Api\Bindings\BindingsExtensionInterface;
 use Boson\WebView\Api\Bindings\BindingsExtensionProvider;
 use Boson\WebView\Api\Data\DataExtensionInterface;
@@ -20,14 +20,14 @@ use Boson\WebView\Api\Security\SecurityExtensionProvider;
 use Boson\WebView\WebView;
 
 /**
- * @template-extends ExtensionProvider<WebView>
+ * @template-extends Extension<WebView>
  */
 #[DependsOn(DataExtensionProvider::class)]
 #[DependsOn(ScriptsExtensionProvider::class)]
 #[DependsOn(BindingsExtensionProvider::class)]
 #[DependsOn(SecurityExtensionProvider::class)]
 #[AvailableAs(['battery', BatteryExtensionInterface::class])]
-final class BatteryExtensionProvider extends ExtensionProvider
+final class BatteryExtensionProvider extends Extension
 {
     public function load(IdentifiableInterface $ctx, EventListener $listener): ClientBatteryExtension
     {

@@ -10,7 +10,7 @@ use Boson\WebView\Api\Bindings\Exception\InvalidFunctionException;
 use Boson\WebView\Api\Bindings\Rpc\DefaultRpcResponder;
 use Boson\WebView\Api\Bindings\Rpc\RpcResponderInterface;
 use Boson\WebView\Api\Scripts\ScriptsExtensionInterface;
-use Boson\WebView\Api\WebViewExtension;
+use Boson\WebView\Api\LoadedWebViewExtension;
 use Boson\WebView\Event\WebViewMessageReceived;
 use Boson\WebView\WebView;
 
@@ -20,7 +20,7 @@ use Boson\WebView\WebView;
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Boson\WebView
  */
-final class BindingsExtension extends WebViewExtension implements
+final class BindingsExtension extends LoadedWebViewExtension implements
     BindingsExtensionInterface,
     \IteratorAggregate
 {

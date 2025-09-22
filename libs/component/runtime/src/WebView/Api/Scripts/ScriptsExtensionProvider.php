@@ -7,14 +7,14 @@ namespace Boson\WebView\Api\Scripts;
 use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Extension\Attribute\AvailableAs;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 use Boson\WebView\WebView;
 
 /**
- * @template-extends ExtensionProvider<WebView>
+ * @template-extends Extension<WebView>
  */
 #[AvailableAs(['scripts', ScriptsExtensionInterface::class])]
-final class ScriptsExtensionProvider extends ExtensionProvider
+final class ScriptsExtensionProvider extends Extension
 {
     /**
      * @var non-empty-string

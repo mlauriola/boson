@@ -6,13 +6,13 @@ namespace Boson\WebView\Api\LifecycleEvents;
 
 use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 use Boson\WebView\WebView;
 
 /**
- * @template-extends ExtensionProvider<WebView>
+ * @template-extends Extension<WebView>
  */
-final class LifecycleEventsExtensionProvider extends ExtensionProvider
+final class LifecycleEventsExtensionProvider extends Extension
 {
     public function load(IdentifiableInterface $ctx, EventListener $listener): LifecycleEventsExtension
     {

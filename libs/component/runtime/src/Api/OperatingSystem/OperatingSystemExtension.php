@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Api\OperatingSystem;
 
-use Boson\Api\ApplicationExtension;
+use Boson\Api\LoadedApplicationExtension;
 use Boson\Component\OsInfo\OperatingSystem;
 use Boson\Contracts\OsInfo\FamilyInterface;
 use Boson\Contracts\OsInfo\OperatingSystemInterface;
@@ -14,7 +14,7 @@ use Boson\Contracts\OsInfo\StandardInterface;
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Boson\Api\OperatingSystem
  */
-final class OperatingSystemExtension extends ApplicationExtension implements
+final class OperatingSystemExtension extends LoadedApplicationExtension implements
     OperatingSystemExtensionInterface
 {
     private OperatingSystemInterface $os {

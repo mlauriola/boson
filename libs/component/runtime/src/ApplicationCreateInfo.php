@@ -11,7 +11,7 @@ use Boson\Api\Dialog\DialogExtensionProvider;
 use Boson\Api\OperatingSystem\OperatingSystemExtensionProvider;
 use Boson\Api\QuitHandler\QuitHandlerExtensionProvider;
 use Boson\Api\QuitOnClose\QuitOnCloseExtensionProvider;
-use Boson\Extension\ExtensionProviderInterface;
+use Boson\Extension\ExtensionInterface;
 use Boson\Window\WindowCreateInfo;
 
 //
@@ -35,7 +35,7 @@ use Boson\Window\WindowCreateInfo;
 final readonly class ApplicationCreateInfo
 {
     /**
-     * @var list<ExtensionProviderInterface<Application>>
+     * @var list<ExtensionInterface<Application>>
      *
      * @noinspection PhpUndefinedConstantInspection
      */
@@ -57,13 +57,13 @@ final readonly class ApplicationCreateInfo
     public array $schemes;
 
     /**
-     * @var list<ExtensionProviderInterface<Application>>
+     * @var list<ExtensionInterface<Application>>
      */
     public array $extensions;
 
     /**
      * @param iterable<mixed, non-empty-string> $schemes list of scheme names
-     * @param iterable<mixed, ExtensionProviderInterface<Application>> $extensions
+     * @param iterable<mixed, ExtensionInterface<Application>> $extensions
      *        list of enabled application extensions
      */
     public function __construct(
@@ -133,9 +133,9 @@ final readonly class ApplicationCreateInfo
     }
 
     /**
-     * @param iterable<mixed, ExtensionProviderInterface<Application>> $extensions
+     * @param iterable<mixed, ExtensionInterface<Application>> $extensions
      *
-     * @return list<ExtensionProviderInterface<Application>>
+     * @return list<ExtensionInterface<Application>>
      */
     private static function extensionsToList(iterable $extensions): array
     {
@@ -159,15 +159,15 @@ final readonly class ApplicationCreateInfo
     }
 
     /**
-     * @param list<ExtensionProviderInterface<Application>> $with
-     * @param list<class-string<ExtensionProviderInterface<Application>>> $except
+     * @param list<ExtensionInterface<Application>> $with
+     * @param list<class-string<ExtensionInterface<Application>>> $except
      *
-     * @return iterable<array-key, ExtensionProviderInterface<Application>>
+     * @return iterable<array-key, ExtensionInterface<Application>>
      */
     public static function extensions(array $with = [], array $except = []): iterable
     {
         /**
-         * @var ExtensionProviderInterface<Application> $extension
+         * @var ExtensionInterface<Application> $extension
          *
          * @phpstan-ignore-next-line PHPStan does not support this constant
          */

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Boson\WebView;
 
 use Boson\Application;
-use Boson\Extension\ExtensionProviderInterface;
+use Boson\Extension\ExtensionInterface;
 use Boson\WebView\Api\Bindings\BindingsExtensionProvider;
 use Boson\WebView\Api\Data\DataExtensionProvider;
 use Boson\WebView\Api\LifecycleEvents\LifecycleEventsExtensionProvider;
@@ -34,7 +34,7 @@ use Boson\WebView\WebViewCreateInfo\StorageDirectoryResolver;
 final readonly class WebViewCreateInfo
 {
     /**
-     * @var list<ExtensionProviderInterface<WebView>>
+     * @var list<ExtensionInterface<WebView>>
      *
      * @noinspection PhpUndefinedConstantInspection
      */
@@ -94,7 +94,7 @@ final readonly class WebViewCreateInfo
     public array $flags;
 
     /**
-     * @var list<ExtensionProviderInterface<WebView>>
+     * @var list<ExtensionInterface<WebView>>
      */
     public array $extensions;
 
@@ -111,7 +111,7 @@ final readonly class WebViewCreateInfo
      *          data) will be disabled.
      * @param iterable<non-empty-string, string|float|bool|int|list<string|float|bool|int>> $flags
      *        See the {@see $flags} property description for information
-     * @param iterable<mixed, ExtensionProviderInterface<WebView>> $extensions
+     * @param iterable<mixed, ExtensionInterface<WebView>> $extensions
      *         list of enabled webview extensions
      */
     public function __construct(
@@ -161,9 +161,9 @@ final readonly class WebViewCreateInfo
     }
 
     /**
-     * @param iterable<mixed, ExtensionProviderInterface<WebView>> $extensions
+     * @param iterable<mixed, ExtensionInterface<WebView>> $extensions
      *
-     * @return list<ExtensionProviderInterface<WebView>>
+     * @return list<ExtensionInterface<WebView>>
      */
     private static function extensionsToList(iterable $extensions): array
     {
@@ -171,15 +171,15 @@ final readonly class WebViewCreateInfo
     }
 
     /**
-     * @param list<ExtensionProviderInterface<WebView>> $with
-     * @param list<class-string<ExtensionProviderInterface<WebView>>> $except
+     * @param list<ExtensionInterface<WebView>> $with
+     * @param list<class-string<ExtensionInterface<WebView>>> $except
      *
-     * @return iterable<array-key, ExtensionProviderInterface<WebView>>
+     * @return iterable<array-key, ExtensionInterface<WebView>>
      */
     public static function extensions(array $with = [], array $except = []): iterable
     {
         /**
-         * @var ExtensionProviderInterface<WebView> $extension
+         * @var ExtensionInterface<WebView> $extension
          *
          * @phpstan-ignore-next-line PHPStan does not support this constant
          */

@@ -9,13 +9,13 @@ use Boson\Component\CpuInfo\CentralProcessorInterface;
 use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Extension\Attribute\AvailableAs;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 
 /**
- * @template-extends ExtensionProvider<Application>
+ * @template-extends Extension<Application>
  */
 #[AvailableAs(['cpu', CentralProcessorExtensionInterface::class, CentralProcessorInterface::class])]
-final class CentralProcessorExtensionProvider extends ExtensionProvider
+final class CentralProcessorExtensionProvider extends Extension
 {
     public function load(IdentifiableInterface $ctx, EventListener $listener): CentralProcessorExtension
     {

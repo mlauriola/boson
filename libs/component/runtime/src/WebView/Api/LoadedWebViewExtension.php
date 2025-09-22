@@ -8,14 +8,14 @@ use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Internal\StructPointerId;
 use Boson\WebView\WebView;
-use Boson\Window\Api\WindowExtension;
+use Boson\Window\Api\LoadedWindowExtension;
 
 /**
  * @template TContext of IdentifiableInterface<StructPointerId> = WebView
  *
- * @template-extends WindowExtension<TContext>
+ * @template-extends LoadedWindowExtension<TContext>
  */
-abstract class WebViewExtension extends WindowExtension
+abstract class LoadedWebViewExtension extends LoadedWindowExtension
 {
     /**
      * Gets reference to the context's ID

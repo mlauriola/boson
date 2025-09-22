@@ -9,13 +9,13 @@ use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Contracts\OsInfo\OperatingSystemInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Extension\Attribute\AvailableAs;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 
 /**
- * @template-extends ExtensionProvider<Application>
+ * @template-extends Extension<Application>
  */
 #[AvailableAs(['os', OperatingSystemExtensionInterface::class, OperatingSystemInterface::class])]
-final class OperatingSystemExtensionProvider extends ExtensionProvider
+final class OperatingSystemExtensionProvider extends Extension
 {
     public function load(IdentifiableInterface $ctx, EventListener $listener): OperatingSystemExtension
     {

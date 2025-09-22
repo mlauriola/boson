@@ -8,7 +8,7 @@ use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Extension\Attribute\AvailableAs;
 use Boson\Extension\Attribute\DependsOn;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 use Boson\WebView\Api\Bindings\BindingsExtensionInterface;
 use Boson\WebView\Api\Bindings\BindingsExtensionProvider;
 use Boson\WebView\Api\Data\DataExtensionInterface;
@@ -18,13 +18,13 @@ use Boson\WebView\Api\Scripts\ScriptsExtensionProvider;
 use Boson\WebView\WebView;
 
 /**
- * @template-extends ExtensionProvider<WebView>
+ * @template-extends Extension<WebView>
  */
 #[AvailableAs(['network', NetworkExtensionInterface::class])]
 #[DependsOn(ScriptsExtensionProvider::class)]
 #[DependsOn(BindingsExtensionProvider::class)]
 #[DependsOn(DataExtensionProvider::class)]
-final class NetworkExtensionProvider extends ExtensionProvider
+final class NetworkExtensionProvider extends Extension
 {
     public function load(IdentifiableInterface $ctx, EventListener $listener): NetworkExtension
     {

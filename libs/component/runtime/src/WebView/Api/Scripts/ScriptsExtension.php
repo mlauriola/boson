@@ -6,7 +6,7 @@ namespace Boson\WebView\Api\Scripts;
 
 use Boson\Component\Saucer\LoadTime;
 use Boson\Dispatcher\EventListener;
-use Boson\WebView\Api\WebViewExtension;
+use Boson\WebView\Api\LoadedWebViewExtension;
 use Boson\WebView\WebView;
 use JetBrains\PhpStorm\Language;
 
@@ -16,7 +16,7 @@ use JetBrains\PhpStorm\Language;
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Boson\WebView
  */
-final class ScriptsExtension extends WebViewExtension implements
+final class ScriptsExtension extends LoadedWebViewExtension implements
     ScriptsExtensionInterface,
     \IteratorAggregate
 {

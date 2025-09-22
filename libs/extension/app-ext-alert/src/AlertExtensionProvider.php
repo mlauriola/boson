@@ -15,14 +15,14 @@ use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Extension\Attribute\AvailableAs;
 use Boson\Extension\Attribute\DependsOn;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 
 /**
- * @template-extends ExtensionProvider<Application>
+ * @template-extends Extension<Application>
  */
 #[AvailableAs(['alert', AlertExtensionInterface::class])]
 #[DependsOn(OperatingSystemExtensionProvider::class)]
-final class AlertExtensionProvider extends ExtensionProvider
+final class AlertExtensionProvider extends Extension
 {
     public function load(IdentifiableInterface $ctx, EventListener $listener): AlertExtensionInterface
     {

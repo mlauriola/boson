@@ -11,12 +11,12 @@ use Boson\Contracts\EventListener\Subscription\CancellableSubscriptionInterface;
 use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Event\ApplicationStarted;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 
 /**
- * @template-extends ExtensionProvider<Application>
+ * @template-extends Extension<Application>
  */
-final class AutorunExtensionProvider extends ExtensionProvider
+final class AutorunExtensionProvider extends Extension
 {
     /**
      * List of loaded applications that have never been launched

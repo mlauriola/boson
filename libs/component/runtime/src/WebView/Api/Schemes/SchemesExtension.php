@@ -11,11 +11,11 @@ use Boson\Contracts\Http\ResponseInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Shared\Marker\RequiresDealloc;
 use Boson\WebView\Api\Schemes\Event\SchemeRequestReceived;
-use Boson\WebView\Api\WebViewExtension;
+use Boson\WebView\Api\LoadedWebViewExtension;
 use Boson\WebView\WebView;
 use FFI\CData;
 
-final class SchemesExtension extends WebViewExtension implements SchemesExtensionInterface
+final class SchemesExtension extends LoadedWebViewExtension implements SchemesExtensionInterface
 {
     /**
      * @var list<non-empty-lowercase-string>

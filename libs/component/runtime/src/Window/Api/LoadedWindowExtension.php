@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Window\Api;
 
-use Boson\Api\ApplicationExtension;
+use Boson\Api\LoadedApplicationExtension;
 use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Internal\StructPointerId;
@@ -13,9 +13,9 @@ use Boson\Window\Window;
 /**
  * @template TContext of IdentifiableInterface<StructPointerId> = Window
  *
- * @template-extends ApplicationExtension<TContext>
+ * @template-extends LoadedApplicationExtension<TContext>
  */
-abstract class WindowExtension extends ApplicationExtension
+abstract class LoadedWindowExtension extends LoadedApplicationExtension
 {
     /**
      * Gets reference to the context's ID

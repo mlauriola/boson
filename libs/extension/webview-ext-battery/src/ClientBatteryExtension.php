@@ -18,7 +18,7 @@ use Boson\WebView\Api\Data\DataExtensionInterface;
 use Boson\WebView\Api\Data\Exception\WebViewIsNotReadyException;
 use Boson\WebView\Api\Scripts\ScriptsExtensionInterface;
 use Boson\WebView\Api\Security\SecurityExtensionInterface;
-use Boson\WebView\Api\WebViewExtension;
+use Boson\WebView\Api\LoadedWebViewExtension;
 use Boson\WebView\WebView;
 
 /**
@@ -30,7 +30,7 @@ use Boson\WebView\WebView;
  * }
  */
 #[ExpectsSecurityContext]
-final class ClientBatteryExtension extends WebViewExtension implements
+final class ClientBatteryExtension extends LoadedWebViewExtension implements
     BatteryExtensionInterface
 {
     public bool $isAvailable {

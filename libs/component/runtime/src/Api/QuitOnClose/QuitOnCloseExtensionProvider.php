@@ -8,14 +8,14 @@ use Boson\Application;
 use Boson\ApplicationCreateInfo;
 use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 
 /**
  * Controls application shutdown behavior when all windows are closed.
  *
- * @template-extends ExtensionProvider<Application>
+ * @template-extends Extension<Application>
  */
-final class QuitOnCloseExtensionProvider extends ExtensionProvider
+final class QuitOnCloseExtensionProvider extends Extension
 {
     public function load(IdentifiableInterface $ctx, EventListener $listener): null
     {

@@ -8,7 +8,7 @@ use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Extension\Attribute\AvailableAs;
 use Boson\Extension\Attribute\DependsOn;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 use Boson\WebView\Api\Bindings\BindingsExtensionInterface;
 use Boson\WebView\Api\Bindings\BindingsExtensionProvider;
 use Boson\WebView\Api\Scripts\ScriptsExtensionInterface;
@@ -16,12 +16,12 @@ use Boson\WebView\Api\Scripts\ScriptsExtensionProvider;
 use Boson\WebView\WebView;
 
 /**
- * @template-extends ExtensionProvider<WebView>
+ * @template-extends Extension<WebView>
  */
 #[AvailableAs(['data', DataExtensionInterface::class])]
 #[DependsOn(ScriptsExtensionProvider::class)]
 #[DependsOn(BindingsExtensionProvider::class)]
-final class DataExtensionProvider extends ExtensionProvider
+final class DataExtensionProvider extends Extension
 {
     public function __construct(
         private readonly DataExtensionCreateInfo $info = new DataExtensionCreateInfo(),

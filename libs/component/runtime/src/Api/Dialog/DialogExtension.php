@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Api\Dialog;
 
-use Boson\Api\ApplicationExtension;
+use Boson\Api\LoadedApplicationExtension;
 use Boson\Api\Dialog\Event\DirectoriesSelecting;
 use Boson\Api\Dialog\Event\DirectorySelected;
 use Boson\Api\Dialog\Event\DirectorySelecting;
@@ -19,7 +19,7 @@ use FFI\CData;
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Boson\Api\Dialog
  */
-final class DialogExtension extends ApplicationExtension implements DialogExtensionInterface
+final class DialogExtension extends LoadedApplicationExtension implements DialogExtensionInterface
 {
     protected CData $ptr {
         /** @phpstan-ignore-next-line : PHPStan does not support property inheritance */

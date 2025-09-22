@@ -8,12 +8,12 @@ use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 
 /**
- * @phpstan-type DependencyType class-string<ExtensionProviderInterface>
+ * @phpstan-type DependencyType class-string<ExtensionInterface>
  * @phpstan-type AliasType non-empty-string
  *
  * @template TContext of IdentifiableInterface = IdentifiableInterface
  */
-interface ExtensionProviderInterface
+interface ExtensionInterface
 {
     /**
      * List of extension providers on which the specified extension depends.
@@ -41,7 +41,7 @@ interface ExtensionProviderInterface
      * }
      * ```
      *
-     * @var list<class-string<ExtensionProviderInterface>>
+     * @var list<class-string<ExtensionInterface>>
      *
      * @phpstan-var list<DependencyType>
      */

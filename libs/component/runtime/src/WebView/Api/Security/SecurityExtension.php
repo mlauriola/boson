@@ -6,14 +6,14 @@ namespace Boson\WebView\Api\Security;
 
 use Boson\Dispatcher\EventListener;
 use Boson\WebView\Api\Data\DataExtensionInterface;
-use Boson\WebView\Api\WebViewExtension;
+use Boson\WebView\Api\LoadedWebViewExtension;
 use Boson\WebView\WebView;
 use Boson\WebView\WebViewState;
 
 /**
  * Provides information about the security context of the WebView.
  */
-final class SecurityExtension extends WebViewExtension implements SecurityExtensionInterface
+final class SecurityExtension extends LoadedWebViewExtension implements SecurityExtensionInterface
 {
     /**
      * @var non-empty-list<non-empty-string>

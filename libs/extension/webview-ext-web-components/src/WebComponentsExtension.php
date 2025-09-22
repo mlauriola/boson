@@ -21,14 +21,14 @@ use Boson\WebView\Api\WebComponents\Exception\InvalidComponentNameException;
 use Boson\WebView\Api\WebComponents\Exception\InvalidComponentPropertyNameException;
 use Boson\WebView\Api\WebComponents\Internal\WebViewComponentBuilder;
 use Boson\WebView\Api\WebComponents\Internal\WebViewComponentInstances;
-use Boson\WebView\Api\WebViewExtension;
+use Boson\WebView\Api\LoadedWebViewExtension;
 use Boson\WebView\Event\WebViewNavigating;
 use Boson\WebView\WebView;
 
 /**
  * @template-implements \IteratorAggregate<non-empty-string, class-string>
  */
-final class WebComponentsExtension extends WebViewExtension implements
+final class WebComponentsExtension extends LoadedWebViewExtension implements
     WebComponentsExtensionInterface,
     \IteratorAggregate
 {

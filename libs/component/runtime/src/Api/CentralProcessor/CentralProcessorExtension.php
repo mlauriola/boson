@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Api\CentralProcessor;
 
-use Boson\Api\ApplicationExtension;
+use Boson\Api\LoadedApplicationExtension;
 use Boson\Component\CpuInfo\ArchitectureInterface;
 use Boson\Component\CpuInfo\CentralProcessor;
 use Boson\Component\CpuInfo\CentralProcessorInterface;
@@ -13,7 +13,7 @@ use Boson\Component\CpuInfo\CentralProcessorInterface;
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Boson\Api\CentralProcessor
  */
-final class CentralProcessorExtension extends ApplicationExtension implements
+final class CentralProcessorExtension extends LoadedApplicationExtension implements
     CentralProcessorExtensionInterface
 {
     private CentralProcessorInterface $cpu {

@@ -7,16 +7,16 @@ namespace Boson\Api;
 use Boson\Application;
 use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
-use Boson\Extension\Extension;
+use Boson\Extension\LoadedExtension;
 use Boson\Internal\StructPointerId;
 use FFI\CData;
 
 /**
  * @template TContext of IdentifiableInterface<StructPointerId> = Application
  *
- * @template-extends Extension<TContext>
+ * @template-extends LoadedExtension<TContext>
  */
-abstract class ApplicationExtension extends Extension
+abstract class LoadedApplicationExtension extends LoadedExtension
 {
     /**
      * Gets reference to the context's ID

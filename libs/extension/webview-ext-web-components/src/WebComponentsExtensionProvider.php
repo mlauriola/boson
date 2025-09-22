@@ -8,7 +8,7 @@ use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Extension\Attribute\AvailableAs;
 use Boson\Extension\Attribute\DependsOn;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 use Boson\WebView\Api\Bindings\BindingsExtensionInterface;
 use Boson\WebView\Api\Bindings\BindingsExtensionProvider;
 use Boson\WebView\Api\Data\DataExtensionInterface;
@@ -18,13 +18,13 @@ use Boson\WebView\Api\Scripts\ScriptsExtensionProvider;
 use Boson\WebView\WebView;
 
 /**
- * @template-extends ExtensionProvider<WebView>
+ * @template-extends Extension<WebView>
  */
 #[AvailableAs(['components', WebComponentsExtensionInterface::class])]
 #[DependsOn(BindingsExtensionProvider::class)]
 #[DependsOn(ScriptsExtensionProvider::class)]
 #[DependsOn(DataExtensionProvider::class)]
-final class WebComponentsExtensionProvider extends ExtensionProvider
+final class WebComponentsExtensionProvider extends Extension
 {
     /**
      * @var non-empty-string

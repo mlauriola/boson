@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Boson\Extension\Attribute;
 
-use Boson\Extension\ExtensionProviderInterface;
+use Boson\Extension\ExtensionInterface;
 
 /**
- * @phpstan-import-type AliasType from ExtensionProviderInterface
+ * @phpstan-import-type AliasType from ExtensionInterface
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 final readonly class AvailableAs

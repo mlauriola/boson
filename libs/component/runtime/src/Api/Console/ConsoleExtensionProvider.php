@@ -15,14 +15,14 @@ use Boson\Component\OsInfo\Family;
 use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Extension\Attribute\DependsOn;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 use FFI\Env\Runtime;
 
 /**
- * @template-extends ExtensionProvider<Application>
+ * @template-extends Extension<Application>
  */
 #[DependsOn(OperatingSystemExtensionProvider::class)]
-final class ConsoleExtensionProvider extends ExtensionProvider
+final class ConsoleExtensionProvider extends Extension
 {
     public function load(IdentifiableInterface $ctx, EventListener $listener): null
     {

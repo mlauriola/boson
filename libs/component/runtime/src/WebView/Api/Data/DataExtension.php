@@ -14,7 +14,7 @@ use Boson\WebView\Api\Data\Exception\ClientErrorException;
 use Boson\WebView\Api\Data\Exception\StalledRequestException;
 use Boson\WebView\Api\Data\Exception\WebViewIsNotReadyException;
 use Boson\WebView\Api\Scripts\ScriptsExtensionInterface;
-use Boson\WebView\Api\WebViewExtension;
+use Boson\WebView\Api\LoadedWebViewExtension;
 use Boson\WebView\WebView;
 use Boson\WebView\WebViewState;
 use JetBrains\PhpStorm\Language;
@@ -27,7 +27,7 @@ use function React\Promise\resolve;
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Boson\WebView
  */
-final class DataExtension extends WebViewExtension implements DataExtensionInterface
+final class DataExtension extends LoadedWebViewExtension implements DataExtensionInterface
 {
     private const string DATA_REQUEST_TEMPLATE = <<<'JS'
         try {

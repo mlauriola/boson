@@ -10,7 +10,7 @@ use Boson\Component\Saucer\State;
 use Boson\Component\Saucer\WebEvent as Event;
 use Boson\Dispatcher\EventListener;
 use Boson\Internal\WebView\CSaucerWebViewEventsStruct;
-use Boson\WebView\Api\WebViewExtension;
+use Boson\WebView\Api\LoadedWebViewExtension;
 use Boson\WebView\Event\WebViewDomReady;
 use Boson\WebView\Event\WebViewFaviconChanged;
 use Boson\WebView\Event\WebViewFaviconChanging;
@@ -27,7 +27,7 @@ use FFI\CData;
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Boson\WebView
  */
-final class LifecycleEventsExtension extends WebViewExtension
+final class LifecycleEventsExtension extends LoadedWebViewExtension
 {
     /**
      * @var non-empty-string

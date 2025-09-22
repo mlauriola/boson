@@ -8,17 +8,17 @@ use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Extension\Attribute\AvailableAs;
 use Boson\Extension\Attribute\DependsOn;
-use Boson\Extension\ExtensionProvider;
+use Boson\Extension\Extension;
 use Boson\WebView\Api\Scripts\ScriptsExtensionInterface;
 use Boson\WebView\Api\Scripts\ScriptsExtensionProvider;
 use Boson\WebView\WebView;
 
 /**
- * @template-extends ExtensionProvider<WebView>
+ * @template-extends Extension<WebView>
  */
 #[AvailableAs(['bindings', BindingsExtensionInterface::class])]
 #[DependsOn(ScriptsExtensionProvider::class)]
-final class BindingsExtensionProvider extends ExtensionProvider
+final class BindingsExtensionProvider extends Extension
 {
     public function __construct(
         private readonly BindingsExtensionCreateInfo $info = new BindingsExtensionCreateInfo(),
