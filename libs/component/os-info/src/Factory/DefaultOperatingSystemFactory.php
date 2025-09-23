@@ -38,8 +38,8 @@ final readonly class DefaultOperatingSystemFactory implements OperatingSystemFac
         );
     }
 
-    public function createOperatingSystemFromGlobals(): OperatingSystemInterface
+    public function createOperatingSystem(): OperatingSystemInterface
     {
-        return $this->factory->createOperatingSystemFromGlobals();
+        return $this->factory->createOperatingSystem();
     }
 }

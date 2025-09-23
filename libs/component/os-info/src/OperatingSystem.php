@@ -54,7 +54,7 @@ final readonly class OperatingSystem implements OperatingSystemInterface
         );
 
         /** @var OperatingSystemFactoryInterface $factory */
-        return $factory->createOperatingSystemFromGlobals();
+        return $factory->createOperatingSystem();
     }
 
     public function isSupports(StandardInterface $standard): bool

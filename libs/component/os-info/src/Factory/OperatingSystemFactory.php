@@ -46,9 +46,9 @@ final readonly class OperatingSystemFactory implements OperatingSystemFactoryInt
         $this->drivers = \iterator_to_array($drivers, false);
     }
 
-    public function createOperatingSystemFromGlobals(): OperatingSystemInterface
+    public function createOperatingSystem(): OperatingSystemInterface
     {
-        $family = $this->familyFactory->createFamilyFromGlobals();
+        $family = $this->familyFactory->createFamily();
 
         return new OperatingSystem(
             family: $family,

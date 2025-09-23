@@ -15,5 +15,5 @@ interface FamilyFactoryInterface
     /**
      * Creates and returns a {@see FamilyInterface} instance.
      */
-    public function createFamilyFromGlobals(): FamilyInterface;
+    public function createFamily(): FamilyInterface;
 }

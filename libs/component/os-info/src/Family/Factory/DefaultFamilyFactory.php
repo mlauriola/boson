@@ -17,8 +17,8 @@ final readonly class DefaultFamilyFactory implements FamilyFactoryInterface
         );
     }
 
-    public function createFamilyFromGlobals(): FamilyInterface
+    public function createFamily(): FamilyInterface
     {
-        return $this->factory->createFamilyFromGlobals();
+        return $this->factory->createFamily();
     }
 }

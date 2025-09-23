@@ -26,11 +26,11 @@ final class InMemoryFamilyFactoryTest extends TestCase
         $expectedFamily = $this->createMock(FamilyInterface::class);
         $delegate = $this->createMock(FamilyFactoryInterface::class);
         $delegate->expects(self::once())
-            ->method('createFamilyFromGlobals')
+            ->method('createFamily')
             ->willReturn($expectedFamily);
 
         $factory = new InMemoryFamilyFactory($delegate);
-        $family = $factory->createFamilyFromGlobals();
+        $family = $factory->createFamily();
 
         self::assertSame($expectedFamily, $family);
     }
@@ -40,16 +40,16 @@ final class InMemoryFamilyFactoryTest extends TestCase
         $expectedFamily = $this->createMock(FamilyInterface::class);
         $delegate = $this->createMock(FamilyFactoryInterface::class);
         $delegate->expects(self::once())
-            ->method('createFamilyFromGlobals')
+            ->method('createFamily')
             ->willReturn($expectedFamily);
 
         $factory = new InMemoryFamilyFactory($delegate);
 
         // First call should call delegate
-        $family1 = $factory->createFamilyFromGlobals();
+        $family1 = $factory->createFamily();
 
         // Second call should return cached result
-        $family2 = $factory->createFamilyFromGlobals();
+        $family2 = $factory->createFamily();
 
         self::assertSame($expectedFamily, $family1);
         self::assertSame($expectedFamily, $family2);
@@ -60,11 +60,11 @@ final class InMemoryFamilyFactoryTest extends TestCase
     {
         $expectedFamily = $this->createMock(FamilyInterface::class);
         $delegate = $this->createMock(FamilyFactoryInterface::class);
-        $delegate->method('createFamilyFromGlobals')
+        $delegate->method('createFamily')
             ->willReturn($expectedFamily);
 
         $factory = new InMemoryFamilyFactory($delegate);
-        $family = $factory->createFamilyFromGlobals();
+        $family = $factory->createFamily();
 
         self::assertInstanceOf(FamilyInterface::class, $family);
     }

@@ -15,5 +15,5 @@ interface OperatingSystemFactoryInterface
     /**
      * Creates and returns a {@see OperatingSystemInterface} instance.
      */
-    public function createOperatingSystemFromGlobals(): OperatingSystemInterface;
+    public function createOperatingSystem(): OperatingSystemInterface;
 }

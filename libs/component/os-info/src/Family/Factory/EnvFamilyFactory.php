@@ -55,15 +55,15 @@ final readonly class EnvFamilyFactory implements FamilyFactoryInterface
         return null;
     }
 
-    public function createFamilyFromGlobals(): FamilyInterface
+    public function createFamily(): FamilyInterface
     {
         $name = $this->tryGetFamilyFromEnvironmentAsString();
 
         if ($name === null) {
-            return $this->delegate->createFamilyFromGlobals();
+            return $this->delegate->createFamily();
         }
 
         return Family::tryFrom($name)
-            ?? $this->delegate->createFamilyFromGlobals();
+            ?? $this->delegate->createFamily();
     }
 }

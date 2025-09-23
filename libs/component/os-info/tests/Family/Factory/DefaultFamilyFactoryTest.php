@@ -23,14 +23,14 @@ final class DefaultFamilyFactoryTest extends TestCase
 
     public function testCreateFamilyFromGlobalsReturnsFamilyInterface(): void
     {
-        $family = $this->factory->createFamilyFromGlobals();
+        $family = $this->factory->createFamily();
 
         self::assertInstanceOf(FamilyInterface::class, $family);
     }
 
     public function testCreateFamilyFromGlobalsReturnsValidFamily(): void
     {
-        $family = $this->factory->createFamilyFromGlobals();
+        $family = $this->factory->createFamily();
 
         self::assertNotEmpty($family->name);
         self::assertInstanceOf(FamilyInterface::class, $family);

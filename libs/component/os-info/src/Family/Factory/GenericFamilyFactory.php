@@ -20,7 +20,7 @@ final readonly class GenericFamilyFactory implements FamilyFactoryInterface
         private string $name = \PHP_OS_FAMILY,
     ) {}
 
-    public function createFamilyFromGlobals(): FamilyInterface
+    public function createFamily(): FamilyInterface
     {
         return Family::tryFrom($this->name)
             ?? new Family($this->name);

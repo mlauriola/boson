@@ -32,7 +32,7 @@ final class DefaultOperatingSystemFactoryTest extends TestCase
     public function testCreateOperatingSystemFromGlobalsReturnsOperatingSystemInterface(): void
     {
         $factory = new DefaultOperatingSystemFactory();
-        $os = $factory->createOperatingSystemFromGlobals();
+        $os = $factory->createOperatingSystem();
 
         self::assertInstanceOf(OperatingSystemInterface::class, $os);
     }
@@ -40,7 +40,7 @@ final class DefaultOperatingSystemFactoryTest extends TestCase
     public function testCreateOperatingSystemFromGlobalsReturnsValidOperatingSystem(): void
     {
         $factory = new DefaultOperatingSystemFactory();
-        $os = $factory->createOperatingSystemFromGlobals();
+        $os = $factory->createOperatingSystem();
 
         self::assertNotEmpty($os->name);
         self::assertNotEmpty($os->version);

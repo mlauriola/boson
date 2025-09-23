@@ -14,8 +14,8 @@ final class InMemoryOperatingSystemFactory implements OperatingSystemFactoryInte
         private readonly OperatingSystemFactoryInterface $delegate,
     ) {}
 
-    public function createOperatingSystemFromGlobals(): OperatingSystemInterface
+    public function createOperatingSystem(): OperatingSystemInterface
     {
-        return $this->current ??= $this->delegate->createOperatingSystemFromGlobals();
+        return $this->current ??= $this->delegate->createOperatingSystem();
     }
 }

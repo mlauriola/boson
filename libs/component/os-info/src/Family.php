@@ -87,7 +87,7 @@ final readonly class Family implements FamilyInterface
         );
 
         /** @var FamilyFactoryInterface $factory */
-        return $factory->createFamilyFromGlobals();
+        return $factory->createFamily();
     }
 
     /**

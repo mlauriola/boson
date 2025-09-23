@@ -19,7 +19,7 @@ final readonly class LinuxProcCpuInfoVendorFactory implements VendorFactoryInter
 
     public function createVendor(): VendorInfoInterface
     {
-        $family = $this->osFamilyFactory?->createFamilyFromGlobals()
+        $family = $this->osFamilyFactory?->createFamily()
             ?? Family::createFromGlobals();
 
         $fallback = $this->delegate->createVendor();

@@ -27,11 +27,11 @@ final class InMemoryOperatingSystemFactoryTest extends TestCase
         $expectedOs = $this->createMock(OperatingSystemInterface::class);
         $delegate = $this->createMock(OperatingSystemFactoryInterface::class);
         $delegate->expects(self::once())
-            ->method('createOperatingSystemFromGlobals')
+            ->method('createOperatingSystem')
             ->willReturn($expectedOs);
 
         $factory = new InMemoryOperatingSystemFactory($delegate);
-        $os = $factory->createOperatingSystemFromGlobals();
+        $os = $factory->createOperatingSystem();
 
         self::assertSame($expectedOs, $os);
     }
@@ -41,16 +41,16 @@ final class InMemoryOperatingSystemFactoryTest extends TestCase
         $expectedOs = $this->createMock(OperatingSystemInterface::class);
         $delegate = $this->createMock(OperatingSystemFactoryInterface::class);
         $delegate->expects(self::once())
-            ->method('createOperatingSystemFromGlobals')
+            ->method('createOperatingSystem')
             ->willReturn($expectedOs);
 
         $factory = new InMemoryOperatingSystemFactory($delegate);
 
         // First call should call delegate
-        $os1 = $factory->createOperatingSystemFromGlobals();
+        $os1 = $factory->createOperatingSystem();
 
         // Second call should return cached result
-        $os2 = $factory->createOperatingSystemFromGlobals();
+        $os2 = $factory->createOperatingSystem();
 
         self::assertSame($expectedOs, $os1);
         self::assertSame($expectedOs, $os2);
@@ -61,11 +61,11 @@ final class InMemoryOperatingSystemFactoryTest extends TestCase
     {
         $expectedOs = $this->createMock(OperatingSystemInterface::class);
         $delegate = $this->createMock(OperatingSystemFactoryInterface::class);
-        $delegate->method('createOperatingSystemFromGlobals')
+        $delegate->method('createOperatingSystem')
             ->willReturn($expectedOs);
 
         $factory = new InMemoryOperatingSystemFactory($delegate);
-        $os = $factory->createOperatingSystemFromGlobals();
+        $os = $factory->createOperatingSystem();
 
         self::assertInstanceOf(OperatingSystemInterface::class, $os);
     }
