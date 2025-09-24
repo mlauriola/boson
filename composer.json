@@ -11,8 +11,10 @@
     ],
     "require": {
         "php": "^8.4",
+        "boson-php/app-ext-alert": "^0.19",
         "boson-php/compiler": "^0.19",
         "boson-php/cpu-info": "^0.19",
+        "boson-php/cpu-info-contracts": "^0.19",
         "boson-php/event-listener-contracts": "^0.19",
         "boson-php/globals-provider": "^0.19",
         "boson-php/http": "^0.19",
@@ -38,7 +40,6 @@
         "boson-php/uri-factory-contracts": "^0.19",
         "boson-php/value-object-contracts": "^0.19",
         "boson-php/weak-types": "^0.19",
-        "boson-php/app-ext-alert": "^0.19",
         "boson-php/webview-ext-battery": "^0.19",
         "boson-php/webview-ext-network": "^0.19",
         "boson-php/webview-ext-web-components": "^0.19"
@@ -76,6 +77,7 @@
             "Boson\\Component\\Uri\\Tests\\": "libs/component/uri/tests",
             "Boson\\Component\\Uri\\Factory\\Tests\\": "libs/component/uri-factory/tests",
             "Boson\\Component\\WeakType\\Tests\\": "libs/component/weak-types/tests",
+            "Boson\\Contracts\\CpuInfo\\Tests\\": "libs/contracts/cpu-info-contracts/tests",
             "Boson\\Contracts\\EventListener\\Tests\\": "libs/contracts/event-listener-contracts/tests",
             "Boson\\Contracts\\Http\\Tests\\": "libs/contracts/http-contracts/tests",
             "Boson\\Contracts\\Id\\Tests\\": "libs/contracts/id-contracts/tests",

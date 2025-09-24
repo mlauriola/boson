@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Component\CpuInfo\Architecture;
 
-use Boson\Component\CpuInfo\ArchitectureInterface;
+use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
 
 /**
  * @internal this is an internal library class, please do not use it in your code

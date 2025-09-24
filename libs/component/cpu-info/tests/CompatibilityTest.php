@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Boson\Component\CpuInfo\Tests;
 
 use Boson\Component\CpuInfo\Architecture\Factory\ArchitectureFactoryInterface;
-use Boson\Component\CpuInfo\ArchitectureInterface;
 use Boson\Component\CpuInfo\CentralProcessor;
 use Boson\Component\CpuInfo\Factory\CentralProcessorFactoryInterface;
-use Boson\Component\CpuInfo\InstructionSet\Factory\CpuId\DetectorInterface;
+use Boson\Component\CpuInfo\Factory\Driver\CpuIdDriver\DetectorInterface;
 use Boson\Component\CpuInfo\InstructionSet\Factory\InstructionSetFactoryInterface;
 use Boson\Component\CpuInfo\InstructionSet\Factory\OptionalInstructionSetFactoryInterface;
-use Boson\Component\CpuInfo\InstructionSetInterface;
 use Boson\Component\CpuInfo\Vendor\Factory\VendorFactoryInterface;
 use Boson\Component\CpuInfo\Vendor\VendorInfo;
 use Boson\Component\Pasm\ExecutorInterface;
+use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
+use Boson\Contracts\CpuInfo\InstructionSetInterface;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Api\CentralProcessor;
 
-use Boson\Component\CpuInfo\CentralProcessorInterface;
+use Boson\Contracts\CpuInfo\CentralProcessorInterface;
 
 /**
  * Provides information about the main CPU.

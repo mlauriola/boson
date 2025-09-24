@@ -7,6 +7,7 @@ namespace Boson\Component\CpuInfo;
 use Boson\Component\CpuInfo\Architecture\ArchitectureImpl;
 use Boson\Component\CpuInfo\Architecture\Factory\DefaultArchitectureFactory;
 use Boson\Component\CpuInfo\Architecture\Factory\InMemoryArchitectureFactory;
+use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
 
 require_once __DIR__ . '/Architecture/constants.php';
 

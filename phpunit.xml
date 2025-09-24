@@ -34,6 +34,7 @@
             <directory>libs/component/weak-types/tests</directory>
         </testsuite>
         <testsuite name="contracts">
+            <directory>libs/contracts/cpu-info-contracts/tests</directory>
             <directory>libs/contracts/event-listener-contracts/tests</directory>
             <directory>libs/contracts/http-contracts/tests</directory>
             <directory>libs/contracts/id-contracts/tests</directory>
@@ -77,6 +78,7 @@
             <directory>libs/component/uri-factory/src</directory>
             <directory>libs/component/weak-types/src</directory>
             <!-- contracts -->
+            <directory>libs/contracts/cpu-info-contracts/src</directory>
             <directory>libs/contracts/event-listener-contracts/src</directory>
             <directory>libs/contracts/http-contracts/src</directory>
             <directory>libs/contracts/id-contracts/src</directory>

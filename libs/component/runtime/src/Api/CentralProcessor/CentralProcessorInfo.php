@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Boson\Api\CentralProcessor;
 
-use Boson\Component\CpuInfo\ArchitectureInterface;
 use Boson\Component\CpuInfo\CentralProcessor;
-use Boson\Component\CpuInfo\CentralProcessorInterface;
+use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
+use Boson\Contracts\CpuInfo\CentralProcessorInterface;
 
 /**
  * @internal this is an internal library class, please do not use it in your code
@@ -30,12 +30,12 @@ final class CentralProcessorInfo implements CentralProcessorInfoInterface
         get => $this->cpu->vendor;
     }
 
-    public int $physicalCores {
-        get => $this->cpu->physicalCores;
+    public int $cores {
+        get => $this->cpu->cores;
     }
 
-    public int $logicalCores {
-        get => $this->cpu->logicalCores;
+    public int $threads {
+        get => $this->cpu->threads;
     }
 
     public iterable $instructionSets {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Boson\Api\CentralProcessor;
 
 use Boson\Application;
-use Boson\Component\CpuInfo\CentralProcessorInterface;
+use Boson\Contracts\CpuInfo\CentralProcessorInterface;
 use Boson\Contracts\Id\IdentifiableInterface;
 use Boson\Dispatcher\EventListener;
 use Boson\Extension\Attribute\AvailableAs;

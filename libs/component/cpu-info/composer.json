@@ -17,6 +17,7 @@
     "require": {
         "php": "^8.4",
         "ffi/env": "^1.0",
+        "boson-php/cpu-info-contracts": "^0.19",
         "boson-php/pasm": "^0.19"
     },
     "autoload": {

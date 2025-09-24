@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Boson\Component\CpuInfo\Factory;
 
-use Boson\Component\CpuInfo\CentralProcessorInterface;
+use Boson\Contracts\CpuInfo\CentralProcessorInterface;
 
 final class InMemoryCentralProcessorFactory implements CentralProcessorFactoryInterface
 {
-    private ?CentralProcessorInterface $current = null;
+    private ?CentralProcessorInterface $cpu = null;
 
     public function __construct(
         private readonly CentralProcessorFactoryInterface $delegate,
@@ -16,6 +16,6 @@ final class InMemoryCentralProcessorFactory implements CentralProcessorFactoryIn
 
     public function createCentralProcessor(): CentralProcessorInterface
     {
-        return $this->current ??= $this->delegate->createCentralProcessor();
+        return $this->cpu ??= $this->delegate->createCentralProcessor();
     }
 }

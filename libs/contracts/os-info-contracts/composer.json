@@ -1,6 +1,6 @@
 {
     "name": "boson-php/os-info-contracts",
-    "description": "Provides basic OS info interfaces",
+    "description": "Provides basic OS Info interfaces",
     "type": "library",
     "license": "MIT",
     "homepage": "https://bosonphp.com",

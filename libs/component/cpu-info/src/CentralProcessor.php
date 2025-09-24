@@ -6,10 +6,11 @@ namespace Boson\Component\CpuInfo;
 
 use Boson\Component\CpuInfo\Factory\DefaultCentralProcessorFactory;
 use Boson\Component\CpuInfo\Factory\InMemoryCentralProcessorFactory;
-use Boson\Component\CpuInfo\Vendor\VendorInfo;
+use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
+use Boson\Contracts\CpuInfo\CentralProcessorInterface;
+use Boson\Contracts\CpuInfo\InstructionSetInterface;
 
-final readonly class CentralProcessor extends VendorInfo implements
-    CentralProcessorInterface
+final readonly class CentralProcessor implements CentralProcessorInterface
 {
     /**
      * @var list<InstructionSetInterface>
@@ -17,28 +18,29 @@ final readonly class CentralProcessor extends VendorInfo implements
     public array $instructionSets;
 
     /**
-     * @param non-empty-string $name
-     * @param non-empty-string|null $vendor
-     * @param int<1, max> $physicalCores
-     * @param int<1, max> $logicalCores
      * @param iterable<mixed, InstructionSetInterface> $instructionSets
      */
     public function __construct(
         public ArchitectureInterface $arch,
-        string $name,
-        ?string $vendor = null,
-        int $physicalCores = 1,
-        int $logicalCores = 1,
+        /**
+         * @var non-empty-string|null
+         */
+        public string $vendor,
+        /**
+         * @var non-empty-string|null
+         */
+        public ?string $name = null,
+        /**
+         * @var int<1, max>
+         */
+        public int $cores = 1,
+        /**
+         * @var int<1, max>
+         */
+        public int $threads = 1,
         iterable $instructionSets = [],
     ) {
         $this->instructionSets = \iterator_to_array($instructionSets, false);
-
-        parent::__construct(
-            name: $name,
-            vendor: $vendor,
-            physicalCores: $physicalCores,
-            logicalCores: $logicalCores,
-        );
     }
 
     /**

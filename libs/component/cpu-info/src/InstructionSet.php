@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Boson\Component\CpuInfo;
 
 use Boson\Component\CpuInfo\InstructionSet\InstructionSetImpl;
+use Boson\Contracts\CpuInfo\InstructionSetInterface;
 
 require_once __DIR__ . '/InstructionSet/constants.php';
 
@@ -135,7 +136,10 @@ final class InstructionSet implements InstructionSetInterface
         'sse3' => self::SSE3,
         'ssse3' => self::SSSE3,
         'sse4_1' => self::SSE4_1,
+        'sse4.1' => self::SSE4_1,
         'sse4_2' => self::SSE4_2,
+        'sse4.2' => self::SSE4_2,
+        'fma3' => self::FMA3,
         'avx' => self::AVX,
         'avx2' => self::AVX2,
         'avx512f' => self::AVX512F,

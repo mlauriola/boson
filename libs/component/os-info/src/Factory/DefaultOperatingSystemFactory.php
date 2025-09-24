@@ -26,7 +26,7 @@ final readonly class DefaultOperatingSystemFactory implements OperatingSystemFac
         $this->factory = new OperatingSystemFactory(
             familyFactory: $familyFactory,
             drivers: [
-                new EnvDriver(),
+                EnvDriver::createForOverrideEnvVariables(),
                 new WindowsRegistryDriver(),
                 new WindowsGenericDriver(),
                 new MacLicenseAwareDriver(),
