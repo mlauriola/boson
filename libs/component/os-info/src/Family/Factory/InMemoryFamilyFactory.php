@@ -23,6 +23,6 @@ final class InMemoryFamilyFactory implements FamilyFactoryInterface
 
     public function createFamily(): FamilyInterface
     {
-        return $this->family ??= $this->delegate->createFamilyFromGlobals();
+        return $this->family ??= $this->delegate->createFamily();
     }
 }

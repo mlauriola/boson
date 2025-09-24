@@ -27,7 +27,7 @@ final readonly class WindowsRegistryDriver implements
     private const int RRF_RT_REG_DWORD = 0x00000010;
 
     /**
-     * Contains registry key for WebView2 runtime.
+     * Contains registry root for HKLM runtime.
      *
      * ```
      *  ((HKEY)(LONG_PTR)(LONG)0x80000002)

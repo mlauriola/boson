@@ -11,8 +11,12 @@ use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
  */
 final readonly class GenericDriver implements VendorDriverInterface
 {
+    /**
+     * @return non-empty-string
+     */
     public function tryGetVendor(ArchitectureInterface $arch): string
     {
+        /** @var non-empty-string */
         return \php_uname('m');
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boson\Component\CpuInfo\Factory\Driver\CpuIdDriver;
+namespace Boson\Component\CpuInfo\Factory\Driver\CpuId;
 
 use Boson\Component\CpuInfo\Architecture;
 use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;

@@ -23,7 +23,7 @@ final readonly class CentralProcessor implements CentralProcessorInterface
     public function __construct(
         public ArchitectureInterface $arch,
         /**
-         * @var non-empty-string|null
+         * @var non-empty-string
          */
         public string $vendor,
         /**

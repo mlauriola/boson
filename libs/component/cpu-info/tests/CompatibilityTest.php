@@ -7,7 +7,7 @@ namespace Boson\Component\CpuInfo\Tests;
 use Boson\Component\CpuInfo\Architecture\Factory\ArchitectureFactoryInterface;
 use Boson\Component\CpuInfo\CentralProcessor;
 use Boson\Component\CpuInfo\Factory\CentralProcessorFactoryInterface;
-use Boson\Component\CpuInfo\Factory\Driver\CpuIdDriver\DetectorInterface;
+use Boson\Component\CpuInfo\Factory\Driver\CpuId\DetectorInterface;
 use Boson\Component\CpuInfo\InstructionSet\Factory\InstructionSetFactoryInterface;
 use Boson\Component\CpuInfo\InstructionSet\Factory\OptionalInstructionSetFactoryInterface;
 use Boson\Component\CpuInfo\Vendor\Factory\VendorFactoryInterface;

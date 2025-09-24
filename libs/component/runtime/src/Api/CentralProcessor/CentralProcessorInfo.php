@@ -22,12 +22,12 @@ final class CentralProcessorInfo implements CentralProcessorInfoInterface
         get => $this->cpu->arch;
     }
 
-    public string $name {
-        get => $this->cpu->name;
+    public string $vendor {
+        get => $this->cpu->vendor;
     }
 
-    public ?string $vendor {
-        get => $this->cpu->vendor;
+    public ?string $name {
+        get => $this->cpu->name;
     }
 
     public int $cores {

@@ -10,6 +10,8 @@ use Boson\Component\CpuInfo\Factory\Driver\CpuIdDriver;
 use Boson\Component\CpuInfo\Factory\Driver\EnvDriver;
 use Boson\Component\CpuInfo\Factory\Driver\GenericDriver;
 use Boson\Component\CpuInfo\Factory\Driver\LinuxProcCpuInfoDriver;
+use Boson\Component\CpuInfo\Factory\Driver\WindowsRegistryDriver;
+use Boson\Component\CpuInfo\Factory\Driver\WindowsSysInfoDriver;
 use Boson\Contracts\CpuInfo\CentralProcessorInterface;
 
 final readonly class DefaultCentralProcessorFactory implements CentralProcessorFactoryInterface
@@ -24,6 +26,8 @@ final readonly class DefaultCentralProcessorFactory implements CentralProcessorF
             drivers: [
                 EnvDriver::createForOverrideEnvVariables(),
                 new LinuxProcCpuInfoDriver(),
+                new WindowsRegistryDriver(),
+                new WindowsSysInfoDriver(),
                 new CpuIdDriver(),
                 new EnvDriver([], ['PROCESSOR_IDENTIFIER'], ['NUMBER_OF_PROCESSORS'], ['NUMBER_OF_PROCESSORS']),
                 new GenericDriver(),

@@ -43,12 +43,15 @@ final readonly class CentralProcessorFactory implements CentralProcessorFactoryI
     {
         $arch = $this->architectureFactory->createArchitecture();
 
+        $cores = $this->getCores($arch);
+        $threads = \max($cores, $this->getThreads($arch));
+
         return new CentralProcessor(
             arch: $arch,
             vendor: $this->getVendor($arch),
             name: $this->getName($arch),
-            cores: $cores = $this->getCores($arch),
-            threads: \max($cores, $this->getThreads($arch)),
+            cores: $cores,
+            threads: $threads,
             instructionSets: $this->getInstructionSets($arch),
         );
     }

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Boson\Component\CpuInfo\Factory\Driver\LinuxProcCpuInfoDriver;
+namespace Boson\Component\CpuInfo\Factory\Driver\LinuxProcCpuInfo;
 
 /**
  * @phpstan-type ThreadInfoType array<non-empty-string, string>
- * @phpstan-type CoreInfoType list<ThreadInfoType>
- * @phpstan-type ProcessorInfoType iterable<mixed, CoreInfoType>
+ * @phpstan-type CoreInfoType array<int, ThreadInfoType>
+ * @phpstan-type ProcessorInfoType iterable<int, CoreInfoType>
  *
- * @template-implements \IteratorAggregate<int, CoreInfoType>
+ * @template-implements \IteratorAggregate<int, ProcessorInfoType>
  */
 final readonly class LinuxProcCpuInfoReader implements \IteratorAggregate
 {
@@ -21,7 +21,7 @@ final readonly class LinuxProcCpuInfoReader implements \IteratorAggregate
     ) {}
 
     /**
-     * @return \Generator<mixed, CoreInfoType>
+     * @return \Generator<mixed, ProcessorInfoType>
      */
     public function getIterator(): \Generator
     {

@@ -77,14 +77,21 @@ final readonly class EnvDriver implements
 
     public function tryGetCores(ArchitectureInterface $arch): ?int
     {
-        return $this->tryGetEnvironmentAsInt($this->coresEnvVariableNames);
+        $result = $this->tryGetEnvironmentAsInt($this->coresEnvVariableNames);
+
+        return $result === null ? null : \max(1, $result);
     }
 
     public function tryGetThreads(ArchitectureInterface $arch): ?int
     {
-        return $this->tryGetEnvironmentAsInt($this->threadsEnvVariableNames);
+        $result = $this->tryGetEnvironmentAsInt($this->threadsEnvVariableNames);
+
+        return $result === null ? null : \max(1, $result);
     }
 
+    /**
+     * @param iterable<mixed, non-empty-string> $envVariables
+     */
     private function tryGetEnvironmentAsInt(iterable $envVariables): ?int
     {
         $result = $this->tryGetEnvironmentAsString($envVariables);
