@@ -135,14 +135,6 @@ final class OperatingSystemTest extends TestCase
         self::assertTrue($os->isSupports($customStandard));
     }
 
-    public function testCreateFromGlobalsReturnsOperatingSystemInterface(): void
-    {
-        $os = OperatingSystem::createFromGlobals();
-
-        self::assertInstanceOf(OperatingSystemInterface::class, $os);
-        self::assertInstanceOf(OperatingSystem::class, $os);
-    }
-
     public function testCreateFromGlobalsReturnsSameInstanceOnSubsequentCalls(): void
     {
         $os1 = OperatingSystem::createFromGlobals();

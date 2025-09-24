@@ -8,7 +8,6 @@ use Boson\Component\OsInfo\Factory\DefaultOperatingSystemFactory;
 use Boson\Component\OsInfo\Family\Factory\FamilyFactoryInterface;
 use Boson\Component\OsInfo\FamilyInterface;
 use Boson\Component\OsInfo\Tests\TestCase;
-use Boson\Contracts\OsInfo\OperatingSystemInterface;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('boson-php/os-info')]
@@ -27,14 +26,6 @@ final class DefaultOperatingSystemFactoryTest extends TestCase
         $factory = new DefaultOperatingSystemFactory($familyFactory);
 
         self::assertInstanceOf(DefaultOperatingSystemFactory::class, $factory);
-    }
-
-    public function testCreateOperatingSystemFromGlobalsReturnsOperatingSystemInterface(): void
-    {
-        $factory = new DefaultOperatingSystemFactory();
-        $os = $factory->createOperatingSystem();
-
-        self::assertInstanceOf(OperatingSystemInterface::class, $os);
     }
 
     public function testCreateOperatingSystemFromGlobalsReturnsValidOperatingSystem(): void
