@@ -70,8 +70,6 @@ jobs:
             split_repository: 'http-contracts'
           - local_path: 'contracts/id-contracts'
             split_repository: 'id-contracts'
-          - local_path: 'contracts/os-info-contracts'
-            split_repository: 'os-info-contracts'
           - local_path: 'contracts/uri-contracts'
             split_repository: 'uri-contracts'
           - local_path: 'contracts/uri-factory-contracts'

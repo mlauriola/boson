@@ -28,7 +28,6 @@ includes:
   - libs/contracts/event-listener-contracts/phpstan.neon
   - libs/contracts/http-contracts/phpstan.neon
   - libs/contracts/id-contracts/phpstan.neon
-  - libs/contracts/os-info-contracts/phpstan.neon
   - libs/contracts/uri-contracts/phpstan.neon
   - libs/contracts/uri-factory-contracts/phpstan.neon
   - libs/contracts/value-object-contracts/phpstan.neon

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Boson\Component\OsInfo\Tests\Family\Factory;
 
-use Boson\Component\OsInfo\Family\Factory\InMemoryFamilyFactory;
 use Boson\Component\OsInfo\Family\Factory\FamilyFactoryInterface;
+use Boson\Component\OsInfo\Family\Factory\InMemoryFamilyFactory;
+use Boson\Component\OsInfo\FamilyInterface;
 use Boson\Component\OsInfo\Tests\TestCase;
-use Boson\Contracts\OsInfo\FamilyInterface;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('boson-php/os-info')]

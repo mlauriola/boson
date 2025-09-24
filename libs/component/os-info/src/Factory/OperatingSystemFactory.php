@@ -10,10 +10,10 @@ use Boson\Component\OsInfo\Factory\Driver\NameDriverInterface;
 use Boson\Component\OsInfo\Factory\Driver\StandardsDriverInterface;
 use Boson\Component\OsInfo\Factory\Driver\VersionDriverInterface;
 use Boson\Component\OsInfo\Family\Factory\FamilyFactoryInterface;
+use Boson\Component\OsInfo\FamilyInterface;
 use Boson\Component\OsInfo\OperatingSystem;
-use Boson\Contracts\OsInfo\FamilyInterface;
+use Boson\Component\OsInfo\StandardInterface;
 use Boson\Contracts\OsInfo\OperatingSystemInterface;
-use Boson\Contracts\OsInfo\StandardInterface;
 
 final readonly class OperatingSystemFactory implements OperatingSystemFactoryInterface
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Boson\Component\OsInfo\Family\Factory;
 
 use Boson\Component\OsInfo\Family;
-use Boson\Contracts\OsInfo\FamilyInterface;
+use Boson\Component\OsInfo\FamilyInterface;
 
 /**
  * Factory that attempts to detect the OS family from environment variables.

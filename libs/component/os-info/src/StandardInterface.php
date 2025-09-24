@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boson\Contracts\OsInfo;
+namespace Boson\Component\OsInfo;
 
 use Boson\Contracts\ValueObject\StringValueObjectInterface;
 

@@ -18,7 +18,6 @@
         "php": "^8.4",
         "ext-pcre": "*",
         "ext-ffi": "*",
-        "boson-php/os-info-contracts": "^0.19",
         "ffi/env": "^1.0"
     },
     "autoload": {

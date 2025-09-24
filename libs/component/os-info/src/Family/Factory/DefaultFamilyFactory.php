@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Component\OsInfo\Family\Factory;
 
-use Boson\Contracts\OsInfo\FamilyInterface;
+use Boson\Component\OsInfo\FamilyInterface;
 
 final readonly class DefaultFamilyFactory implements FamilyFactoryInterface
 {

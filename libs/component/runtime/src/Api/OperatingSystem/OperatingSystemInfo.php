@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Boson\Api\OperatingSystem;
 
+use Boson\Component\OsInfo\FamilyInterface;
 use Boson\Component\OsInfo\OperatingSystem;
-use Boson\Contracts\OsInfo\FamilyInterface;
+use Boson\Component\OsInfo\StandardInterface;
 use Boson\Contracts\OsInfo\OperatingSystemInterface;
-use Boson\Contracts\OsInfo\StandardInterface;
 
 /**
  * @internal this is an internal library class, please do not use it in your code

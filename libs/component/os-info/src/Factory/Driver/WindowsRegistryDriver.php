@@ -6,7 +6,7 @@ namespace Boson\Component\OsInfo\Factory\Driver;
 
 use Boson\Component\OsInfo\Factory\Driver\WindowsRegistry\Advapi32;
 use Boson\Component\OsInfo\Family;
-use Boson\Contracts\OsInfo\FamilyInterface;
+use Boson\Component\OsInfo\FamilyInterface;
 use FFI\CData;
 use FFI\Env\Runtime;
 

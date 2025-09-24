@@ -33,6 +33,9 @@
             "Boson\\Component\\CpuInfo\\Tests\\": "tests"
         }
     },
+    "provide": {
+        "boson-php/cpu-info-contracts-implementation": "^0.19"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "0.19.x-dev",
