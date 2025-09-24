@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Boson\Component\CpuInfo\Factory\Driver;
 
+use Boson\Component\CpuInfo\ArchitectureInterface;
 use Boson\Component\CpuInfo\Factory\Driver\LinuxProcCpuInfo\LinuxProcCpuInfoReader;
 use Boson\Component\CpuInfo\InstructionSet;
-use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
 
 final class LinuxProcCpuInfoDriver implements
     NameDriverInterface,

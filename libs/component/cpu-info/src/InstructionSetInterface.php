@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boson\Contracts\CpuInfo;
+namespace Boson\Component\CpuInfo;
 
 interface InstructionSetInterface extends \Stringable
 {

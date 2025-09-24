@@ -24,7 +24,6 @@ includes:
   - libs/component/uri-factory/phpstan.neon
   - libs/component/weak-types/phpstan.neon
   # Contracts
-  - libs/contracts/cpu-info-contracts/phpstan.neon
   - libs/contracts/event-listener-contracts/phpstan.neon
   - libs/contracts/http-contracts/phpstan.neon
   - libs/contracts/id-contracts/phpstan.neon

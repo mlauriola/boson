@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Boson\Component\CpuInfo\Factory\Driver;
 
+use Boson\Component\CpuInfo\ArchitectureInterface;
 use Boson\Component\CpuInfo\Factory\Driver\WindowsRegistry\Advapi32;
-use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
 use FFI\CData;
 use FFI\Env\Runtime;
 

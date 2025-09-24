@@ -24,7 +24,6 @@ $files = PhpCsFixer\Finder::create()
         __DIR__ . '/libs/component/uri-factory/src',
         __DIR__ . '/libs/component/weak-types/src',
         // Contracts
-        __DIR__ . '/libs/contracts/cpu-info-contracts/src',
         __DIR__ . '/libs/contracts/event-listener-contracts/src',
         __DIR__ . '/libs/contracts/http-contracts/src',
         __DIR__ . '/libs/contracts/id-contracts/src',

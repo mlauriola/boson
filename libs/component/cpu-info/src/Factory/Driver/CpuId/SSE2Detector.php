@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Boson\Component\CpuInfo\Factory\Driver\CpuId;
 
 use Boson\Component\CpuInfo\InstructionSet;
+use Boson\Component\CpuInfo\InstructionSetInterface;
 use Boson\Component\Pasm\ExecutorInterface;
-use Boson\Contracts\CpuInfo\InstructionSetInterface;
 
 final readonly class SSE2Detector extends AMD64Detector
 {

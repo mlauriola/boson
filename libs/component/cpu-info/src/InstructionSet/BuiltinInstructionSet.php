@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Component\CpuInfo\InstructionSet;
 
-use Boson\Contracts\CpuInfo\InstructionSetInterface;
+use Boson\Component\CpuInfo\InstructionSetInterface;
 
 /**
  * @internal this is an internal library class, please do not use it in your code

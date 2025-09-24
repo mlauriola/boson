@@ -7,7 +7,6 @@ namespace Boson\Api\OperatingSystem;
 use Boson\Component\OsInfo\FamilyInterface;
 use Boson\Component\OsInfo\OperatingSystem;
 use Boson\Component\OsInfo\StandardInterface;
-use Boson\Contracts\OsInfo\OperatingSystemInterface;
 
 /**
  * @internal this is an internal library class, please do not use it in your code
@@ -15,7 +14,7 @@ use Boson\Contracts\OsInfo\OperatingSystemInterface;
  */
 final class OperatingSystemInfo implements OperatingSystemInfoInterface
 {
-    private OperatingSystemInterface $os {
+    private OperatingSystem $os {
         get => $this->os ??= OperatingSystem::createFromGlobals();
     }
 

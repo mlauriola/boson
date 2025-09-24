@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Component\CpuInfo\Factory\Driver;
 
-use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
+use Boson\Component\CpuInfo\ArchitectureInterface;
 
 interface VendorDriverInterface
 {

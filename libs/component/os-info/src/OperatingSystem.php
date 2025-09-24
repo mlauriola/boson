@@ -7,7 +7,6 @@ namespace Boson\Component\OsInfo;
 use Boson\Component\OsInfo\Factory\DefaultOperatingSystemFactory;
 use Boson\Component\OsInfo\Factory\InMemoryOperatingSystemFactory;
 use Boson\Component\OsInfo\Factory\OperatingSystemFactoryInterface;
-use Boson\Contracts\OsInfo\OperatingSystemInterface;
 
 final readonly class OperatingSystem
 {
@@ -61,7 +60,7 @@ final readonly class OperatingSystem
     /**
      * @api
      */
-    public static function createFromGlobals(): OperatingSystemInterface
+    public static function createFromGlobals(): self
     {
         static $factory = new InMemoryOperatingSystemFactory(
             delegate: new DefaultOperatingSystemFactory(),

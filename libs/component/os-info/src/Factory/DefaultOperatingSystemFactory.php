@@ -14,7 +14,7 @@ use Boson\Component\OsInfo\Factory\Driver\WindowsGenericDriver;
 use Boson\Component\OsInfo\Factory\Driver\WindowsRegistryDriver;
 use Boson\Component\OsInfo\Family\Factory\DefaultFamilyFactory;
 use Boson\Component\OsInfo\Family\Factory\FamilyFactoryInterface;
-use Boson\Contracts\OsInfo\OperatingSystemInterface;
+use Boson\Component\OsInfo\OperatingSystem;
 
 final readonly class DefaultOperatingSystemFactory implements OperatingSystemFactoryInterface
 {
@@ -38,7 +38,7 @@ final readonly class DefaultOperatingSystemFactory implements OperatingSystemFac
         );
     }
 
-    public function createOperatingSystem(): OperatingSystemInterface
+    public function createOperatingSystem(): OperatingSystem
     {
         return $this->factory->createOperatingSystem();
     }

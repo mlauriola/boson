@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Component\CpuInfo\InstructionSet;
 
-use Boson\Contracts\CpuInfo\InstructionSetInterface;
+use Boson\Component\CpuInfo\InstructionSetInterface;
 
 /**
  * @phpstan-require-implements InstructionSetInterface

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Component\CpuInfo\Factory\Driver;
 
+use Boson\Component\CpuInfo\ArchitectureInterface;
 use Boson\Component\CpuInfo\Factory\Driver\CpuId\AESDetector;
 use Boson\Component\CpuInfo\Factory\Driver\CpuId\AVX2Detector;
 use Boson\Component\CpuInfo\Factory\Driver\CpuId\AVX512FDetector;
@@ -22,7 +23,6 @@ use Boson\Component\CpuInfo\Factory\Driver\CpuId\SSEDetector;
 use Boson\Component\CpuInfo\Factory\Driver\CpuId\SSSE3Detector;
 use Boson\Component\Pasm\Executor;
 use Boson\Component\Pasm\ExecutorInterface;
-use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
 
 final readonly class CpuIdDriver implements InstructionSetsDriverInterface
 {

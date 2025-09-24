@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Boson\Component\CpuInfo;
 
 use Boson\Component\CpuInfo\InstructionSet\InstructionSetImpl;
-use Boson\Contracts\CpuInfo\InstructionSetInterface;
 
 require_once __DIR__ . '/InstructionSet/constants.php';
 

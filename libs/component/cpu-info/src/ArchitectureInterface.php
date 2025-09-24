@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boson\Contracts\CpuInfo\Architecture;
+namespace Boson\Component\CpuInfo;
 
 interface ArchitectureInterface extends \Stringable
 {

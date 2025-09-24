@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Boson\Component\CpuInfo\Factory\Driver\CpuId;
 
 use Boson\Component\CpuInfo\Architecture;
-use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
+use Boson\Component\CpuInfo\ArchitectureInterface;
 
 abstract readonly class AMD64Detector implements DetectorInterface
 {

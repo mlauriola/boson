@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boson\Component\CpuInfo\Architecture;
 
-use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
+use Boson\Component\CpuInfo\ArchitectureInterface;
 
 /**
  * @phpstan-require-implements ArchitectureInterface

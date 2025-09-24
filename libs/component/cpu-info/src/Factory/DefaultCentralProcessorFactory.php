@@ -6,13 +6,13 @@ namespace Boson\Component\CpuInfo\Factory;
 
 use Boson\Component\CpuInfo\Architecture\Factory\ArchitectureFactoryInterface;
 use Boson\Component\CpuInfo\Architecture\Factory\DefaultArchitectureFactory;
+use Boson\Component\CpuInfo\CentralProcessor;
 use Boson\Component\CpuInfo\Factory\Driver\CpuIdDriver;
 use Boson\Component\CpuInfo\Factory\Driver\EnvDriver;
 use Boson\Component\CpuInfo\Factory\Driver\GenericDriver;
 use Boson\Component\CpuInfo\Factory\Driver\LinuxProcCpuInfoDriver;
 use Boson\Component\CpuInfo\Factory\Driver\WindowsRegistryDriver;
 use Boson\Component\CpuInfo\Factory\Driver\WindowsSysInfoDriver;
-use Boson\Contracts\CpuInfo\CentralProcessorInterface;
 
 final readonly class DefaultCentralProcessorFactory implements CentralProcessorFactoryInterface
 {
@@ -35,7 +35,7 @@ final readonly class DefaultCentralProcessorFactory implements CentralProcessorF
         );
     }
 
-    public function createCentralProcessor(): CentralProcessorInterface
+    public function createCentralProcessor(): CentralProcessor
     {
         return $this->factory->createCentralProcessor();
     }

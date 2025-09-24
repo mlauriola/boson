@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Boson\Component\CpuInfo\Factory;
 
 use Boson\Component\CpuInfo\Architecture\Factory\ArchitectureFactoryInterface;
+use Boson\Component\CpuInfo\ArchitectureInterface;
 use Boson\Component\CpuInfo\CentralProcessor;
 use Boson\Component\CpuInfo\Factory\Driver\CoresDriverInterface;
 use Boson\Component\CpuInfo\Factory\Driver\InstructionSetsDriverInterface;
 use Boson\Component\CpuInfo\Factory\Driver\NameDriverInterface;
 use Boson\Component\CpuInfo\Factory\Driver\ThreadsDriverInterface;
 use Boson\Component\CpuInfo\Factory\Driver\VendorDriverInterface;
-use Boson\Contracts\CpuInfo\Architecture\ArchitectureInterface;
-use Boson\Contracts\CpuInfo\CentralProcessorInterface;
-use Boson\Contracts\CpuInfo\InstructionSetInterface;
+use Boson\Component\CpuInfo\InstructionSetInterface;
 
 final readonly class CentralProcessorFactory implements CentralProcessorFactoryInterface
 {
@@ -39,7 +38,7 @@ final readonly class CentralProcessorFactory implements CentralProcessorFactoryI
         $this->drivers = \iterator_to_array($drivers, false);
     }
 
-    public function createCentralProcessor(): CentralProcessorInterface
+    public function createCentralProcessor(): CentralProcessor
     {
         $arch = $this->architectureFactory->createArchitecture();
 

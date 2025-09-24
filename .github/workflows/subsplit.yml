@@ -62,8 +62,6 @@ jobs:
           - local_path: 'component/weak-types'
             split_repository: 'weak-types'
           # Contracts
-          - local_path: 'contracts/cpu-info-contracts'
-            split_repository: 'cpu-info-contracts'
           - local_path: 'contracts/event-listener-contracts'
             split_repository: 'event-listener-contracts'
           - local_path: 'contracts/http-contracts'

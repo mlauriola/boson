@@ -13,7 +13,6 @@ use Boson\Component\OsInfo\Family\Factory\FamilyFactoryInterface;
 use Boson\Component\OsInfo\FamilyInterface;
 use Boson\Component\OsInfo\OperatingSystem;
 use Boson\Component\OsInfo\StandardInterface;
-use Boson\Contracts\OsInfo\OperatingSystemInterface;
 
 final readonly class OperatingSystemFactory implements OperatingSystemFactoryInterface
 {
@@ -46,7 +45,7 @@ final readonly class OperatingSystemFactory implements OperatingSystemFactoryInt
         $this->drivers = \iterator_to_array($drivers, false);
     }
 
-    public function createOperatingSystem(): OperatingSystemInterface
+    public function createOperatingSystem(): OperatingSystem
     {
         $family = $this->familyFactory->createFamily();
 
