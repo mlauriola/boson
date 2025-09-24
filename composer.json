@@ -75,7 +75,6 @@
             "Boson\\Component\\Uri\\Tests\\": "libs/component/uri/tests",
             "Boson\\Component\\Uri\\Factory\\Tests\\": "libs/component/uri-factory/tests",
             "Boson\\Component\\WeakType\\Tests\\": "libs/component/weak-types/tests",
-            "Boson\\Contracts\\CpuInfo\\Tests\\": "libs/contracts/cpu-info-contracts/tests",
             "Boson\\Contracts\\EventListener\\Tests\\": "libs/contracts/event-listener-contracts/tests",
             "Boson\\Contracts\\Http\\Tests\\": "libs/contracts/http-contracts/tests",
             "Boson\\Contracts\\Id\\Tests\\": "libs/contracts/id-contracts/tests",
