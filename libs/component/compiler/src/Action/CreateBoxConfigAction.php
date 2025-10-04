@@ -135,6 +135,7 @@ final readonly class CreateBoxConfigAction implements ActionInterface
             'dump-autoload' => false,
             'stub' => $config->boxStubPathname,
             'output' => $config->pharPathname,
+            'exclude-composer-files' => false,
             'main' => false,
             'chmod' => '0644',
             'compression' => 'GZ',
