@@ -18,12 +18,25 @@ final readonly class CreateBoxConfigAction implements ActionInterface
     {
         yield CreateBoxConfigStatus::ReadyToCreate;
 
-        \file_put_contents($config->boxConfigPathname, \json_encode(
-            value: $this->getBoxConfig($config),
-            flags: \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR,
-        ));
+        // Update box.json config in case of configuration
+        // file is more relevant than generated config file.
+        if ($this->getBoxConfigTimestamp($config) < $config->timestamp) {
+            \file_put_contents($config->boxConfigPathname, \json_encode(
+                value: $this->getBoxConfig($config),
+                flags: \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR,
+            ));
+        }
 
         yield CreateBoxConfigStatus::Created;
+    }
+
+    private function getBoxConfigTimestamp(Configuration $config): int
+    {
+        if (\is_file($config->boxConfigPathname) && ($time = \filemtime($config->boxConfigPathname)) !== false) {
+            return $time;
+        }
+
+        return \PHP_INT_MIN;
     }
 
     /**
