@@ -18,7 +18,7 @@ Why Boson? Because it's not an [Electron](https://www.electronjs.org)!
 And much easier than that =)
 
 By the way, there is more information about the project
-[in the documentation](https://bosonphp.com/doc/0.19/introduction).
+[in the documentation](https://bosonphp.com/doc/master/introduction).
 
 > Also, this repository contains included high level PHP bindings
 > [for Saucer v6.0](https://github.com/saucer/saucer).
@@ -46,20 +46,20 @@ composer require boson-php/runtime
 
 ## Documentation
 
-- You can learn more [about what a Boson is](https://bosonphp.com/doc/0.19/introduction).
-- Information [about the configs](https://bosonphp.com/doc/0.19/configuration) is
-  available on the [corresponding pages](https://bosonphp.com/doc/0.19/application-configuration).
-- A more detailed description of working with the [application](https://bosonphp.com/doc/0.19/application),
-  [windows](https://bosonphp.com/doc/0.19/window) and [webview](https://bosonphp.com/doc/0.19/webview)
+- You can learn more [about what a Boson is](https://bosonphp.com/doc/master/introduction).
+- Information [about the configs](https://bosonphp.com/doc/master/configuration) is
+  available on the [corresponding pages](https://bosonphp.com/doc/master/application-configuration).
+- A more detailed description of working with the [application](https://bosonphp.com/doc/master/application),
+  [windows](https://bosonphp.com/doc/master/window) and [webview](https://bosonphp.com/doc/master/webview)
   is also available.
 - Also, do not miss the detailed guide on additional apps for working with
-  [function bindings](https://bosonphp.com/doc/0.19/bindings-api),
-  [scripts](https://bosonphp.com/doc/0.19/scripts-api),
-  [request interception](https://bosonphp.com/doc/0.19/schemes-api), and more.
+  [function bindings](https://bosonphp.com/doc/master/bindings-api),
+  [scripts](https://bosonphp.com/doc/master/scripts-api),
+  [request interception](https://bosonphp.com/doc/master/schemes-api), and more.
 - If you want to build an application based on
-  [Symfony](https://bosonphp.com/doc/0.19/symfony-adapter),
-  [Laravel](https://bosonphp.com/doc/0.19/laravel-adapter) and
-  [others](https://bosonphp.com/doc/0.19/psr7-adapter),
+  [Symfony](https://bosonphp.com/doc/master/symfony-adapter),
+  [Laravel](https://bosonphp.com/doc/master/laravel-adapter) and
+  [others](https://bosonphp.com/doc/master/psr7-adapter),
   then similar functionality is also available.
 
 
@@ -121,5 +121,5 @@ Any questions left? You can ask them:
 ## Contributing
 
 Boson is an Open Source, [community-driven project](https://github.com/boson-php/boson/graphs/contributors).
-Join them [contributing code](https://bosonphp.com/doc/0.19/contribution).
+Join them [contributing code](https://bosonphp.com/doc/master/contribution).
 
