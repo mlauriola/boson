@@ -12,7 +12,7 @@ use FFI\CData;
 /**
  * Windows driver for executing and compiling assembly (machine) code.
  */
-class Win32Driver implements DriverInterface
+class WindowsDriver implements DriverInterface
 {
     /**
      * Enables read-only or read/write access to the committed region

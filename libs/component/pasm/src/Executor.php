@@ -8,7 +8,7 @@ use Boson\Component\Pasm\Driver\BSDDriver;
 use Boson\Component\Pasm\Driver\DriverInterface;
 use Boson\Component\Pasm\Driver\LinuxDriver;
 use Boson\Component\Pasm\Driver\MacOSDriver;
-use Boson\Component\Pasm\Driver\Win32Driver;
+use Boson\Component\Pasm\Driver\WindowsDriver;
 use Boson\Component\Pasm\Exception\NoAvailableDriverException;
 use FFI\Env\Runtime;
 
@@ -38,7 +38,7 @@ final readonly class Executor implements ExecutorInterface
     private function getDefaultDrivers(): array
     {
         return [
-            new Win32Driver(),
+            new WindowsDriver(),
             new LinuxDriver(),
             new MacOSDriver(),
             new BSDDriver(),
