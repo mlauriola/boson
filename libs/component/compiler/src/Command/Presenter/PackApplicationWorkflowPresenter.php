@@ -58,7 +58,7 @@ final readonly class PackApplicationWorkflowPresenter extends ConsolePresenter
 
                 case CreateBuildDirectoryStatus::Created:
                     $this->write($style, $progress, \sprintf(
-                        "   <info>●</info> Build directory \"<comment>%s</comment>\" is available",
+                        '   <info>●</info> Build directory "<comment>%s</comment>" is available',
                         $config->output,
                     ));
                     break;
@@ -69,7 +69,7 @@ final readonly class PackApplicationWorkflowPresenter extends ConsolePresenter
 
                 case CreateBoxConfigStatus::Created:
                     $this->write($style, $progress, \sprintf(
-                        "   <info>●</info> Config \"<comment>%s</comment>\" is created",
+                        '   <info>●</info> Config "<comment>%s</comment>" is created',
                         $config->boxConfigPathname,
                     ));
                     break;
@@ -84,7 +84,7 @@ final readonly class PackApplicationWorkflowPresenter extends ConsolePresenter
 
                 case DownloadBoxStatus::Complete:
                     $this->write($style, $progress, \sprintf(
-                        "   <info>●</info> The \"<comment>humbug/box</comment>\" <info>v%s</info> is ready",
+                        '   <info>●</info> The "<comment>humbug/box</comment>" <info>v%s</info> is ready',
                         $config->boxVersion,
                     ));
                     break;
@@ -99,7 +99,7 @@ final readonly class PackApplicationWorkflowPresenter extends ConsolePresenter
 
                 case PackBoxStatus::Packed:
                     $this->write($style, $progress, \sprintf(
-                        "   <info>●</info> Application packed \"<comment>%s</comment>\"",
+                        '   <info>●</info> Application packed "<comment>%s</comment>"',
                         $config->pharPathname,
                     ));
                     break;

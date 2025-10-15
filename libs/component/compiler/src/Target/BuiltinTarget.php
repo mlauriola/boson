@@ -138,6 +138,7 @@ abstract readonly class BuiltinTarget extends Target
 
     /**
      * @param array<mixed, non-empty-string> $extensions
+     *
      * @return list<non-empty-string>
      */
     protected function exceptBuiltinExtensions(array $extensions): array
