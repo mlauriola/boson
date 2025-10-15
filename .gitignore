@@ -10,8 +10,8 @@
 /build
 
 # Testing
-test.php
-boson.json
+/test.php
+/boson.json
 
 # Toolset
 *.phar
