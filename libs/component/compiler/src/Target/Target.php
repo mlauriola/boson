@@ -39,7 +39,7 @@ abstract readonly class Target implements TargetInterface
         yield $this => TargetCompileStatus::ReadyToCompile;
 
         foreach ($this->process($config) as $info => $tick) {
-            if ($tick instanceof \UnitEnum) {
+            if ($tick instanceof \UnitEnum && (\is_string($info) || $info instanceof \Stringable)) {
                 yield $info => $tick;
             }
 

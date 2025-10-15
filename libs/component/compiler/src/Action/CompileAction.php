@@ -16,8 +16,8 @@ final readonly class CompileAction extends TargetAction
      * @var non-empty-string
      */
     private const string DEFAULT_INI_CONFIG = <<<'INI'
-        ffi.enable=1
-        INI;
+                             ffi.enable=1
+                             INI;
 
     public function __construct(
         /**
@@ -74,6 +74,11 @@ final readonly class CompileAction extends TargetAction
     {
         $ini = self::DEFAULT_INI_CONFIG;
 
+        /**
+         * @var non-empty-string $key
+         * @var scalar $value
+         * @phpstan-ignore-next-line : Additional target's ini configuration is valid array (checked by json schema)
+         */
         foreach ([...$config->ini, ...$this->target->config['ini'] ?? []] as $key => $value) {
             $ini .= "\n$key=" . match ($value) {
                 false => '0',

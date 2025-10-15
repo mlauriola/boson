@@ -102,7 +102,7 @@ final readonly class CompileApplicationWorkflowPresenter extends ConsolePresente
                 case CompileStatus::BuildConfiguration:
                     $this->write($style, $progress, \sprintf(
                         "php.ini:\n   · %s",
-                        \str_replace("\n", "\n   · ", \rtrim($data)),
+                        \str_replace("\n", "\n   · ", \rtrim((string) $data)),
                     ));
                     break;
 
