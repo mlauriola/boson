@@ -38,9 +38,9 @@ abstract readonly class Target implements TargetInterface
     {
         yield $this => TargetCompileStatus::ReadyToCompile;
 
-        foreach ($this->process($config) as $tick) {
+        foreach ($this->process($config) as $info => $tick) {
             if ($tick instanceof \UnitEnum) {
-                yield $this => $tick;
+                yield $info => $tick;
             }
 
             yield $this => TargetCompileStatus::Progress;
