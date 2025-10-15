@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Boson\Component\Compiler\Configuration\Factory;
 
-use Boson\Component\Compiler\Target\TargetFactoryInterface;
 use Boson\Component\Compiler\Configuration;
 use Boson\Component\Compiler\Configuration\DirectoryIncludeConfiguration;
 use Boson\Component\Compiler\Configuration\Factory\JsonConfiguration\JsonConfigLoader;
@@ -13,6 +12,7 @@ use Boson\Component\Compiler\Configuration\Factory\JsonConfiguration\JsonConfigV
 use Boson\Component\Compiler\Configuration\FileIncludeConfiguration;
 use Boson\Component\Compiler\Configuration\FinderIncludeConfiguration;
 use Boson\Component\Compiler\Configuration\IncludeConfiguration;
+use Boson\Component\Compiler\Target\TargetFactoryInterface;
 
 /**
  * @phpstan-import-type CompilationTargetConfigType from TargetFactoryInterface
