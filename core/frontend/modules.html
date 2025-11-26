@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Management - Microplus BOS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="help-modal.css">
+    <script>
+        // Set active page for sidebar component
+        window.ACTIVE_PAGE = 'modules';
+    </script>
+    <script src="common.js"></script>
+    <script src="header-component.js"></script>
+    <script src="sidebar-component.js"></script>
+    <script src="maintenance-banner.js"></script>
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #2084c6;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2084c6;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-core {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+
+        .badge-module {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header"></header>
+
+        <div class="layout-wrapper">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar" id="sidebar"></aside>
+
+            <!-- Main content -->
+            <main class="main-content">
+                <!-- Maintenance Banner Container -->
+                <div id="maintenanceBannerContainer"></div>
+
+                <div class="content-padding">
+                    <div class="section-header">
+                        <h2>Module Management</h2>
+                        <div class="header-actions">
+                            <button id="saveChangesBtn" class="btn btn-primary" disabled
+                                onclick="showConfirmationModal()">Update Application</button>
+                        </div>
+                    </div>
+
+                    <div class="users-table-section">
+                        <div class="table-responsive">
+                            <table id="modulesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Module Name</th>
+                                        <th>Description</th>
+                                        <th>Path</th>
+                                        <th>Role Access</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="modulesTableBody">
+                                    <!-- Data will be inserted dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Help Modal Container -->
+    <div id="helpModalContainer"></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirm Changes</h2>
+                <span class="close" onclick="closeConfirmationModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>You are about to update the module configuration. This will trigger a server restart.</p>
+                <div id="changesList" style="margin: 15px 0; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                    <!-- Changes will be listed here -->
+                </div>
+                <p>Are you sure you want to proceed?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeConfirmationModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveChanges()">Confirm & Restart</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="help-modal.js"></script>
+    <script src="modules.js"></script>
+</body>
+
+</html>

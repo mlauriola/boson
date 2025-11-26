@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restriction - Common Codes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="help-modal.css">
+    <style>
+        .admin-section {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        .admin-section h2 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            color: #1a3c5f;
+            border-bottom: 2px solid #2084c6;
+            padding-bottom: 8px;
+        }
+
+        .admin-section h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #1a3c5f;
+            font-size: 1.1rem;
+        }
+
+        .admin-section p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .settings-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1a3c5f;
+            font-weight: 600;
+        }
+
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .info-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        /* Ensure main content scrolls */
+        .main-content {
+            overflow-y: auto;
+            max-height: calc(100vh - 120px);
+        }
+
+        /* Message bar styles */
+        .message {
+            min-height: 36px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .message-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+    <script>
+        // Set active page for sidebar component
+        window.ACTIVE_PAGE = 'viewRestriction';
+    </script>
+    <script src="common.js"></script>
+    <script src="header-component.js"></script>
+    <script src="sidebar-component.js"></script>
+    <script src="maintenance-banner.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header"></header>
+
+        <div class="layout-wrapper">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar" id="sidebar"></aside>
+
+            <!-- Main content -->
+            <main class="main-content">
+                <!-- Message area -->
+                <div id="messageArea" class="message" style="visibility: hidden; opacity: 0;"></div>
+
+                <!-- Restriction Section -->
+                <section class="admin-section">
+                    <h2>Restriction</h2>
+                    <p>
+                        Manage access restrictions for the ViewCommonCodes page.
+                    </p>
+
+                    <div class="settings-card">
+                        <h3>ViewCommonCodes Restriction</h3>
+                        <p>When enabled, the ViewCommonCodes page will show only the header without buttons and a custom
+                            message. No one (including administrators) will be able to access the full page.</p>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="viewCommonCodesEnabled">
+                                <span>Enable ViewCommonCodes Restriction</span>
+                            </label>
+                            <div class="info-text">Toggle to restrict access to ViewCommonCodes page</div>
+                        </div>
+
+                        <div id="viewCommonCodesDetails" style="display: none;">
+                            <div class="form-group">
+                                <label for="viewCommonCodesMessage">Message for Users</label>
+                                <textarea id="viewCommonCodesMessage"
+                                    placeholder="This page is temporarily unavailable to the public."></textarea>
+                                <div class="info-text">This message will be displayed on the ViewCommonCodes page</div>
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="saveViewCommonCodesRestriction()">
+                                Save ViewCommonCodes Restriction
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="ViewRestriction.js"></script>
+</body>
+
+</html>

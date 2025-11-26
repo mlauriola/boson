@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table List - Commonwealth Games Glasgow 2026</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="help-modal.css?v=4">
+  <script>
+    window.ACTIVE_PAGE = 'tablelist';
+  </script>
+  <script src="common.js"></script>
+  <script src="header-component.js?v=9"></script>
+  <script src="sidebar-component.js?v=14"></script>
+  <script src="maintenance-banner.js"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="header"></header>
+
+    <div class="layout-wrapper">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar" id="sidebar"></aside>
+
+      <!-- Main content -->
+      <main class="main-content">
+        <!-- Table List section -->
+        <section class="users-section">
+          <!-- Search Section -->
+          <div class="filters-section" style="display: block;">
+            <div class="search-bar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by description, table name..."
+                class="search-input"
+              >
+              <button id="clearSearch" class="btn-clear" style="display: none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Message area (always reserves space) -->
+          <!-- Message area with Help button -->
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+            <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
+            <button class="btn btn-secondary" id="helpBtn" title="Help" style="min-width: 38px; height: 34px; padding: 6px 10px; flex-shrink: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: center;">
+              <span style="font-weight: bold; font-size: 16px;">?</span>
+            </button>
+          </div>
+
+          <!-- Tables Container -->
+          <div class="table-container">
+            <div class="section-header">
+              <h2>Table List</h2>
+            </div>
+            <div class="table-wrapper">
+              <table id="tableListTable">
+                <thead>
+                  <tr>
+                    <th class="sortable" data-column="Description">
+                      Description
+                      <span class="sort-icon"></span>
+                    </th>
+                    <th class="sortable" data-column="RefTable">
+                      Table Name
+                      <span class="sort-icon"></span>
+                    </th>
+                    <th class="sortable" data-column="HasToBeManaged">
+                      Visibility
+                      <span class="sort-icon"></span>
+                    </th>
+                    <th class="sortable" data-column="LongDescription">
+                      Long Description
+                      <span class="sort-icon"></span>
+                    </th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tableListTableBody">
+                  <!-- Data will be inserted dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="editModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Edit Table Configuration</h2>
+        <span class="close" id="closeModal">&times;</span>
+      </div>
+
+      <div class="modal-body">
+        <form id="editTableForm">
+          <input type="hidden" id="editCode">
+
+          <div class="form-group">
+            <label for="editDescription">Description</label>
+            <input
+              type="text"
+              id="editDescription"
+              name="description"
+              readonly
+              style="background-color: #e9ecef; cursor: not-allowed;"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="editRefTable">Table Name</label>
+            <input
+              type="text"
+              id="editRefTable"
+              name="refTable"
+              readonly
+              style="background-color: #e9ecef; cursor: not-allowed;"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="editHasToBeManaged">Visibility *</label>
+            <select
+              id="editHasToBeManaged"
+              name="hasToBeManaged"
+              required
+            >
+              <option value="1">Visible</option>
+              <option value="0">Hidden</option>
+              <option value="2">Excluded</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="editLongDescription">Long Description</label>
+            <textarea
+              id="editLongDescription"
+              name="longDescription"
+              rows="4"
+              placeholder="Enter detailed description..."
+            ></textarea>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelEdit">Cancel</button>
+        <button type="submit" class="btn btn-primary" form="editTableForm">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="help-modal.js?v=1"></script>
+  <script src="TableList.js?v=1"></script>
+</body>
+</html>

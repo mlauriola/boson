@@ -1,0 +1,34 @@
+{
+    "branding": {
+        "appName": "Microplus BOS",
+        "logo": "/img/ClientLogo.svg",
+        "favicon": "/favicon.ico",
+        "colors": {
+            "brandColor": "#1a4480",
+            "brandColorHover": "#06306c",
+            "btnPrimaryBg": "#10bcc7",
+            "btnPrimaryText": "#ffffff",
+            "btnPrimaryHover": "#00a8b3",
+            "btnSecondaryBg": "#1a4480",
+            "btnSecondaryText": "#ffffff",
+            "btnSecondaryHover": "#06306c",
+            "btnDangerBg": "#ed9926",
+            "btnDangerText": "#ffffff",
+            "btnDangerHover": "#d98512",
+            "headerBg": "#ffffff",
+            "headerText": "#1a4480",
+            "sidebarBg": "#ffffff",
+            "sidebarActiveBg": "#e7f3ff",
+            "sidebarActiveBorder": "#10bcc7",
+            "tableHeaderBg": "#2084c6",
+            "tableHeaderText": "#ffffff"
+        }
+    },
+    "server": {
+        "port": 3000,
+        "sessionSecret": "change-this-in-production"
+    },
+    "database": {
+        "targetDatabase": "MyWebAppDB"
+    }
+}

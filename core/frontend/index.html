@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microplus BOS</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="help-modal.css">
+  <script>
+    // Set active page for sidebar
+    window.ACTIVE_PAGE = 'home';
+  </script>
+</head>
+
+<body>
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="header"></header>
+
+    <div class="layout-wrapper">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar" id="sidebar"></aside>
+
+      <!-- Main content -->
+      <main class="main-content">
+        <!-- Maintenance Banner Container -->
+        <div id="maintenanceBannerContainer"></div>
+
+        <!-- Welcome Section -->
+        <section style="padding: 20px 40px;">
+          <div
+            style="background: white; border-radius: 8px; padding: 30px; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <h1 style="margin-top: 0; color: #2084c6;">Welcome <span id="welcomeUser"></span></h1>
+            <p>This application contains the back office tools for managing the system.</p>
+          </div>
+
+          <h2 style="color: #333; margin-bottom: 20px;">Modules</h2>
+          <div
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-bottom: 40px;">
+            <!-- Dynamic modules will be injected here -->
+
+            <!-- Administration Card -->
+            <div class="dashboard-card" id="administrationCard"
+              style="display: none; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 20px; transition: transform 0.2s, box-shadow 0.2s;">
+              <div
+                style="width: 40px; height: 40px; background: #f0f7ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; color: #2084c6;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                  <path d="M2 17l10 5 10-5"></path>
+                  <path d="M2 12l10 5 10-5"></path>
+                </svg>
+              </div>
+              <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; color: #333;">Administration</div>
+              <div style="color: #666; font-size: 0.9rem; margin-bottom: 15px; line-height: 1.5;">
+                Manage users, roles, and system maintenance settings.
+              </div>
+              <a href="users.html"
+                style="display: inline-flex; align-items: center; color: #2084c6; text-decoration: none; font-weight: 500; font-size: 0.9rem;">
+                Go to Administration
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  style="margin-left: 5px;">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+
+            <!-- Settings Card -->
+            <div class="dashboard-card" id="settingsCard"
+              style="background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 20px; transition: transform 0.2s, box-shadow 0.2s;">
+              <div
+                style="width: 40px; height: 40px; background: #f0f7ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; color: #2084c6;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                  </path>
+                </svg>
+              </div>
+              <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; color: #333;">Settings</div>
+              <div style="color: #666; font-size: 0.9rem; margin-bottom: 15px; line-height: 1.5;">
+                Update your profile and change your password.
+              </div>
+              <a href="profile.html"
+                style="display: inline-flex; align-items: center; color: #2084c6; text-decoration: none; font-weight: 500; font-size: 0.9rem;">
+                Go to Settings
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  style="margin-left: 5px;">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Help Modal Container -->
+  <div id="helpModalContainer"></div>
+
+  <!-- First Login Modal -->
+  <div id="firstLoginModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Change Password Required</h2>
+      </div>
+      <div class="modal-body">
+        <p>You must change your password before continuing.</p>
+        <form id="firstLoginPasswordForm">
+          <div class="form-group">
+            <label for="modalCurrentPassword">Current Password</label>
+            <input type="password" id="modalCurrentPassword" readonly style="background-color: #e9ecef;">
+          </div>
+          <div class="form-group">
+            <label for="modalNewPassword">New Password *</label>
+            <input type="password" id="modalNewPassword" required>
+          </div>
+          <div class="form-group">
+            <label for="modalConfirmPassword">Confirm New Password *</label>
+            <input type="password" id="modalConfirmPassword" required>
+          </div>
+          <div id="modalMessageArea" class="message"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" form="firstLoginPasswordForm">Change Password</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="header-component.js"></script>
+  <script src="sidebar-component.js"></script>
+  <script src="maintenance-banner.js"></script>
+  <script src="help-modal.js"></script>
+  <script src="index.js"></script>
+</body>
+
+</html>

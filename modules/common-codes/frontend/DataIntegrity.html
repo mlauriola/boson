@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Integrity Check - Commonwealth Games Glasgow 2026</title>
+  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="help-modal.css?v=4">
+  <style>
+    .admin-section {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .admin-section h2 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: #1a3c5f;
+      border-bottom: 2px solid #2084c6;
+      padding-bottom: 8px;
+    }
+
+    .admin-section p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .verification-results {
+      margin-top: 24px;
+    }
+
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .results-table th,
+    .results-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .results-table th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+      color: #1a3c5f;
+    }
+
+    .results-table tr:hover {
+      background-color: #f8f9fa;
+    }
+
+    .severity-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .severity-critical {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .severity-high {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .severity-medium {
+      background-color: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .severity-low {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .summary-card {
+      display: inline-block;
+      background: #f8f9fa;
+      border-left: 4px solid #2084c6;
+      padding: 16px 24px;
+      margin: 16px 16px 16px 0;
+      border-radius: 4px;
+    }
+
+    .summary-card h3 {
+      margin: 0 0 8px 0;
+      color: #1a3c5f;
+      font-size: 1.1rem;
+    }
+
+    .summary-card .value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2084c6;
+    }
+
+    .summary-card.critical {
+      border-left-color: #dc3545;
+    }
+
+    .summary-card.critical .value {
+      color: #dc3545;
+    }
+
+    .summary-card.success {
+      border-left-color: #28a745;
+    }
+
+    .summary-card.success .value {
+      color: #28a745;
+    }
+
+    .details-link {
+      color: #2084c6;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 0.9rem;
+    }
+
+    .details-link:hover {
+      color: #1a5a8a;
+    }
+
+    .code-snippet {
+      font-family: 'Courier New', monospace;
+      background: #f8f9fa;
+      padding: 4px 8px;
+      border-radius: 3px;
+      font-size: 0.9rem;
+      color: #e83e8c;
+    }
+
+    /* Ensure main content scrolls */
+    .main-content {
+      overflow-y: auto;
+      max-height: calc(100vh - 70px);
+    }
+
+    .admin-section {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    .results-table {
+      width: 100%;
+      min-width: 800px;
+    }
+
+    .no-issues {
+      text-align: center;
+      padding: 40px;
+      color: #28a745;
+      font-size: 1.2rem;
+    }
+
+    .no-issues svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+    }
+  </style>
+  <script>
+    // Set active page for sidebar component
+    window.ACTIVE_PAGE = 'dataintegrity';
+  </script>
+  <script src="common.js"></script>
+  <script src="header-component.js?v=8"></script>
+  <script src="sidebar-component.js?v=15"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="header"></header>
+
+    <div class="layout-wrapper">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar" id="sidebar"></aside>
+
+      <!-- Main content -->
+      <main class="main-content">
+        <!-- Message area with Help button -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+          <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
+          <button class="btn btn-secondary" id="helpBtn" title="Help" style="min-width: 38px; height: 34px; padding: 6px 10px; flex-shrink: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: center;">
+            <span style="font-weight: bold; font-size: 16px;">?</span>
+          </button>
+        </div>
+
+        <!-- Data Integrity Check Section -->
+        <section class="admin-section">
+          <h2>Data Integrity Check</h2>
+          <p>
+            Verify referential integrity by checking for orphan records where foreign key references
+            point to non-existent values in lookup tables.
+          </p>
+          <p>
+            This check examines all relationships between Common Codes tables
+            and identifies data that violates referential integrity constraints.
+          </p>
+
+          <button class="btn btn-primary" id="checkIntegrityBtn" onclick="checkDataIntegrity()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Check Data Integrity
+          </button>
+
+          <!-- Verification Results -->
+          <div id="verificationResults" class="verification-results" style="display: none;">
+            <!-- Summary cards -->
+            <div id="summaryCards"></div>
+
+            <!-- Results table -->
+            <div id="resultsTableContainer"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Details Modal -->
+  <div id="detailsModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 90%; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h2 id="detailsTitle">Orphan Records Details</h2>
+        <span class="close-modal" onclick="closeDetailsModal()">&times;</span>
+      </div>
+      <div class="modal-body" id="detailsBody">
+        <!-- Details will be populated here -->
+      </div>
+    </div>
+  </div>
+
+  <script src="help-modal.js?v=1"></script>
+  <script src="DataIntegrity.js?v=1"></script>
+</body>
+</html>

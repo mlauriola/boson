@@ -1,0 +1,19 @@
+{
+  "enabled": false,
+  "message": "The system is currently under maintenance. We'll be back shortly.",
+  "allowedRoles": [
+    1
+  ],
+  "estimatedEndTime": null,
+  "scheduled": {
+    "enabled": false,
+    "message": "Scheduled maintenance: the system will not be accessible during the indicated period.",
+    "startTime": "2025-10-10T08:56:00.000Z",
+    "endTime": "2025-10-30T09:56:00.000Z",
+    "showUntil": null
+  },
+  "viewCommonCodesRestricted": {
+    "enabled": false,
+    "message": "The service is not yet live."
+  }
+}

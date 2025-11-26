@@ -1,0 +1,84 @@
+{
+    "modules": {
+        "core": {
+            "enabled": true,
+            "path": "core",
+            "description": "Core system functionality (Auth, Users, Layout)"
+        },
+        "common-codes": {
+            "enabled": true,
+            "path": "modules/common-codes",
+            "description": "Management of common codes and reference tables",
+            "roleAccess": [
+                1,
+                2,
+                3
+            ],
+            "entryPoint": "backend/index.js",
+            "menu": {
+                "label": "Common Codes",
+                "icon": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\"></rect><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\"></rect><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\"></rect><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\"></rect></svg>",
+                "items": [
+                    {
+                        "label": "Edit",
+                        "link": "CommonCodes.html",
+                        "id": "commonCodesEdit"
+                    },
+                    {
+                        "label": "RSC Codes",
+                        "link": "RSCCodes.html",
+                        "id": "rscCodes",
+                        "roles": [
+                            1,
+                            2
+                        ]
+                    },
+                    {
+                        "label": "Versioning",
+                        "link": "Versioning.html",
+                        "id": "versioning",
+                        "roles": [
+                            1,
+                            2
+                        ]
+                    },
+                    {
+                        "label": "Restriction",
+                        "link": "ViewRestriction.html",
+                        "id": "viewRestriction",
+                        "roles": [
+                            1
+                        ]
+                    },
+                    {
+                        "label": "Data Integrity",
+                        "link": "DataIntegrity.html",
+                        "id": "dataIntegrity",
+                        "roles": [
+                            1,
+                            2
+                        ]
+                    },
+                    {
+                        "label": "Logs",
+                        "link": "logs.html",
+                        "id": "logs",
+                        "roles": [
+                            1,
+                            2
+                        ]
+                    },
+                    {
+                        "label": "Table List",
+                        "link": "TableList.html",
+                        "id": "tableList",
+                        "roles": [
+                            1,
+                            2
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

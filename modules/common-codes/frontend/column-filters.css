@@ -1,0 +1,131 @@
+/* Column Filters Styling */
+
+/* Ensure table headers can show dropdowns */
+thead {
+  position: relative;
+  z-index: 100;
+}
+
+th {
+  position: relative;
+  overflow: visible !important;
+}
+
+/* Filter icon */
+.filter-icon {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.2s;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.filter-icon:hover {
+  opacity: 1;
+}
+
+.filter-icon.active {
+  opacity: 1;
+}
+
+.filter-icon svg {
+  width: 14px;
+  height: 14px;
+  fill: white;
+  display: block;
+  vertical-align: middle;
+  transition: fill 0.2s;
+}
+
+/* Change filter icon color when active (has text) */
+.filter-icon.active svg {
+  fill: #10bcc7; /* Same color as Add Record button */
+}
+
+/* Filter dropdown container - matching settings dropdown style */
+.filter-dropdown {
+  /* position set dynamically via JS (fixed) */
+  background: #b8e9ed; /* Medium teal background - less light version of #10bcc7 */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 250px;
+  z-index: 10000;
+  overflow: visible;
+}
+
+/* Filter search container */
+.filter-search {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 4px;
+}
+
+/* Search input */
+.filter-search-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.filter-search-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+/* Clear button (smaller X to clear input) */
+.filter-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ddd;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+/* Clear button when input has text */
+.filter-clear.has-text {
+  color: #999;
+}
+
+.filter-clear.has-text:hover {
+  color: #dc3545;
+}
+
+.filter-clear svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Close button */
+.filter-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.filter-close:hover {
+  color: #333;
+}
+
+.filter-close svg {
+  width: 16px;
+  height: 16px;
+}

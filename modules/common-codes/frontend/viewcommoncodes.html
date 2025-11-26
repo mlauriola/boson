@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Common Codes - Commonwealth Games Glasgow 2026</title>
+  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="help-modal.css?v=4">
+  <style>
+    /* Read-only specific styles */
+    .readonly-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .readonly-header img.games-logo {
+      height: 80px;
+      width: auto;
+    }
+
+    .readonly-main {
+      width: 100%;
+      padding: 20px;
+      max-width: 100%;
+    }
+
+    .readonly-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Adjust table height for taller header */
+    .table-wrapper {
+      max-height: calc(100vh - 430px) !important;
+    }
+
+    /* Placeholder styles */
+    .placeholder-text {
+      padding: 40px;
+      text-align: center;
+      color: #666;
+      font-size: 16px;
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Compact buttons in header */
+    .user-info .btn {
+      padding: 12px 12px;
+    }
+  </style>
+  <script>
+    // Mark this as a public page - no maintenance management link
+    window.IS_PUBLIC_PAGE = true;
+  </script>
+  <script src="common.js"></script>
+  <script src="maintenance-banner.js"></script>
+</head>
+
+<body>
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left readonly-header">
+        <img src="/img/Microplus2018-1.svg" alt="Microplus Logo" class="header-logo">
+        <h1>Commonwealth Games Glasgow 2026 - Common Codes <span id="releaseInfo">Release <span
+              id="releaseVersion">...</span></span></h1>
+        <img src="/img/ClientLogo.svg" alt="Client Logo" class="games-logo client-branding-logo" style="display: none;"
+          onerror="this.style.display='none'">
+      </div>
+      <div class="user-info">
+        <button class="btn btn-primary" id="excelBtn">Excel</button>
+        <button class="btn btn-danger" id="odfBtn">DT_CODES</button>
+        <button class="btn btn-secondary" id="loginBtn" onclick="window.location.href='login.html'">Login</button>
+      </div>
+    </header>
+
+    <!-- Main content (full width, no sidebar) -->
+    <main class="readonly-main">
+      <!-- Restriction Message (shown when ViewCommonCodes is restricted) -->
+      <div id="restrictionMessage"
+        style="display: none; padding: 40px; text-align: center; background: #f8f9fa; border-radius: 8px; margin: 20px 0;">
+        <h2 style="color: #856404; margin-bottom: 20px;">Service Unavailable</h2>
+        <p id="restrictionMessageText"
+          style="font-size: 1.1rem; color: #666; line-height: 1.8; max-width: 800px; margin: 0 auto;"></p>
+      </div>
+
+      <!-- Common Codes content -->
+      <section class="cc-section" id="mainContent">
+        <!-- Table Selector -->
+        <div class="cc-selector">
+          <select id="tableSelector" class="cc-select">
+            <option value="">-- Select a table --</option>
+          </select>
+          <div id="tableLongDescription" class="table-long-description">Please select a table from the dropdown above to
+            view its contents.</div>
+        </div>
+
+        <!-- Message area with Help button -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+          <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
+          <button class="btn btn-secondary" id="helpBtn" title="Help"
+            style="min-width: 38px; height: 34px; padding: 6px 10px; flex-shrink: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: center;">
+            <span style="font-weight: bold; font-size: 16px;">?</span>
+          </button>
+        </div>
+
+        <!-- Release Notes (shown when no table is selected) -->
+        <div id="releaseNotesContainer" style="display: none; margin-bottom: 10px;">
+          <div
+            style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <h3 id="releaseMessageTitle"
+              style="margin: 0 0 15px 0; color: #1a3c5f; font-size: 1.2rem; border-bottom: 2px solid #2084c6; padding-bottom: 10px;">
+              Release Notes</h3>
+            <div id="releaseMessageContent" style="line-height: 1.6; color: #333;"></div>
+          </div>
+        </div>
+
+        <!-- Modified Tables List (shown when no table is selected) -->
+        <div id="modifiedTablesBox" style="display: none; margin-bottom: 10px;">
+          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: #1a3c5f;">Modified Tables in this Release:</h4>
+            <ul id="modifiedTablesList" style="margin: 0; padding-left: 20px; line-height: 1.8; color: #555;"></ul>
+          </div>
+        </div>
+
+        <!-- Data Table Container -->
+        <div id="tableContainer" class="table-container" style="display: none;">
+          <div class="section-header">
+            <h2 id="tableTitle">Table Data</h2>
+            <div class="header-actions readonly-actions">
+              <button class="btn btn-secondary" id="viewRecordBtn" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  style="margin-right: 8px;">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                View Record
+              </button>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table id="dataTable">
+              <thead id="tableHead"></thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="help-modal.js?v=1"></script>
+  <script src="ViewCommonCodes.js?v=6"></script>
+</body>
+
+</html>

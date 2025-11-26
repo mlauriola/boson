@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Commonwealth Games Glasgow 2026</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="help-modal.css?v=4">
+  <script>
+    window.ACTIVE_PAGE = 'profile';
+  </script>
+  <script src="common.js"></script>
+  <script src="header-component.js?v=9"></script>
+  <script src="sidebar-component.js?v=14"></script>
+  <script src="maintenance-banner.js"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <header class="header"></header>
+    <div class="layout-wrapper">
+      <aside class="sidebar" id="sidebar"></aside>
+      <main class="main-content">
+        <section class="profile-section">
+          <!-- Message area with Help button -->
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+            <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
+            <button class="btn btn-secondary" id="helpBtn" title="Help" style="min-width: 38px; height: 34px; padding: 6px 10px; flex-shrink: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: center;">
+              <span style="font-weight: bold; font-size: 16px;">?</span>
+            </button>
+          </div>
+
+          <div class="table-container">
+            <div class="section-header">
+              <h2>My Profile</h2>
+            </div>
+
+            <form id="profileForm" style="padding: 20px;">
+              <div class="form-group">
+                <label for="profileUsername">Username</label>
+                <input
+                  type="text"
+                  id="profileUsername"
+                  disabled
+                  style="background-color: #e9ecef; cursor: not-allowed;"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="profileReferent">Referent</label>
+                <input
+                  type="text"
+                  id="profileReferent"
+                  name="referent"
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="profileEmail">Email *</label>
+                <input
+                  type="email"
+                  id="profileEmail"
+                  name="email"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="profilePhone">Phone</label>
+                <input
+                  type="text"
+                  id="profilePhone"
+                  name="phone"
+                >
+              </div>
+
+              <div style="padding: 16px 0; display: flex; gap: 12px; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="help-modal.js?v=2"></script>
+  <script src="profile.js"></script>
+</body>
+</html>

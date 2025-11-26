@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Microplus BOS</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .maintenance-banner {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      border-radius: 4px;
+      padding: 16px;
+      margin-bottom: 20px;
+      color: #721c24;
+    }
+
+    .scheduled-maintenance-banner {
+      background-color: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 4px;
+      padding: 16px;
+      margin-bottom: 20px;
+      color: #856404;
+    }
+
+    .banner-content {
+      flex: 1;
+    }
+
+    .banner-content strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .banner-time {
+      font-size: 0.9rem;
+      margin-top: 8px;
+      opacity: 0.9;
+    }
+
+    /* Reduce spacing for login page */
+    .login-card .form-group {
+      margin-bottom: 8px;
+    }
+
+    .login-card .btn {
+      margin-top: 6px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <!-- Logos -->
+      <div class="login-logos" id="loginLogos">
+        <!-- Logos will be injected here -->
+      </div>
+
+      <h1 id="appTitle">Microplus BOS</h1>
+      <p class="subtitle">Back Office System</p>
+
+      <!-- Maintenance Banner (hidden by default) -->
+      <div id="maintenanceBanner" style="display: none;"></div>
+
+      <!-- Scheduled Maintenance Banner (hidden by default) -->
+      <div id="scheduledMaintenanceBanner" style="display: none;"></div>
+
+      <!-- Login form -->
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required autocomplete="username"
+            placeholder="Enter your username">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required autocomplete="current-password"
+            placeholder="Enter your password">
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="loginBtn">
+          Login
+        </button>
+
+        <!-- Error message (always reserves space) -->
+        <div id="errorMessage" class="error-message"></div>
+
+        <!-- Forgot Password Link -->
+        <div style="text-align: center; margin-top: 8px;">
+          <a href="forgot-password.html"
+            style="color: #2084c6; text-decoration: none; font-size: 14px; font-weight: 500;">
+            Forgot Password?
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+
+</html>

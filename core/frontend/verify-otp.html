@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Code - Microplus BOS</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Override body background to match login-container */
+    body {
+      background: #1a4480;
+    }
+
+    /* Info box customization - remove border and reduce spacing */
+    .info-box {
+      background: #fff3cd;
+      border-left: none;
+      padding: 10px;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    .info-box p {
+      margin: 0;
+      color: #856404;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    /* OTP inputs */
+    .otp-inputs {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .otp-input {
+      width: 50px;
+      height: 55px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      border: 2px solid #ced4da;
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+
+    .otp-input:focus {
+      outline: none;
+      border-color: #2084c6;
+      box-shadow: 0 0 0 3px rgba(32, 132, 198, 0.1);
+    }
+
+    .otp-input.filled {
+      border-color: #28a745;
+      background-color: #f8f9fa;
+    }
+
+    /* Resend section */
+    .resend-section {
+      text-align: center;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .resend-section p {
+      color: #666;
+      font-size: 13px;
+      margin: 0 0 6px 0;
+    }
+
+    .resend-btn {
+      background: transparent;
+      color: #2084c6;
+      border: 1px solid #2084c6;
+      padding: 8px 16px;
+      width: auto;
+      font-size: 13px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .resend-btn:hover:not(:disabled) {
+      background: #2084c6;
+      color: white;
+    }
+
+    .resend-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Back link */
+    .back-link {
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .back-link a {
+      color: #2084c6;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .back-link a:hover {
+      color: #1a3c5f;
+      text-decoration: underline;
+    }
+
+    /* Reduce spacing for verify page */
+    .login-card .form-group {
+      margin-bottom: 8px;
+    }
+
+    .login-card .btn-primary {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loading {
+      display: none;
+      margin-left: 10px;
+    }
+
+    .loading.show {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <h1 style="font-size: 22px; margin-bottom: 4px;">Verify Code</h1>
+      <p class="subtitle" style="margin-bottom: 6px;">Enter the 6-digit code sent to your email</p>
+
+      <div class="info-box">
+        <p>
+          <strong>Important:</strong> The code expires in 15 minutes. If you don't receive it, check your spam folder.
+        </p>
+      </div>
+
+      <form id="verifyOtpForm">
+        <div class="otp-inputs">
+          <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" autocomplete="off"
+            data-index="0">
+          <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" autocomplete="off"
+            data-index="1">
+          <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" autocomplete="off"
+            data-index="2">
+          <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" autocomplete="off"
+            data-index="3">
+          <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" autocomplete="off"
+            data-index="4">
+          <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" autocomplete="off"
+            data-index="5">
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="verifyBtn">
+          Verify Code
+          <span class="loading" id="loadingSpinner"></span>
+        </button>
+
+        <!-- Error/Success message (always reserves space) -->
+        <div id="messageArea" class="error-message"></div>
+
+        <div class="resend-section">
+          <p>Didn't receive the code?</p>
+          <button type="button" class="resend-btn" id="resendBtn">
+            Resend Code
+          </button>
+        </div>
+
+        <div class="back-link">
+          <a href="forgot-password.html">← Try a different account</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="common.js"></script>
+  <script>
+    const otpInputs = document.querySelectorAll('.otp-input');
+    const form = document.getElementById('verifyOtpForm');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const resendBtn = document.getElementById('resendBtn');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+
+    // Initialize MessageManager
+    MessageManager.init('messageArea');
+
+    // Load config and apply branding
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('/api/config');
+        if (response.ok) {
+          const config = await response.json();
+          const branding = config.branding || {};
+          if (branding.appName) {
+            document.title = `Verify Code - ${branding.appName}`;
+          }
+        }
+      } catch (error) {
+        console.error('Error loading config:', error);
+      }
+    });
+
+    // Get username from sessionStorage
+    const recoveryUsername = sessionStorage.getItem('recoveryUsername');
+
+    if (!recoveryUsername) {
+      MessageManager.show('Session expired. Please start over.', 'error');
+      setTimeout(() => {
+        window.location.href = 'forgot-password.html';
+      }, 2000);
+    }
+
+    // OTP input handling
+    otpInputs.forEach((input, index) => {
+      // Auto-focus next input
+      input.addEventListener('input', (e) => {
+        const value = e.target.value;
+
+        // Only allow numbers
+        if (!/^\d$/.test(value)) {
+          e.target.value = '';
+          return;
+        }
+
+        e.target.classList.add('filled');
+
+        // Move to next input
+        if (value && index < otpInputs.length - 1) {
+          otpInputs[index + 1].focus();
+        }
+
+        // Auto-submit when all fields filled
+        if (index === otpInputs.length - 1 && value) {
+          form.dispatchEvent(new Event('submit'));
+        }
+      });
+
+      // Handle backspace
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+          otpInputs[index - 1].focus();
+          otpInputs[index - 1].classList.remove('filled');
+        }
+      });
+
+      // Handle paste
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pastedData = e.clipboardData.getData('text').trim();
+        const digits = pastedData.replace(/\D/g, '').split('').slice(0, 6);
+
+        digits.forEach((digit, idx) => {
+          if (otpInputs[idx]) {
+            otpInputs[idx].value = digit;
+            otpInputs[idx].classList.add('filled');
+          }
+        });
+
+        // Focus last filled input or next empty
+        const nextEmpty = digits.length < 6 ? digits.length : 5;
+        otpInputs[nextEmpty].focus();
+      });
+    });
+
+    // Get OTP from inputs
+    function getOTP() {
+      return Array.from(otpInputs).map(input => input.value).join('');
+    }
+
+    // Verify OTP
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const otp = getOTP();
+
+      if (otp.length !== 6) {
+        MessageManager.show('Please enter all 6 digits', 'error');
+        return;
+      }
+
+      verifyBtn.disabled = true;
+      loadingSpinner.classList.add('show');
+      MessageManager.hide();
+
+      try {
+        const response = await fetch('/api/auth/verify-otp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            usernameOrEmail: recoveryUsername,
+            otp
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          MessageManager.show('Code verified! Redirecting...', 'success');
+
+          // Store OTP for next step
+          sessionStorage.setItem('recoveryOTP', otp);
+
+          // Redirect to reset password page
+          setTimeout(() => {
+            window.location.href = 'reset-password.html';
+          }, 1500);
+        } else {
+          MessageManager.show(data.error || 'Invalid code. Please try again.', 'error');
+          verifyBtn.disabled = false;
+          loadingSpinner.classList.remove('show');
+
+          // Clear inputs
+          otpInputs.forEach(input => {
+            input.value = '';
+            input.classList.remove('filled');
+          });
+          otpInputs[0].focus();
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        MessageManager.show('An error occurred. Please try again.', 'error');
+        verifyBtn.disabled = false;
+        loadingSpinner.classList.remove('show');
+      }
+    });
+
+    // Resend code
+    resendBtn.addEventListener('click', async () => {
+      resendBtn.disabled = true;
+      MessageManager.hide();
+
+      try {
+        const response = await fetch('/api/auth/request-reset', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify({ usernameOrEmail: recoveryUsername })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          MessageManager.show('New code sent to your email!', 'success');
+
+          // Clear inputs
+          otpInputs.forEach(input => {
+            input.value = '';
+            input.classList.remove('filled');
+          });
+          otpInputs[0].focus();
+
+          // Enable button after 30 seconds
+          setTimeout(() => {
+            resendBtn.disabled = false;
+          }, 30000);
+        } else {
+          MessageManager.show(data.error || 'Failed to resend code', 'error');
+          resendBtn.disabled = false;
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        MessageManager.show('An error occurred. Please try again.', 'error');
+        resendBtn.disabled = false;
+      }
+    });
+
+    // Auto-focus first input
+    otpInputs[0].focus();
+  </script>
+</body>
+
+</html>

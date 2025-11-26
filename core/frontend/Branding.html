@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branding & Layout - Commonwealth Games Glasgow 2026</title>
+    <link rel="stylesheet" href="styles.css?v=3">
+    <link rel="stylesheet" href="help-modal.css?v=4">
+    <style>
+        .color-picker-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .color-picker-group input[type="color"] {
+            width: 50px;
+            height: 40px;
+            padding: 0;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .color-picker-group label {
+            margin-bottom: 0;
+            flex: 1;
+        }
+
+        .preview-section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .preview-header {
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+
+        .preview-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .preview-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .info-text {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+    </style>
+    <script>
+        // Set active page for sidebar component
+        window.ACTIVE_PAGE = 'branding';
+    </script>
+    <script src="common.js"></script>
+    <script src="header-component.js?v=8"></script>
+    <script src="sidebar-component.js?v=18"></script>
+    <script src="maintenance-banner.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header"></header>
+
+        <div class="layout-wrapper">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar" id="sidebar"></aside>
+
+            <!-- Main content -->
+            <main class="main-content">
+                <div class="content-padding">
+                    <!-- Message area -->
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                        <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
+                    </div>
+
+                    <!-- Branding Section -->
+                    <section class="users-table-section" style="overflow: visible;">
+                        <div class="section-header">
+                            <h2>Branding & Layout</h2>
+                        </div>
+                        <p>Customize the application's look and feel. Changes will be applied immediately after saving.
+                        </p>
+
+                        <div class="form-row">
+                            <!-- Colors Configuration -->
+                            <div class="form-group" style="flex: 1;">
+                                <h3>Colors</h3>
+
+                                <div class="color-picker-group">
+                                    <input type="color" id="brandColor">
+                                    <label for="brandColor">Brand Color (Text, Headers)</label>
+                                </div>
+
+                                <div class="color-picker-group">
+                                    <input type="color" id="btnPrimaryBg">
+                                    <label for="btnPrimaryBg">Primary Button</label>
+                                </div>
+
+                                <div class="color-picker-group">
+                                    <input type="color" id="btnSecondaryBg">
+                                    <label for="btnSecondaryBg">Secondary Button</label>
+                                </div>
+
+                                <div class="color-picker-group">
+                                    <input type="color" id="btnDangerBg">
+                                    <label for="btnDangerBg">Danger Button</label>
+                                </div>
+
+                                <div class="color-picker-group">
+                                    <input type="color" id="tableHeaderBg">
+                                    <label for="tableHeaderBg">Table Header</label>
+                                </div>
+                            </div>
+
+                            <!-- Logo Configuration -->
+                            <div class="form-group" style="flex: 1;">
+                                <h3>Logo</h3>
+                                <div class="form-group">
+                                    <label for="logoUpload">Upload Logo</label>
+                                    <input type="file" id="logoUpload" accept="image/*" style="margin-bottom: 10px;">
+                                    <div class="info-text">Upload a new logo image (will be saved as
+                                        /img/ClientLogo.png)</div>
+                                    <div id="currentLogo" style="margin-top: 10px;">
+                                        <img id="currentLogoPreview" src="/img/ClientLogo.png" alt="Current Logo"
+                                            style="max-height: 80px; border: 1px solid #dee2e6; border-radius: 4px; padding: 5px;"
+                                            onerror="this.style.display='none'">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="appName">Application Name</label>
+                                    <input type="text" id="appName" placeholder="Microplus BOS">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Preview -->
+                        <div class="preview-section">
+                            <div class="preview-header">Live Preview</div>
+                            <div class="preview-content">
+                                <!-- Dummy Header -->
+                                <div id="previewHeader"
+                                    style="padding: 15px; background: white; border-bottom: 1px solid #dee2e6; display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <img id="previewLogo" src="" alt="Logo" style="height: 40px;">
+                                        <h1 id="previewTitle" style="margin: 0; font-size: 18px;">App Name</h1>
+                                    </div>
+                                    <div id="previewUserInfo" style="font-weight: 500;">User Name</div>
+                                </div>
+
+                                <!-- Dummy Buttons -->
+                                <div class="preview-buttons">
+                                    <button id="previewBtnPrimary" class="btn">Primary Action</button>
+                                    <button id="previewBtnSecondary" class="btn">Secondary Action</button>
+                                    <button id="previewBtnDanger" class="btn">Danger Action</button>
+                                </div>
+
+                                <!-- Dummy Table Header -->
+                                <div style="overflow-x: auto;">
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <thead>
+                                            <tr id="previewTableHeader">
+                                                <th style="padding: 10px; color: white;">Column 1</th>
+                                                <th style="padding: 10px; color: white;">Column 2</th>
+                                                <th style="padding: 10px; color: white;">Column 3</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td
+                                                    style="padding: 10px; border-bottom: 1px solid #dee2e6; background: white;">
+                                                    Data 1</td>
+                                                <td
+                                                    style="padding: 10px; border-bottom: 1px solid #dee2e6; background: white;">
+                                                    Data 2</td>
+                                                <td
+                                                    style="padding: 10px; border-bottom: 1px solid #dee2e6; background: white;">
+                                                    Data 3</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                            <button class="btn btn-secondary" onclick="resetToDefaults()">
+                                Reset to Defaults
+                            </button>
+                            <button class="btn btn-primary" onclick="saveBrandingConfig()">
+                                Save Configuration
+                            </button>
+                        </div>
+
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="Branding.js"></script>
+</body>
+
+</html>
