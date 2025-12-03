@@ -20,7 +20,7 @@ async function initSidebar(activePage) {
 
   let sidebarHTML = `
     <div class="sidebar-logo">
-      <img src="${logoSrc}" alt="${appName}">
+      <img src="${logoSrc}" alt="${appName}" onerror="this.style.display='none'">
     </div>
     <button class="btn-menu" id="menuToggle" aria-label="Toggle menu">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -155,11 +155,41 @@ async function initSidebar(activePage) {
       const authData = await authResponse.json();
       if (authData.authenticated) {
         updateSidebarMenuVisibility(authData.roleId);
+
+        // Restore submenu states from localStorage
+        restoreSubmenuStates();
       }
     }
   } catch (error) {
     console.error('Error checking auth for sidebar:', error);
   }
+}
+
+// Restore submenu states from localStorage
+function restoreSubmenuStates() {
+  // Check all submenus and restore their state
+  const submenus = document.querySelectorAll('.submenu');
+  submenus.forEach(submenu => {
+    const submenuId = submenu.id;
+    const savedState = localStorage.getItem(`submenu_${submenuId}`);
+
+    if (savedState === 'open') {
+      const parentLi = submenu.closest('.has-submenu');
+      submenu.classList.add('open');
+      submenu.style.display = 'block';
+      if (parentLi) {
+        parentLi.classList.add('open');
+      }
+    } else if (savedState === 'closed') {
+      const parentLi = submenu.closest('.has-submenu');
+      submenu.classList.remove('open');
+      submenu.style.display = 'none';
+      if (parentLi) {
+        parentLi.classList.remove('open');
+      }
+    }
+    // If no saved state, keep the default state from the HTML
+  });
 }
 
 // Load application version from package.json
@@ -196,6 +226,8 @@ function toggleSubmenu(event, submenuId) {
       if (parentLi) {
         parentLi.classList.remove('open');
       }
+      // Save state to localStorage
+      localStorage.setItem(`submenu_${submenuId}`, 'closed');
     } else {
       // Open submenu
       submenu.classList.add('open');
@@ -203,6 +235,8 @@ function toggleSubmenu(event, submenuId) {
       if (parentLi) {
         parentLi.classList.add('open');
       }
+      // Save state to localStorage
+      localStorage.setItem(`submenu_${submenuId}`, 'open');
     }
   }
 }
