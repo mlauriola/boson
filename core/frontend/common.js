@@ -1,87 +1,138 @@
 // common.js - Shared utilities for all pages
 
 // Message handling
+// Message handling (Toast Notification)
+// Message handling (Persistent Message Bar)
 const MessageManager = {
-  messageArea: null,
-  hideTimeout: null,
+  messageBar: null,
+  messageContent: null,
 
-  // Initialize message area
-  init(messageAreaId = 'messageArea') {
-    this.messageArea = document.getElementById(messageAreaId);
-    if (!this.messageArea) {
-      console.warn(`Message area with id "${messageAreaId}" not found`);
+  // Initialize the message bar
+  init(containerId = null) {
+    // Check if already initialized
+    if (this.messageBar) return this;
+
+    // Check if an existing container is provided or exists in DOM
+    if (containerId) {
+      const existingEl = document.getElementById(containerId);
+      if (existingEl) {
+        // If the element is the message area itself (inner div)
+        if (existingEl.classList.contains('message')) {
+          this.messageContent = existingEl;
+          this.messageBar = existingEl.parentElement;
+        } else {
+          // Assume it's the container
+          this.messageBar = existingEl;
+          this.messageContent = existingEl.querySelector('.message-content') || existingEl.querySelector('.message');
+        }
+
+        if (this.messageBar && this.messageContent) {
+          this.clear();
+          return this;
+        }
+      }
     }
+
+    // Find the main content area to inject the bar
+    const mainContent = document.querySelector('.main-content');
+    if (!mainContent) return this;
+
+    // Create container if it doesn't exist
+    let container = document.getElementById('globalMessageBar');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'globalMessageBar';
+      container.className = 'message-bar-container';
+
+      // Message Content Area
+      const content = document.createElement('div');
+      content.id = 'messageContent';
+      content.className = 'message-content';
+      container.appendChild(content);
+
+      // Help Icon
+      const helpLink = document.createElement('a');
+      helpLink.href = '#';
+      helpLink.className = 'help-icon-link';
+      helpLink.title = 'User Guide';
+      helpLink.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      `;
+      helpLink.onclick = (e) => {
+        e.preventDefault();
+        if (typeof window.showHelp === 'function') {
+          // Determine current page help key
+          const path = window.location.pathname;
+          let pageKey = 'index';
+          if (path.includes('users')) pageKey = 'users';
+          else if (path.includes('modules')) pageKey = 'modules';
+          else if (path.includes('Maintenance')) pageKey = 'maintenance';
+          else if (path.includes('Branding')) pageKey = 'branding';
+
+          window.showHelp(pageKey);
+        }
+      };
+      container.appendChild(helpLink);
+
+      // Insert at the top of main content
+      mainContent.insertBefore(container, mainContent.firstChild);
+    }
+
+    this.messageBar = container;
+    this.messageContent = container.querySelector('.message-content');
+
+    // Show page description by default
+    this.clear();
+
     return this;
   },
 
-  // Show message with auto-hide after duration
-  show(message, type = 'info', duration = 5000) {
-    if (!this.messageArea) {
-      console.error('MessageManager not initialized. Call MessageManager.init() first.');
-      return;
-    }
+  // Show message
+  show(message, type = 'info', duration = 0) {
+    this.init(); // Ensure initialized
+    if (!this.messageContent) return;
 
-    // Clear any existing timeout
-    if (this.hideTimeout) {
-      clearTimeout(this.hideTimeout);
-      this.hideTimeout = null;
-    }
+    this.messageContent.textContent = message;
+    this.messageContent.className = `message-content ${type}`;
 
-    // Set message content and styling
-    this.messageArea.textContent = message;
-    this.messageArea.className = `message ${type}`;
-    this.messageArea.style.visibility = 'visible';
-    this.messageArea.style.opacity = '1';
-
-    // Auto-hide after duration (if duration > 0)
+    // Auto-clear only if duration is set (usually 0 for persistent bar)
     if (duration > 0) {
-      this.hideTimeout = setTimeout(() => {
-        this.hideTimeout = null; // Clear timeout reference
-        this.messageArea.style.visibility = 'hidden';
-        this.messageArea.style.opacity = '0';
+      setTimeout(() => {
+        this.clear();
       }, duration);
     }
   },
 
-  // Hide message (only if no timeout is active, i.e., not a timed message)
+  // Hide/Clear message
   hide() {
-    if (!this.messageArea) return;
-
-    // Don't hide if there's an active timeout (means a timed message is showing)
-    if (this.hideTimeout) {
-      return;
-    }
-
-    this.messageArea.style.visibility = 'hidden';
-    this.messageArea.style.opacity = '0';
+    this.clear();
   },
 
-  // Force hide message (clears timeout and hides immediately)
-  forceHide() {
-    if (!this.messageArea) return;
-
-    this.messageArea.style.visibility = 'hidden';
-    this.messageArea.style.opacity = '0';
-
-    // Clear timeout if exists
-    if (this.hideTimeout) {
-      clearTimeout(this.hideTimeout);
-      this.hideTimeout = null;
-    }
-  },
-
-  // Show loading message (no auto-hide)
-  showLoading(message = 'Loading...') {
-    this.show(message, 'info', 0); // duration = 0 means no auto-hide
-  },
-
-  // Clear message content
+  // Clear message text but keep bar visible (show default description)
   clear() {
-    if (!this.messageArea) return;
+    if (this.messageContent) {
+      if (window.PAGE_DESCRIPTION) {
+        this.messageContent.textContent = window.PAGE_DESCRIPTION;
+        this.messageContent.className = 'message-content page-description-text'; // Default style with description class
+      } else {
+        this.messageContent.textContent = '';
+        this.messageContent.className = 'message-content';
+      }
+    }
+  },
 
-    this.messageArea.textContent = '';
-    this.messageArea.className = 'message';
-    this.hide();
+  // Force hide (same as clear for persistent bar)
+  forceHide() {
+    this.clear();
+  },
+
+  // Show loading
+  showLoading(message = 'Loading...') {
+    this.show(message, 'info');
   }
 };
 
@@ -148,8 +199,13 @@ async function applyGlobalBranding() {
 }
 
 // Initialize branding on load
+// Initialize branding and message bar on load
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', applyGlobalBranding);
+  document.addEventListener('DOMContentLoaded', () => {
+    applyGlobalBranding();
+    MessageManager.init();
+  });
 } else {
   applyGlobalBranding();
+  MessageManager.init();
 }

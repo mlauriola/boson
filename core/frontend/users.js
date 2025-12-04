@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
   MessageManager.init('messageArea');
 
   // DOM Elements
-  const currentUserSpan = document.getElementById('currentUser');
+
   const addUserBtn = document.getElementById('addUserBtn');
   const addUserForm = document.getElementById('addUserForm');
   const usersTableBody = document.getElementById('usersTableBody');
-  const menuToggle = document.getElementById('menuToggle');
+
   const sidebar = document.getElementById('sidebar');
   const layoutWrapper = document.querySelector('.layout-wrapper');
   const searchInput = document.getElementById('searchInput');
@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const phone = (user.Phone || '').toLowerCase();
 
         return username.includes(searchTerm) ||
-               email.includes(searchTerm) ||
-               phone.includes(searchTerm);
+          email.includes(searchTerm) ||
+          phone.includes(searchTerm);
       });
     }
 
@@ -149,23 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Menu toggle functionality
-  menuToggle.addEventListener('click', () => {
-    sidebarCollapsed = !sidebarCollapsed;
-    sidebar.classList.toggle('collapsed', sidebarCollapsed);
-    layoutWrapper.classList.toggle('sidebar-collapsed', sidebarCollapsed);
-  });
 
-  // Close sidebar when clicking outside on mobile
-  document.addEventListener('click', (e) => {
-    if (window.innerWidth <= 768 &&
-        !sidebar.contains(e.target) &&
-        !menuToggle.contains(e.target) &&
-        !sidebarCollapsed) {
-      sidebarCollapsed = true;
-      sidebar.classList.add('collapsed');
-    }
-  });
 
   // Initialization
   init();
@@ -206,7 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Show current user referent
-      currentUserSpan.textContent = `Welcome, ${data.referent || data.username}`;
+      // Handled by header-component.js
+      // currentUserSpan.textContent = `Welcome, ${data.referent || data.username}`;
 
       // Update sidebar menu visibility based on user role
       if (typeof updateSidebarMenuVisibility === 'function') {
@@ -214,7 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (error) {
       console.error('Errore nella verifica dell\'autenticazione:', error);
-      window.location.href = '/login.html';
+      // window.location.href = '/login.html';
+      showMessage('Authentication check failed. See console for details.', 'error');
     }
   }
 
@@ -227,7 +213,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.status === 401) {
         // Non autenticato
-        window.location.href = '/login.html';
+        // window.location.href = '/login.html';
+        showMessage('Session expired or unauthorized. Please log in again.', 'error');
         return;
       }
 

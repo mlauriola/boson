@@ -99,12 +99,14 @@ document.addEventListener('DOMContentLoaded', async () => {
           // Primary Logo (App Logo)
           if (branding.logo) {
             logosHTML += `<img src="${branding.logo}" alt="${branding.appName}" class="login-logo-cg">`;
+            // Secondary Logo (Company Logo)
+            logosHTML += `<img src="/img/MP.svg" alt="Microplus" class="login-logo-microplus">`;
+            logosContainer.style.justifyContent = 'space-between';
           } else {
-            logosHTML += `<img src="/img/2026_Commonwealth_Games_logo.svg.png" alt="Commonwealth Games Glasgow 2026" class="login-logo-cg">`;
+            // Only Microplus Logo centered
+            logosHTML += `<img src="/img/MP.svg" alt="Microplus" class="login-logo-microplus">`;
+            logosContainer.style.justifyContent = 'center';
           }
-
-          // Secondary Logo (Company Logo) - Hardcoded for now or could be in config
-          logosHTML += `<img src="/img/Microplus2018-1.svg" alt="Microplus" class="login-logo-microplus">`;
 
           logosContainer.innerHTML = logosHTML;
         }

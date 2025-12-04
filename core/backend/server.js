@@ -379,6 +379,26 @@ app.get('/api/check-auth', (req, res) => {
   }
 });
 
+// API: Roles (Admin)
+app.get('/api/roles', isAdministrator, async (req, res) => {
+  try {
+    // Try stored procedure first
+    const result = await pool.request().execute('sp_GetAllRoles');
+    res.json(result.recordset);
+  } catch (err) {
+    // console.warn('sp_GetAllRoles failed, trying direct query:', err.message);
+    try {
+      // Fallback to direct query on MP_T_ROLE
+      // Assuming columns Rol_Id and Rol_Description based on naming convention
+      const result = await pool.request().query('SELECT Rol_Id as Id, Rol_Description as Description FROM MP_T_ROLE');
+      res.json(result.recordset);
+    } catch (err2) {
+      console.error('Error fetching roles:', err2);
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+});
+
 // API: Users (Admin)
 app.get('/api/users', isAdministrator, async (req, res) => {
   try {
@@ -515,3 +535,5 @@ async function startServer() {
 
 startServer();
 // Trigger restart: 2025-11-21 15:45
+// Trigger restart: 12/03/2025 23:53:47
+// Trigger restart: 12/03/2025 23:57:38

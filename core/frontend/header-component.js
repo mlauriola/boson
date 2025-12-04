@@ -16,14 +16,14 @@ async function initHeader() {
   const branding = config.branding || {};
 
   // Always use Microplus logo as per user requirement
-  const logoSrc = '/img/Microplus2018-1.svg';
+  const logoSrc = '/img/MP.svg';
   const appName = branding.appName || 'Commonwealth Games Glasgow 2026';
   const primaryColor = branding.primaryColor || '#2084c6';
 
   const headerHTML = `
     <div class="header-left">
       <img src="${logoSrc}" alt="Logo" class="header-logo">
-      <h1>${appName} - <span id="pageTitle">Back Office</span></h1>
+      <h1 class="header-title">${appName} - <span id="pageTitle">${window.PAGE_TITLE || 'Back Office'}</span></h1>
     </div>
     <div class="user-info">
       <span id="currentUser">Loading...</span>

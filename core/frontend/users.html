@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,15 @@
   <script>
     // Set active page for sidebar component
     window.ACTIVE_PAGE = 'users';
+    window.PAGE_TITLE = 'User Management';
+    window.PAGE_DESCRIPTION = 'Manage system users, roles, and permissions.';
   </script>
   <script src="common.js"></script>
   <script src="header-component.js?v=8"></script>
   <script src="sidebar-component.js?v=14"></script>
   <script src="maintenance-banner.js"></script>
 </head>
+
 <body>
   <div class="dashboard-container">
     <!-- Header -->
@@ -26,102 +30,95 @@
 
       <!-- Main content -->
       <main class="main-content">
-        <!-- Users section -->
-        <section class="users-section">
-          <!-- Search Section -->
-          <div class="filters-section" style="display: block;">
-            <div class="search-bar">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.35-4.35"></path>
-              </svg>
-              <input
-                type="text"
-                id="searchInput"
-                placeholder="Search by username, email or phone..."
-                class="search-input"
-              >
-              <button id="clearSearch" class="btn-clear" style="display: none;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Message area (always reserves space) -->
-          <!-- Message area with Help button -->
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+        <div style="padding: 0 20px; flex: 1; overflow-y: auto;">
+          <!-- Message area -->
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0;">
             <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
-            <button class="btn btn-secondary" id="helpBtn" title="Help" style="min-width: 38px; height: 34px; padding: 6px 10px; flex-shrink: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: center;">
-              <span style="font-weight: bold; font-size: 16px;">?</span>
-            </button>
           </div>
 
-          <!-- Users Table Container -->
-          <div class="table-container">
-            <div class="section-header">
-              <h2>Users List</h2>
-              <div class="header-actions">
+          <!-- Users section -->
+          <section class="users-section">
+            <!-- Search Section -->
+            <div class="filters-section" style="display: block;">
+              <div class="search-bar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="search-icon">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search by username, email or phone..."
+                  class="search-input">
+                <button id="clearSearch" class="btn-clear" style="display: none;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="users-table-section">
+              <div class="filter-actions" style="margin-bottom: 15px;">
                 <button class="btn btn-danger" id="deleteSelectedBtn" disabled>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right: 8px;">
                     <polyline points="3 6 5 6 21 6"></polyline>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                   </svg>
                   Delete Selected (<span id="selectedCount">0</span>)
                 </button>
                 <button class="btn btn-primary" id="addUserBtn">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right: 8px;">
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                   </svg>
                   Add User
                 </button>
               </div>
+              <div class="table-wrapper">
+                <table id="usersTable">
+                  <thead>
+                    <tr>
+                      <th class="checkbox-col">
+                        <input type="checkbox" id="selectAll" class="row-checkbox">
+                      </th>
+                      <th class="sortable" data-column="Username">
+                        Username
+                        <span class="sort-icon"></span>
+                      </th>
+                      <th class="sortable" data-column="Referent">
+                        Referent
+                        <span class="sort-icon"></span>
+                      </th>
+                      <th class="sortable" data-column="Email">
+                        Email
+                        <span class="sort-icon"></span>
+                      </th>
+                      <th class="sortable" data-column="Phone">
+                        Phone
+                        <span class="sort-icon"></span>
+                      </th>
+                      <th class="sortable" data-column="RoleName">
+                        Role
+                        <span class="sort-icon"></span>
+                      </th>
+                      <th class="sortable" data-column="Recovery">
+                        Recovery
+                        <span class="sort-icon"></span>
+                      </th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="usersTableBody">
+                    <!-- Data will be inserted dynamically -->
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div class="table-wrapper">
-            <table id="usersTable">
-              <thead>
-                <tr>
-                  <th class="checkbox-col">
-                    <input type="checkbox" id="selectAll" class="row-checkbox">
-                  </th>
-                  <th class="sortable" data-column="Username">
-                    Username
-                    <span class="sort-icon"></span>
-                  </th>
-                  <th class="sortable" data-column="Referent">
-                    Referent
-                    <span class="sort-icon"></span>
-                  </th>
-                  <th class="sortable" data-column="Email">
-                    Email
-                    <span class="sort-icon"></span>
-                  </th>
-                  <th class="sortable" data-column="Phone">
-                    Phone
-                    <span class="sort-icon"></span>
-                  </th>
-                  <th class="sortable" data-column="RoleName">
-                    Role
-                    <span class="sort-icon"></span>
-                  </th>
-                  <th class="sortable" data-column="Recovery">
-                    Recovery
-                    <span class="sort-icon"></span>
-                  </th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="usersTableBody">
-                <!-- Data will be inserted dynamically -->
-              </tbody>
-            </table>
-          </div>
+          </section>
         </div>
-      </section>
-    </main>
+      </main>
     </div>
   </div>
 
@@ -135,70 +132,38 @@
 
       <div class="modal-body">
         <form id="addUserForm">
-        <div class="form-group">
-          <label for="newUsername">Username *</label>
-          <input
-            type="text"
-            id="newUsername"
-            name="username"
-            required
-            placeholder="Username"
-          >
-        </div>
+          <div class="form-group">
+            <label for="newUsername">Username *</label>
+            <input type="text" id="newUsername" name="username" required placeholder="Username">
+          </div>
 
-        <div class="form-group">
-          <label for="newPassword">Password *</label>
-          <input
-            type="password"
-            id="newPassword"
-            name="password"
-            required
-            placeholder="Password"
-          >
-        </div>
+          <div class="form-group">
+            <label for="newPassword">Password *</label>
+            <input type="password" id="newPassword" name="password" required placeholder="Password">
+          </div>
 
-        <div class="form-group">
-          <label for="newReferent">Referent</label>
-          <input
-            type="text"
-            id="newReferent"
-            name="referent"
-            placeholder="Referent name"
-          >
-        </div>
+          <div class="form-group">
+            <label for="newReferent">Referent</label>
+            <input type="text" id="newReferent" name="referent" placeholder="Referent name">
+          </div>
 
-        <div class="form-group">
-          <label for="newEmail">Email *</label>
-          <input
-            type="email"
-            id="newEmail"
-            name="email"
-            required
-            placeholder="email@example.com"
-          >
-        </div>
+          <div class="form-group">
+            <label for="newEmail">Email *</label>
+            <input type="email" id="newEmail" name="email" required placeholder="email@example.com">
+          </div>
 
-        <div class="form-group">
-          <label for="newPhone">Phone</label>
-          <input
-            type="text"
-            id="newPhone"
-            name="phone"
-            placeholder="+1234567890"
-          >
-        </div>
+          <div class="form-group">
+            <label for="newPhone">Phone</label>
+            <input type="text" id="newPhone" name="phone" placeholder="+1234567890">
+          </div>
 
-        <div class="form-group">
-          <label for="newRoleId">Role *</label>
-          <select
-            id="newRoleId"
-            name="roleId"
-            required
-          >
-            <option value="">-- Select Role --</option>
-            <!-- Roles loaded dynamically from database -->
-          </select>
-        </div>
+          <div class="form-group">
+            <label for="newRoleId">Role *</label>
+            <select id="newRoleId" name="roleId" required>
+              <option value="">-- Select Role --</option>
+              <!-- Roles loaded dynamically from database -->
+            </select>
+          </div>
         </form>
       </div>
 
@@ -221,99 +186,57 @@
         <form id="editUserForm">
           <input type="hidden" id="editUserId">
 
-        <div class="form-group">
-          <label for="editId">
-            ID
-            <span class="pk-badge">PK</span>
-          </label>
-          <input
-            type="text"
-            id="editId"
-            name="id"
-            disabled
-            style="background-color: #e9ecef; cursor: not-allowed;"
-          >
-        </div>
+          <div class="form-group">
+            <label for="editId">
+              ID
+              <span class="pk-badge">PK</span>
+            </label>
+            <input type="text" id="editId" name="id" disabled style="background-color: #e9ecef; cursor: not-allowed;">
+          </div>
 
-        <div class="form-group">
-          <label for="editUsername">Username</label>
-          <input
-            type="text"
-            id="editUsername"
-            name="username"
-            readonly
-            style="background-color: #e9ecef; cursor: not-allowed;"
-          >
-        </div>
+          <div class="form-group">
+            <label for="editUsername">Username</label>
+            <input type="text" id="editUsername" name="username" readonly
+              style="background-color: #e9ecef; cursor: not-allowed;">
+          </div>
 
-        <div class="form-group">
-          <label for="editPassword">New Password (leave blank to keep current)</label>
-          <input
-            type="password"
-            id="editPassword"
-            name="password"
-            placeholder="Leave blank to keep current password"
-          >
-        </div>
+          <div class="form-group">
+            <label for="editPassword">New Password (leave blank to keep current)</label>
+            <input type="password" id="editPassword" name="password" placeholder="Leave blank to keep current password">
+          </div>
 
-        <div class="form-group">
-          <label for="editReferent">Referent</label>
-          <input
-            type="text"
-            id="editReferent"
-            name="referent"
-          >
-        </div>
+          <div class="form-group">
+            <label for="editReferent">Referent</label>
+            <input type="text" id="editReferent" name="referent">
+          </div>
 
-        <div class="form-group">
-          <label for="editEmail">Email *</label>
-          <input
-            type="email"
-            id="editEmail"
-            name="email"
-            required
-          >
-        </div>
+          <div class="form-group">
+            <label for="editEmail">Email *</label>
+            <input type="email" id="editEmail" name="email" required>
+          </div>
 
-        <div class="form-group">
-          <label for="editPhone">Phone</label>
-          <input
-            type="text"
-            id="editPhone"
-            name="phone"
-          >
-        </div>
+          <div class="form-group">
+            <label for="editPhone">Phone</label>
+            <input type="text" id="editPhone" name="phone">
+          </div>
 
-        <div class="form-group">
-          <label for="editRoleId">Role *</label>
-          <select
-            id="editRoleId"
-            name="roleId"
-            required
-          >
-            <option value="">-- Select Role --</option>
-            <!-- Roles loaded dynamically from database -->
-          </select>
-        </div>
+          <div class="form-group">
+            <label for="editRoleId">Role *</label>
+            <select id="editRoleId" name="roleId" required>
+              <option value="">-- Select Role --</option>
+              <!-- Roles loaded dynamically from database -->
+            </select>
+          </div>
 
-        <div class="form-group">
-          <label for="editRecovery">Recovery</label>
-          <input
-            type="number"
-            id="editRecovery"
-            name="recovery"
-            min="0"
-          >
-        </div>
+          <div class="form-group">
+            <label for="editRecovery">Recovery</label>
+            <input type="number" id="editRecovery" name="recovery" min="0">
+          </div>
 
-        <div class="form-group">
-          <label for="editRecoveryOTP">Recovery OTP</label>
-          <input
-            type="text"
-            id="editRecoveryOTP"
-            name="recoveryOTP"
-          >
-        </div>
+          <div class="form-group">
+            <label for="editRecoveryOTP">Recovery OTP</label>
+            <input type="text" id="editRecoveryOTP" name="recoveryOTP">
+          </div>
         </form>
       </div>
 
@@ -327,4 +250,5 @@
   <script src="help-modal.js?v=1"></script>
   <script src="users.js?v=1"></script>
 </body>
+
 </html>

@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize MessageManager
+    if (window.MessageManager) {
+        MessageManager.init('messageArea');
+    }
     checkAuthentication();
 });
 
@@ -57,36 +61,35 @@ function renderModulesTable(modules) {
     tbody.innerHTML = '';
 
     Object.entries(modules).forEach(([key, module]) => {
+        if (key === 'core') return;
         const tr = document.createElement('tr');
 
         const isCore = key === 'core';
         const badgeClass = isCore ? 'badge-core' : 'badge-module';
-
         const roleAccess = module.roleAccess ? module.roleAccess.join(', ') : 'All';
 
         // Check if modified
         const isModified = originalModules[key] && originalModules[key].enabled !== module.enabled;
-        const statusClass = isModified ? (module.enabled ? 'text-success' : 'text-danger') : '';
 
         tr.innerHTML = `
-      <td>
-        <strong>${key}</strong>
-        <span class="badge ${badgeClass}">${isCore ? 'System' : 'Module'}</span>
-        ${isModified ? '<span class="badge badge-warning" style="margin-left:5px; background:#ffc107; color:#212529;">Modified</span>' : ''}
-      </td>
-      <td>${module.description || ''}</td>
-      <td><code>${module.path}</code></td>
-      <td>${roleAccess}</td>
-      <td>
-        <label class="switch">
-          <input type="checkbox" 
-            ${module.enabled ? 'checked' : ''} 
-            ${isCore ? 'disabled' : ''}
-            onchange="toggleModuleLocal('${key}', this.checked)">
-          <span class="slider"></span>
-        </label>
-      </td>
-    `;
+            <td>
+                <strong>${key}</strong>
+                <span class="badge ${badgeClass}">${isCore ? 'System' : 'Module'}</span>
+                ${isModified ? '<span class="badge badge-warning" style="margin-left:5px; background:#ffc107; color:#212529;">Modified</span>' : ''}
+            </td>
+            <td>${module.description || ''}</td>
+            <td><code>${module.path}</code></td>
+            <td>${roleAccess}</td>
+            <td>
+                <label class="switch">
+                    <input type="checkbox" 
+                        ${module.enabled ? 'checked' : ''} 
+                        ${isCore ? 'disabled' : ''}
+                        onchange="toggleModuleLocal('${key}', this.checked)">
+                    <span class="slider"></span>
+                </label>
+            </td>
+        `;
 
         tbody.appendChild(tr);
     });

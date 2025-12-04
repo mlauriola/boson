@@ -4,18 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Initialize MessageManager
   MessageManager.init('messageArea');
 
-  // Help button event listener
-  const helpBtn = document.getElementById('helpBtn');
-  if (helpBtn) {
-    helpBtn.addEventListener('click', () => {
-      const pageName = window.ACTIVE_PAGE || 'maintenance';
-      if (typeof window.showHelp === 'function') {
-        window.showHelp(pageName);
-      } else {
-        console.error('Help modal not loaded');
-      }
-    });
-  }
+
 
   // Check authentication
   await checkAuth();
@@ -146,11 +135,7 @@ function updateStatusBadge(isInMaintenance) {
       </div>
     `;
   } else {
-    statusDiv.innerHTML = `
-      <div class="status-badge online">
-        System Online - Normal Operation
-      </div>
-    `;
+    statusDiv.innerHTML = '';
   }
 }
 

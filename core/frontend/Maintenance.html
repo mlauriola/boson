@@ -5,40 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Maintenance - Commonwealth Games Glasgow 2026</title>
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=6">
   <link rel="stylesheet" href="help-modal.css?v=4">
   <style>
-    .admin-section {
-      background: white;
-      border-radius: 8px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      max-width: 100%;
-      overflow-x: auto;
-    }
-
-    .admin-section h2 {
-      margin-top: 0;
-      margin-bottom: 16px;
-      color: #1a3c5f;
-      border-bottom: 2px solid #2084c6;
-      padding-bottom: 8px;
-    }
-
-    .admin-section h3 {
-      margin-top: 0;
-      margin-bottom: 12px;
-      color: #1a3c5f;
-      font-size: 1.1rem;
-    }
-
-    .admin-section p {
-      color: #666;
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
-
     .status-badge {
       display: inline-flex;
       align-items: center;
@@ -64,6 +33,7 @@
       border-radius: 8px;
       padding: 20px;
       margin-bottom: 20px;
+      border: 1px solid #dee2e6;
     }
 
     .form-group {
@@ -118,56 +88,115 @@
       color: #666;
       margin-top: 8px;
     }
-
-    /* Ensure main content scrolls */
-    .main-content {
-      overflow-y: auto;
-      max-height: calc(100vh - 120px);
-    }
-
-    /* Message bar styles with colored backgrounds */
-    .message {
-      min-height: 36px;
-      padding: 12px 20px;
-      margin-bottom: 20px;
-      border-radius: 4px;
-      font-size: 0.95rem;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-
-    .message-success {
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
-
-    .message-error {
-      background-color: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-    }
-
-    .message-warning {
-      background-color: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffc107;
-    }
-
-    .message-info {
-      background-color: #d1ecf1;
-      color: #0c5460;
-      border: 1px solid #bee5eb;
-    }
   </style>
   <script>
     // Set active page for sidebar component
     window.ACTIVE_PAGE = 'maintenance';
+    window.PAGE_TITLE = 'System Maintenance';
+    window.PAGE_DESCRIPTION = 'Manage system-wide settings including maintenance mode and scheduled maintenance notifications.';
   </script>
-  <script src="common.js"></script>
-  <script src="header-component.js?v=8"></script>
-  <script src="sidebar-component.js?v=17"></script>
-  <script src="maintenance-banner.js"></script>
-</head>
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance - Commonwealth Games Glasgow 2026</title>
+    <link rel="stylesheet" href="styles.css?v=6">
+    <link rel="stylesheet" href="help-modal.css?v=4">
+    <style>
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+      }
+
+      .status-badge.online {
+        background-color: #d4edda;
+        color: #155724;
+      }
+
+      .status-badge.offline {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+
+      .settings-card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #dee2e6;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #1a3c5f;
+        font-weight: 600;
+      }
+
+      .form-group input[type="checkbox"] {
+        width: auto;
+        margin-right: 8px;
+      }
+
+      .form-group textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-family: inherit;
+        font-size: 0.95rem;
+        resize: vertical;
+      }
+
+      .form-group input[type="datetime-local"] {
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 0.95rem;
+      }
+
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .info-text {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 8px;
+      }
+    </style>
+    <script>
+      // Set active page for sidebar component
+      window.ACTIVE_PAGE = 'maintenance';
+      window.PAGE_TITLE = 'System Maintenance';
+      window.PAGE_DESCRIPTION = 'Manage system-wide settings including maintenance mode and scheduled maintenance notifications.';
+    </script>
+    <script src="common.js"></script>
+    <script src="header-component.js?v=8"></script>
+    <script src="sidebar-component.js?v=17"></script>
+    <script src="maintenance-banner.js"></script>
+  </head>
 
 <body>
   <div class="dashboard-container">
@@ -180,108 +209,99 @@
 
       <!-- Main content -->
       <main class="main-content">
-        <!-- Message area with Help button -->
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-          <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
-          <button class="btn btn-secondary" id="helpBtn" title="Help"
-            style="min-width: 38px; height: 34px; padding: 6px 10px; flex-shrink: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: center;">
-            <span style="font-weight: bold; font-size: 16px;">?</span>
-          </button>
-        </div>
+        <div class="content-padding">
+          <!-- Message area -->
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
+          </div>
 
-        <!-- Maintenance Section -->
-        <section class="admin-section">
-          <h2>Maintenance</h2>
-          <p>
-            Manage system-wide settings including maintenance mode and scheduled maintenance notifications.
-          </p>
-
-          <!-- Current Status -->
           <div id="currentStatus"></div>
 
-          <!-- Active Maintenance Section -->
-          <div class="settings-card">
-            <h3>Active Maintenance Mode</h3>
-            <p>When enabled, only administrators can access the system. All other users will see a maintenance message.
-            </p>
+          <!-- Main Section with White Background -->
+          <section class="users-table-section" style="flex: 0 auto; overflow: visible;">
+            <!-- Active Maintenance Section -->
+            <div class="settings-card">
+              <h3>Active Maintenance Mode</h3>
+              <p>When enabled, only administrators can access the system. All other users will see a maintenance
+                message.
+              </p>
 
-            <div class="form-group">
-              <label class="checkbox-label">
-                <input type="checkbox" id="maintenanceEnabled">
-                <span>Enable Maintenance Mode</span>
-              </label>
-              <div class="info-text">Toggle to immediately activate or deactivate maintenance mode</div>
-            </div>
-
-            <div id="maintenanceDetails" style="display: none;">
               <div class="form-group">
-                <label for="maintenanceMessage">Message for Users</label>
-                <textarea id="maintenanceMessage"
-                  placeholder="The system is currently under maintenance. We'll be back shortly."></textarea>
-                <div class="info-text">This message will be displayed to users attempting to log in</div>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="maintenanceEnabled">
+                  <span>Enable Maintenance Mode</span>
+                </label>
+                <div class="info-text">Toggle to immediately activate or deactivate maintenance mode</div>
               </div>
 
-              <div class="form-group">
-                <label for="estimatedEndTime">Estimated End Time (Optional)</label>
-                <input type="datetime-local" id="estimatedEndTime">
-                <div class="info-text">When maintenance is expected to be completed</div>
-              </div>
-            </div>
+              <div id="maintenanceDetails" style="display: none;">
+                <div class="form-group">
+                  <label for="maintenanceMessage">Message for Users</label>
+                  <textarea id="maintenanceMessage"
+                    placeholder="The system is currently under maintenance. We'll be back shortly."></textarea>
+                  <div class="info-text">This message will be displayed to users attempting to log in</div>
+                </div>
 
-            <div class="button-group">
-              <button class="btn btn-primary" onclick="saveMaintenanceSettings()">
-                Save Changes
-              </button>
-            </div>
-          </div>
-
-          <!-- Scheduled Maintenance Section -->
-          <div class="settings-card">
-            <h3>Scheduled Maintenance Notification</h3>
-            <p>Display an informational banner to users about upcoming maintenance. This does NOT block access.</p>
-
-            <div class="form-group">
-              <label class="checkbox-label">
-                <input type="checkbox" id="scheduledEnabled">
-                <span>Show Scheduled Maintenance Banner</span>
-              </label>
-              <div class="info-text">Users will see a notification banner but can still access the system</div>
-            </div>
-
-            <div id="scheduledDetails" style="display: none;">
-              <div class="form-group">
-                <label for="scheduledMessage">Banner Message</label>
-                <textarea id="scheduledMessage"
-                  placeholder="Scheduled maintenance: the system will not be accessible during the indicated period."></textarea>
-                <div class="info-text">This message will be shown as a banner to all users</div>
+                <div class="form-group">
+                  <label for="estimatedEndTime">Estimated End Time (Optional)</label>
+                  <input type="datetime-local" id="estimatedEndTime">
+                  <div class="info-text">When maintenance is expected to be completed</div>
+                </div>
               </div>
 
-              <div class="form-group">
-                <label for="scheduledStartTime">Maintenance Start Time <span style="color: #dc3545;">*</span></label>
-                <input type="datetime-local" id="scheduledStartTime" required>
-              </div>
-
-              <div class="form-group">
-                <label for="scheduledEndTime">Maintenance End Time <span style="color: #dc3545;">*</span></label>
-                <input type="datetime-local" id="scheduledEndTime" required>
-              </div>
-
-              <div class="form-group">
-                <label for="scheduledShowUntil">Show Banner Until</label>
-                <input type="datetime-local" id="scheduledShowUntil">
-                <div class="info-text">The banner will automatically hide after this date/time</div>
+              <div class="button-group">
+                <button class="btn btn-primary" onclick="saveMaintenanceSettings()">
+                  Save Changes
+                </button>
               </div>
             </div>
 
-            <div class="button-group">
-              <button class="btn btn-primary" onclick="saveScheduledMaintenance()">
-                Save Scheduled Maintenance
-              </button>
+            <!-- Scheduled Maintenance Section -->
+            <div class="settings-card">
+              <h3>Scheduled Maintenance Notification</h3>
+              <p>Display an informational banner to users about upcoming maintenance. This does NOT block access.</p>
+
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="scheduledEnabled">
+                  <span>Show Scheduled Maintenance Banner</span>
+                </label>
+                <div class="info-text">Users will see a notification banner but can still access the system</div>
+              </div>
+
+              <div id="scheduledDetails" style="display: none;">
+                <div class="form-group">
+                  <label for="scheduledMessage">Banner Message</label>
+                  <textarea id="scheduledMessage"
+                    placeholder="Scheduled maintenance: the system will not be accessible during the indicated period."></textarea>
+                  <div class="info-text">This message will be shown as a banner to all users</div>
+                </div>
+
+                <div class="form-group">
+                  <label for="scheduledStartTime">Maintenance Start Time <span style="color: #dc3545;">*</span></label>
+                  <input type="datetime-local" id="scheduledStartTime" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="scheduledEndTime">Maintenance End Time <span style="color: #dc3545;">*</span></label>
+                  <input type="datetime-local" id="scheduledEndTime" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="scheduledShowUntil">Show Banner Until</label>
+                  <input type="datetime-local" id="scheduledShowUntil">
+                  <div class="info-text">The banner will automatically hide after this date/time</div>
+                </div>
+              </div>
+
+              <div class="button-group">
+                <button class="btn btn-primary" onclick="saveScheduledMaintenance()">
+                  Save Scheduled Maintenance
+                </button>
+              </div>
             </div>
-          </div>
-
-
-        </section>
+          </section>
+        </div>
       </main>
     </div>
   </div>

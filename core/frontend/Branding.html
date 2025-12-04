@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Branding & Layout - Commonwealth Games Glasgow 2026</title>
-    <link rel="stylesheet" href="styles.css?v=3">
+    <link rel="stylesheet" href="styles.css?v=6">
     <link rel="stylesheet" href="help-modal.css?v=4">
     <style>
         .color-picker-group {
@@ -66,6 +66,8 @@
     <script>
         // Set active page for sidebar component
         window.ACTIVE_PAGE = 'branding';
+        window.PAGE_TITLE = 'Branding & Layout';
+        window.PAGE_DESCRIPTION = 'Customize the application\'s look and feel. Changes will be applied immediately after saving.';
     </script>
     <script src="common.js"></script>
     <script src="header-component.js?v=8"></script>
@@ -92,11 +94,6 @@
 
                     <!-- Branding Section -->
                     <section class="users-table-section" style="overflow: visible;">
-                        <div class="section-header">
-                            <h2>Branding & Layout</h2>
-                        </div>
-                        <p>Customize the application's look and feel. Changes will be applied immediately after saving.
-                        </p>
 
                         <div class="form-row">
                             <!-- Colors Configuration -->
@@ -137,7 +134,7 @@
                                     <input type="file" id="logoUpload" accept="image/*" style="margin-bottom: 10px;">
                                     <div class="info-text">Upload a new logo image (will be saved as
                                         /img/ClientLogo.png)</div>
-                                    <div id="currentLogo" style="margin-top: 10px;">
+                                    <div id="currentLogo" style="margin-top: 10px; display: none;">
                                         <img id="currentLogoPreview" src="/img/ClientLogo.png" alt="Current Logo"
                                             style="max-height: 80px; border: 1px solid #dee2e6; border-radius: 4px; padding: 5px;"
                                             onerror="this.style.display='none'">

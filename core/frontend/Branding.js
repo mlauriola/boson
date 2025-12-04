@@ -58,12 +58,9 @@ async function loadBrandingSettings() {
 
             // Update logo preview
             const logoPreview = document.getElementById('currentLogoPreview');
-            if (branding.logo) {
-                logoPreview.src = branding.logo + '?t=' + Date.now(); // Cache bust
-                logoPreview.style.display = 'block';
-            } else {
-                logoPreview.style.display = 'none';
-            }
+            const logoSrc = branding.logo || '/img/MP.svg';
+            logoPreview.src = logoSrc + '?t=' + Date.now(); // Cache bust
+            logoPreview.style.display = 'block';
 
             // Colors
             document.getElementById('brandColor').value = colors.brandColor || '#1a4480';
@@ -129,7 +126,7 @@ function updatePreview() {
 
     const previewLogo = document.getElementById('previewLogo');
     previewLogo.src = currentLogoSrc;
-    previewLogo.style.display = currentLogoSrc ? 'block' : 'none';
+    previewLogo.style.display = currentLogoSrc && currentLogoSrc.indexOf('null') === -1 && currentLogoSrc.indexOf('undefined') === -1 ? 'block' : 'none';
 
     const previewUserInfo = document.getElementById('previewUserInfo');
     previewUserInfo.style.color = brandColor;

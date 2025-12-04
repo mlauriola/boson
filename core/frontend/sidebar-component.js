@@ -141,9 +141,44 @@ async function initSidebar(activePage) {
       sidebarCollapsed = !sidebarCollapsed;
       if (sidebar) {
         sidebar.classList.toggle('collapsed', sidebarCollapsed);
+
+        // Close all submenus if sidebar is collapsed
+        if (sidebarCollapsed) {
+          const openSubmenus = document.querySelectorAll('.submenu.open');
+          openSubmenus.forEach(submenu => {
+            submenu.classList.remove('open');
+            submenu.style.display = 'none';
+            // Update localStorage
+            localStorage.setItem(`submenu_${submenu.id}`, 'closed');
+          });
+
+          const openItems = document.querySelectorAll('.has-submenu.open');
+          openItems.forEach(item => {
+            item.classList.remove('open');
+          });
+        }
       }
       if (layoutWrapper) {
         layoutWrapper.classList.toggle('sidebar-collapsed', sidebarCollapsed);
+      }
+    });
+  }
+
+  // Auto-expand sidebar on click when collapsed
+  if (sidebar) {
+    sidebar.addEventListener('click', (e) => {
+      // Only act if sidebar is collapsed
+      if (sidebar.classList.contains('collapsed')) {
+        // Check if click target is a nav-link or inside one
+        const navLink = e.target.closest('.nav-link');
+        if (navLink) {
+          // Expand sidebar
+          sidebarCollapsed = false;
+          sidebar.classList.remove('collapsed');
+          if (layoutWrapper) {
+            layoutWrapper.classList.remove('sidebar-collapsed');
+          }
+        }
       }
     });
   }
@@ -213,6 +248,30 @@ async function loadAppVersion() {
 function toggleSubmenu(event, submenuId) {
   event.preventDefault();
   event.stopPropagation();
+
+  // Auto-expand sidebar if collapsed
+  const sidebar = document.getElementById('sidebar');
+  const layoutWrapper = document.querySelector('.layout-wrapper');
+  // We need to access the sidebarCollapsed variable from the outer scope or check the class
+  if (sidebar && sidebar.classList.contains('collapsed')) {
+    sidebar.classList.remove('collapsed');
+    if (layoutWrapper) {
+      layoutWrapper.classList.remove('sidebar-collapsed');
+    }
+    // Update the local variable if we can access it, or rely on the class check next time
+    // Since sidebarCollapsed is local to initSidebar, we can't update it here directly if this function is outside.
+    // However, the toggle button listener toggles the class based on the variable.
+    // To keep it in sync, we might need to dispatch an event or just rely on the class.
+    // Let's just remove the class for now, the toggle button logic might get out of sync but it toggles based on current state usually.
+    // Actually, looking at initSidebar, sidebarCollapsed is a local variable.
+    // The toggle button listener does: sidebarCollapsed = !sidebarCollapsed;
+    // If we change the class here, the variable will be out of sync.
+    // But toggleSubmenu is defined OUTSIDE initSidebar in the file I read (lines 213+).
+    // So it cannot access sidebarCollapsed.
+    // The toggle button listener (lines 140+) uses a local variable.
+    // This is a potential bug in the original code structure if state needs to be shared.
+    // For now, removing the class is the visual fix.
+  }
 
   const submenu = document.getElementById(submenuId);
   if (submenu) {

@@ -10,6 +10,8 @@
     <script>
         // Set active page for sidebar component
         window.ACTIVE_PAGE = 'modules';
+        window.PAGE_TITLE = 'Module Management';
+        window.PAGE_DESCRIPTION = 'Enable or disable system modules.';
     </script>
     <script src="common.js"></script>
     <script src="header-component.js"></script>
@@ -95,34 +97,38 @@
 
             <!-- Main content -->
             <main class="main-content">
-                <!-- Maintenance Banner Container -->
-                <div id="maintenanceBannerContainer"></div>
-
-                <div class="content-padding">
-                    <div class="section-header">
-                        <h2>Module Management</h2>
-                        <div class="header-actions">
-                            <button id="saveChangesBtn" class="btn btn-primary" disabled
-                                onclick="showConfirmationModal()">Update Application</button>
-                        </div>
+                <div style="padding: 0 20px; flex: 1; overflow-y: auto;">
+                    <!-- Message area -->
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0;">
+                        <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
                     </div>
 
-                    <div class="users-table-section">
-                        <div class="table-responsive">
-                            <table id="modulesTable">
-                                <thead>
-                                    <tr>
-                                        <th>Module Name</th>
-                                        <th>Description</th>
-                                        <th>Path</th>
-                                        <th>Role Access</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="modulesTableBody">
-                                    <!-- Data will be inserted dynamically -->
-                                </tbody>
-                            </table>
+                    <div class="page-body">
+                        <div class="content-card">
+                            <div class="section-header">
+                                <div class="page-actions">
+                                    <button id="saveChangesBtn" class="btn btn-primary"
+                                        onclick="showConfirmationModal()" disabled>
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Module Name</th>
+                                            <th>Description</th>
+                                            <th>Path</th>
+                                            <th>Role Access</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="modulesTableBody">
+                                        <!-- Modules will be loaded here dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
