@@ -2,7 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
   // DOM elements
-  const messageArea = document.getElementById('messageArea');
+  // DOM elements
+  // messageArea handled globally
   const changePasswordForm = document.getElementById('changePasswordForm');
   const currentPassword = document.getElementById('currentPassword');
   const newPassword = document.getElementById('newPassword');
@@ -10,19 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const toggleCurrentPassword = document.getElementById('toggleCurrentPassword');
   const toggleNewPassword = document.getElementById('toggleNewPassword');
   const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-  const helpBtn = document.getElementById('helpBtn');
-
-  // Help button event listener
-  if (helpBtn) {
-    helpBtn.addEventListener('click', () => {
-      const pageName = window.ACTIVE_PAGE || 'change-password';
-      if (typeof window.showHelp === 'function') {
-        window.showHelp(pageName);
-      } else {
-        console.error('Help modal not loaded');
-      }
-    });
-  }
+  // helpBtn handled globally
 
   // Password visibility toggles
   if (toggleCurrentPassword) {
@@ -207,13 +196,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function showMessage(message, type) {
-    messageArea.textContent = message;
-    messageArea.className = `message ${type}`;
-
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-      messageArea.textContent = '';
-      messageArea.className = 'message';
-    }, 5000);
+    if (window.MessageManager) {
+      window.MessageManager.show(message, type, 5000);
+    } else {
+      console.warn('MessageManager not found, falling back to alert');
+      alert(message);
+    }
   }
 });

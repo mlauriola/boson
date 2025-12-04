@@ -422,6 +422,82 @@ app.get('/api/profile', isAuthenticated, async (req, res) => {
   }
 });
 
+app.put('/api/profile', isAuthenticated, async (req, res) => {
+  try {
+    const { referent, email, phone } = req.body;
+
+    // Get current user details first to preserve other fields
+    const userResult = await pool.request()
+      .input('userId', sql.Int, req.session.userId)
+      .execute('sp_GetUserById');
+
+    if (userResult.recordset.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const currentUser = userResult.recordset[0];
+
+    await pool.request()
+      .input('UserId', sql.Int, req.session.userId)
+      .input('Username', sql.NVarChar, currentUser.Username)
+      .input('Password', sql.NVarChar, currentUser.Password)
+      .input('Referent', sql.NVarChar, referent)
+      .input('Email', sql.NVarChar, email)
+      .input('Phone', sql.NVarChar, phone)
+      .input('RoleId', sql.Int, currentUser.RoleId)
+      .input('Recovery', sql.Int, currentUser.Recovery)
+      .input('RecoveryOTP', sql.NVarChar, currentUser.RecoveryOTP)
+      .execute('sp_UpdateUser');
+
+    // Update session
+    req.session.referent = referent;
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error updating profile:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.post('/api/change-password', isAuthenticated, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    // Verify current password first
+    const checkResult = await pool.request()
+      .input('userId', sql.Int, req.session.userId)
+      .execute('sp_GetUserById');
+
+    if (checkResult.recordset.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const currentUser = checkResult.recordset[0];
+
+    if (currentUser.Password !== currentPassword) {
+      return res.status(400).json({ error: 'Current password is incorrect' });
+    }
+
+    // Update password using sp_UpdateUser
+    await pool.request()
+      .input('UserId', sql.Int, req.session.userId)
+      .input('Username', sql.NVarChar, currentUser.Username)
+      .input('Password', sql.NVarChar, newPassword)
+      .input('Referent', sql.NVarChar, currentUser.Referent)
+      .input('Email', sql.NVarChar, currentUser.Email)
+      .input('Phone', sql.NVarChar, currentUser.Phone)
+      .input('RoleId', sql.Int, currentUser.RoleId)
+      .input('Recovery', sql.Int, currentUser.Recovery)
+      .input('RecoveryOTP', sql.NVarChar, currentUser.RecoveryOTP)
+      .execute('sp_UpdateUser');
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error changing password:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // API: Maintenance (Admin)
 app.get('/api/maintenance', isAdministrator, (req, res) => {
   res.json(readMaintenanceConfig());

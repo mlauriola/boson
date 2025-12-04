@@ -2,25 +2,14 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
   // DOM elements
-  const messageArea = document.getElementById('messageArea');
+  // DOM elements
+  // messageArea handled globally
   const profileForm = document.getElementById('profileForm');
   const profileUsername = document.getElementById('profileUsername');
   const profileReferent = document.getElementById('profileReferent');
   const profileEmail = document.getElementById('profileEmail');
   const profilePhone = document.getElementById('profilePhone');
-  const helpBtn = document.getElementById('helpBtn');
-
-  // Help button event listener
-  if (helpBtn) {
-    helpBtn.addEventListener('click', () => {
-      const pageName = window.ACTIVE_PAGE || 'profile';
-      if (typeof window.showHelp === 'function') {
-        window.showHelp(pageName);
-      } else {
-        console.error('Help modal not loaded');
-      }
-    });
-  }
+  // helpBtn handled globally
 
   // Check authentication and load profile
   await checkAuthentication();
@@ -110,13 +99,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function showMessage(message, type) {
-    messageArea.textContent = message;
-    messageArea.className = `message ${type}`;
-
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-      messageArea.textContent = '';
-      messageArea.className = 'message';
-    }, 5000);
+    if (window.MessageManager) {
+      window.MessageManager.show(message, type, 5000);
+    } else {
+      console.warn('MessageManager not found, falling back to alert');
+      alert(message);
+    }
   }
 });
