@@ -13,7 +13,6 @@ This page enables administrators to:
 - Schedule maintenance notifications in advance
 - Display informational banners about upcoming maintenance
 - Restrict access to the system during maintenance periods
-- Control ViewCommonCodes page availability
 
 ## Key Features
 
@@ -73,27 +72,7 @@ The system is currently under maintenance. We'll be back shortly.
 Scheduled maintenance: the system will not be accessible during the indicated period.
 ```
 
-### ViewCommonCodes Restriction
 
-**Purpose:** Temporarily restrict access to the ViewCommonCodes page for all users including administrators.
-
-**Key Settings:**
-
-- **Enable ViewCommonCodes Restriction**: Toggle checkbox to activate or deactivate
-- **Message for Users**: Custom message displayed on the restricted page
-- **Save ViewCommonCodes Restriction**: Button to apply restriction settings
-
-**How it Works:**
-- When enabled, ViewCommonCodes page shows only header and custom message
-- No one (including administrators) can access the full functionality
-- Other pages remain fully accessible
-- Useful for data update periods or quality checks
-- Page returns to normal when restriction is disabled
-
-**Default Message:**
-```
-This page is temporarily unavailable to the public.
-```
 
 ## Managing Maintenance
 
@@ -153,70 +132,7 @@ End Time: 2025-01-15 06:00
 Show Until: 2025-01-15 08:00
 ```
 
-### Restricting ViewCommonCodes
 
-**Steps:**
-
-1. Navigate to **Maintenance** page
-2. Scroll to **ViewCommonCodes Restriction** section
-3. Check **"Enable ViewCommonCodes Restriction"** checkbox
-4. Enter custom message in **"Message for Users"** field (optional)
-5. Click **"Save ViewCommonCodes Restriction"** button
-6. ViewCommonCodes page is now restricted
-7. Users see only header and message when accessing page
-
-**To Remove Restriction:**
-
-1. Return to **Maintenance** page
-2. Uncheck **"Enable ViewCommonCodes Restriction"** checkbox
-3. Click **"Save ViewCommonCodes Restriction"** button
-4. ViewCommonCodes returns to normal operation
-
-## Common Use Cases
-
-### Planned Database Maintenance
-
-**Scenario:** Database administrator needs exclusive access for schema updates
-
-**Steps:**
-
-1. Schedule notification 48 hours in advance
-   - Banner message: "Scheduled database maintenance Sunday 02:00-06:00 GMT"
-   - Start/End times set appropriately
-2. One hour before maintenance:
-   - Remind users via email or announcement
-3. At maintenance time:
-   - Enable Maintenance Mode
-   - Message: "Database maintenance in progress. Expected completion: 06:00 GMT"
-4. Perform maintenance work
-5. Verify system functionality
-6. Disable Maintenance Mode
-7. Disable scheduled notification banner
-
-### Emergency Hotfix
-
-**Scenario:** Critical bug requires immediate system access restriction
-
-**Steps:**
-
-1. Enable Maintenance Mode immediately
-2. Message: "Emergency maintenance to resolve critical issue. Updates to follow."
-3. Apply hotfix and test
-4. Disable Maintenance Mode as soon as safe
-5. Consider post-maintenance notification about what was fixed
-
-### Temporary ViewCommonCodes Restriction
-
-**Scenario:** Data quality review requires restricting ViewCommonCodes access
-
-**Steps:**
-
-1. Enable ViewCommonCodes Restriction
-2. Message: "ViewCommonCodes is temporarily unavailable for data quality verification."
-3. Perform quality checks and updates
-4. Verify data integrity
-5. Disable ViewCommonCodes Restriction
-6. Normal access restored
 
 ### Weekend Upgrade Window
 

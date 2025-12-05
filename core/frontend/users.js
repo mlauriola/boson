@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Variable to store user data
   let users = [];
   let filteredUsers = [];
-  let roles = [];
 
   // Sorting state
   let currentSortColumn = null;
@@ -159,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     await checkAuthentication();
 
     // Load roles and users
-    await loadRoles();
+
     await loadUsers();
   }
 
@@ -233,43 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Load all roles from database
-  async function loadRoles() {
-    try {
-      const response = await fetch('/api/roles');
 
-      if (!response.ok) {
-        throw new Error('Error loading roles');
-      }
-
-      roles = await response.json();
-      populateRoleDropdowns();
-    } catch (error) {
-      console.error('Error loading roles:', error);
-      MessageManager.show('Error loading roles', 'error');
-    }
-  }
-
-  // Populate role dropdowns in add and edit modals
-  function populateRoleDropdowns() {
-    const newRoleSelect = document.getElementById('newRoleId');
-    const editRoleSelect = document.getElementById('editRoleId');
-
-    [newRoleSelect, editRoleSelect].forEach(select => {
-      // Keep only the first option (placeholder)
-      while (select.options.length > 1) {
-        select.remove(1);
-      }
-
-      // Add roles from database
-      roles.forEach(role => {
-        const option = document.createElement('option');
-        option.value = role.Id;
-        option.textContent = role.Description;
-        select.appendChild(option);
-      });
-    });
-  }
 
   // Render users table
   function renderUsersTable() {
@@ -322,11 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
       phoneCell.innerHTML = user.Phone ? escapeHtml(user.Phone) : '<em>N/A</em>';
       row.appendChild(phoneCell);
 
-      // Role cell
-      const roleCell = document.createElement('td');
-      const roleText = user.RoleName || 'N/A';
-      roleCell.innerHTML = user.RoleName ? escapeHtml(user.RoleName) : '<em>N/A</em>';
-      row.appendChild(roleCell);
+
 
       // Recovery cell
       const recoveryCell = document.createElement('td');
@@ -354,9 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (phoneCell.scrollWidth > phoneCell.clientWidth) {
           phoneCell.title = phoneText;
         }
-        if (roleCell.scrollWidth > roleCell.clientWidth) {
-          roleCell.title = roleText;
-        }
+
         if (recoveryCell.scrollWidth > recoveryCell.clientWidth) {
           recoveryCell.title = String(user.Recovery || 0);
         }
@@ -486,19 +443,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const referent = document.getElementById('newReferent').value.trim();
     const email = document.getElementById('newEmail').value.trim();
     const phone = document.getElementById('newPhone').value.trim();
-    const roleId = parseInt(document.getElementById('newRoleId').value);
-
-    if (!username || !password) {
-      showMessage('Username and password are required', 'error');
-      return;
-    }
-
-    if (!roleId) {
-      showMessage('Role is required', 'error');
-      return;
-    }
 
     try {
+      // Default to Role 3 (Viewer) - "Invisible Role"
+      const roleId = 3;
+
       const response = await fetch('/api/users', {
         method: 'POST',
         headers: {
@@ -537,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('editReferent').value = user.Referent || '';
     document.getElementById('editEmail').value = user.Email || '';
     document.getElementById('editPhone').value = user.Phone || '';
-    document.getElementById('editRoleId').value = user.RoleId || '';
+
     document.getElementById('editRecovery').value = user.Recovery || 0;
     document.getElementById('editRecoveryOTP').value = user.RecoveryOTP || '';
 
@@ -570,7 +519,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const referent = document.getElementById('editReferent').value.trim();
     const email = document.getElementById('editEmail').value.trim();
     const phone = document.getElementById('editPhone').value.trim();
-    const roleId = parseInt(document.getElementById('editRoleId').value);
     const recovery = parseInt(document.getElementById('editRecovery').value) || 0;
     const recoveryOTP = document.getElementById('editRecoveryOTP').value.trim();
 
@@ -579,12 +527,10 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (!roleId) {
-      showMessage('Role is required', 'error');
-      return;
-    }
-
     try {
+      // Default to Role 3 (Viewer) - "Invisible Role"
+      const roleId = 3;
+
       const response = await fetch(`/api/users/${userId}`, {
         method: 'PUT',
         headers: {

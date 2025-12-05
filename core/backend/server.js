@@ -14,7 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Carica le variabili d'ambiente
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 // Carica configurazione app
 const configPath = path.join(__dirname, '../../config/app-config.json');
@@ -76,7 +76,7 @@ const transporter = nodemailer.createTransport({
 async function connectDB() {
   try {
     pool = await sql.connect(dbConfig);
-    console.log(`✓ Connected to database ${dbConfig.database}`);
+    console.log(`✓ Connected to database [${dbConfig.database}] on ${dbConfig.server}`);
     await verifyCoreTables();
   } catch (err) {
     console.error('✗ Database connection error:', err);
@@ -317,10 +317,42 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Check maintenance
+
+
+    // Fetch module-specific roles
+    try {
+      console.log(`DEBUG: Fetching roles for User ${user.Usr_Code}...`);
+      const rolesResult = await pool.request()
+        .input('userId', sql.Int, user.Usr_Code)
+        .query('SELECT ModuleKey, RoleId FROM MP_T_USER_MODULE_ROLE WHERE UserId = @userId');
+
+      const moduleRoles = {};
+      rolesResult.recordset.forEach(row => {
+        moduleRoles[row.ModuleKey] = row.RoleId;
+      });
+
+      console.log(`DEBUG: Fetched roles for User ${user.Usr_Code}:`, moduleRoles);
+
+      req.session.moduleRoles = moduleRoles;
+
+      // Determine Effective Role ID for legacy compatibility / session checks
+      // Priority: Core Module Role -> Default (3/Viewer)
+      const coreRole = moduleRoles['core'];
+      req.session.roleId = coreRole || 3;
+
+    } catch (err) {
+      console.error('DEBUG: Error fetching module roles:', err);
+
+
+      req.session.moduleRoles = {};
+      req.session.roleId = 3; // Default fallback
+    }
+
+    // Now check maintenance with the determined role
     const maintenanceConfig = readMaintenanceConfig();
     if (maintenanceConfig.enabled) {
-      if (!maintenanceConfig.allowedRoles.includes(user.Usr_Rol_Id)) {
+      // Logic: Only Admin (Role 1 in Core) can bypass maintenance
+      if (!maintenanceConfig.allowedRoles.includes(req.session.roleId)) {
         return res.status(503).json({
           error: 'System under maintenance',
           message: maintenanceConfig.message,
@@ -332,14 +364,13 @@ app.post('/login', async (req, res) => {
     req.session.userId = user.Usr_Code;
     req.session.username = user.Usr_Login;
     req.session.referent = user.Usr_Referent;
-    req.session.roleId = user.Usr_Rol_Id;
-    req.session.roleName = user.RoleName;
+    // req.session.roleId is set above
     req.session.firstLogin = user.Usr_First_Login;
 
     res.json({
       success: true,
       username: user.Usr_Login,
-      roleId: user.Usr_Rol_Id,
+      roleId: req.session.roleId, // Returning computed role
       firstLogin: user.Usr_First_Login
     });
   } catch (err) {
@@ -369,6 +400,7 @@ app.get('/api/check-auth', (req, res) => {
       authenticated: true,
       username: req.session.username,
       roleId: req.session.roleId,
+      moduleRoles: req.session.moduleRoles || {},
       maintenanceMode: maintenanceConfig.enabled && !maintenanceBlocked,
       maintenanceMessage: maintenanceConfig.enabled && !maintenanceBlocked ? maintenanceConfig.message : null,
       scheduledMaintenance: maintenanceConfig.scheduled.enabled ? maintenanceConfig.scheduled : null,
@@ -376,6 +408,71 @@ app.get('/api/check-auth', (req, res) => {
     });
   } else {
     res.json({ authenticated: false });
+  }
+});
+
+// API: Get User Module Roles
+app.get('/api/users/:userId/roles', isAdministrator, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const result = await pool.request()
+      .input('userId', sql.Int, userId)
+      .query('SELECT ModuleKey, RoleId FROM MP_T_USER_MODULE_ROLE WHERE UserId = @userId');
+
+    // Transform to simple object: { 'common-codes': 2, ... }
+    const roles = {};
+    result.recordset.forEach(row => {
+      roles[row.ModuleKey] = row.RoleId;
+    });
+
+    res.json(roles);
+  } catch (err) {
+    console.error('Error fetching user module roles:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// API: Update User Module Roles
+app.post('/api/users/:userId/roles', isAdministrator, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { moduleRoles } = req.body; // Expects { 'common-codes': 2, ... }
+
+    if (!moduleRoles || typeof moduleRoles !== 'object') {
+      return res.status(400).json({ error: 'Invalid data' });
+    }
+
+    // Transaction to ensure consistency
+    const transaction = new sql.Transaction(pool);
+    await transaction.begin();
+
+    try {
+      const request = new sql.Request(transaction);
+
+      // 1. Delete existing roles for this user
+      await request
+        .input('userId', sql.Int, userId)
+        .query('DELETE FROM MP_T_USER_MODULE_ROLE WHERE UserId = @userId');
+
+      // 2. Insert new roles
+      for (const [moduleKey, roleId] of Object.entries(moduleRoles)) {
+        if (roleId) { // Only insert if RoleId is valid/truthy
+          await request.query(`
+            INSERT INTO MP_T_USER_MODULE_ROLE (UserId, ModuleKey, RoleId)
+            VALUES (${parseInt(userId)}, '${moduleKey.replace(/'/g, "''")}', ${parseInt(roleId)})
+          `);
+        }
+      }
+
+      await transaction.commit();
+      res.json({ success: true });
+    } catch (err) {
+      await transaction.rollback();
+      throw err;
+    }
+  } catch (err) {
+    console.error('Error updating user module roles:', err);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -444,7 +541,7 @@ app.put('/api/profile', isAuthenticated, async (req, res) => {
       .input('Referent', sql.NVarChar, referent)
       .input('Email', sql.NVarChar, email)
       .input('Phone', sql.NVarChar, phone)
-      .input('RoleId', sql.Int, currentUser.RoleId)
+      // RoleId removed
       .input('Recovery', sql.Int, currentUser.Recovery)
       .input('RecoveryOTP', sql.NVarChar, currentUser.RecoveryOTP)
       .execute('sp_UpdateUser');
@@ -486,7 +583,7 @@ app.post('/api/change-password', isAuthenticated, async (req, res) => {
       .input('Referent', sql.NVarChar, currentUser.Referent)
       .input('Email', sql.NVarChar, currentUser.Email)
       .input('Phone', sql.NVarChar, currentUser.Phone)
-      .input('RoleId', sql.Int, currentUser.RoleId)
+      // RoleId removed
       .input('Recovery', sql.Int, currentUser.Recovery)
       .input('RecoveryOTP', sql.NVarChar, currentUser.RecoveryOTP)
       .execute('sp_UpdateUser');
@@ -594,6 +691,33 @@ async function startServer() {
   await connectDB();
   await loadModules();
 
+  // API: Get Manual Content
+  app.get('/api/manual/:page', (req, res) => {
+    try {
+      const page = req.params.page;
+      // Sanitize page name to prevent directory traversal
+      const safePage = page.replace(/[^a-zA-Z0-9-]/g, '');
+
+      const manualPath = path.join(__dirname, '../../core/manuals/en', `${safePage}.md`);
+
+      if (fs.existsSync(manualPath)) {
+        const content = fs.readFileSync(manualPath, 'utf8');
+        res.set('Content-Type', 'text/markdown');
+        res.send(content);
+      } else {
+        res.status(404).send('Manual not found');
+      }
+    } catch (err) {
+      console.error('Error serving manual:', err);
+      res.status(500).send('Server error');
+    }
+  });
+
+  // API: Get Complete Manual PDF (Placeholder for future implementation)
+  app.get('/api/manual/pdf/complete', (req, res) => {
+    res.status(501).send('PDF generation not implemented yet');
+  });
+
   // Default Route (SPA fallback)
   app.get('*', (req, res) => {
     // If request is for a file that doesn't exist, send index.html
@@ -613,3 +737,5 @@ startServer();
 // Trigger restart: 2025-11-21 15:45
 // Trigger restart: 12/03/2025 23:53:47
 // Trigger restart: 12/03/2025 23:57:38
+// Trigger restart: 2025-12-05 10:37:00
+// Trigger restart: 2025-12-05 12:10:00

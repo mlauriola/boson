@@ -56,11 +56,11 @@ The system has three predefined roles with different permission levels:
 ### 1. ADMINISTRATOR (Role ID: 1)
 
 **Full System Access:**
-- Complete CRUD operations on all Common Codes tables
+- Complete CRUD operations on all data tables
 - User management (create, edit, delete users)
-- Versioning control (create and publish versions)
-- Table configuration (show/hide tables)
-- Data integrity checks and RSC verification
+- Data version control
+- Table configuration
+- Data integrity checks
 - Activity log access
 - Maintenance mode control
 
@@ -69,19 +69,18 @@ The system has three predefined roles with different permission levels:
 ### 2. SUPER EDITOR (Role ID: 2)
 
 **Data Management Access:**
-- Full CRUD operations on Common Codes tables
-- Versioning control (create and publish versions)
+- Full CRUD operations on data tables
+- Data version control
 - Data integrity checks
-- RSC code verification
 - Activity log viewing
 - Cannot manage users or system settings
 
-**Use Case:** Data managers, content editors, sport coordinators
+**Use Case:** Data managers, content editors, coordinators
 
 ### 3. NORMAL EDITOR (Role ID: 3)
 
 **Read-Only Access:**
-- View Common Codes data only
+- View data only
 - Cannot add, edit, or delete records
 - Cannot manage versions
 - Cannot access administrative functions

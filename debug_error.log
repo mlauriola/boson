@@ -1,0 +1,13 @@
+Error fetching roles: RequestError: Invalid object name 'MP_T_USER_MODULE_ROLE'.
+Stack: RequestError: Invalid object name 'MP_T_USER_MODULE_ROLE'.
+    at handleError (C:\microplus-bos\node_modules\mssql\lib\tedious\request.js:384:15)
+    at Connection.emit (node:events:519:28)
+    at Connection.emit (C:\microplus-bos\node_modules\tedious\lib\connection.js:1040:18)
+    at RequestTokenHandler.onErrorMessage (C:\microplus-bos\node_modules\tedious\lib\token\handler.js:365:21)
+    at Readable.<anonymous> (C:\microplus-bos\node_modules\tedious\lib\token\token-stream-parser.js:26:33)
+    at Readable.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushObjectMode (node:internal/streams/readable:538:3)
+    at Readable.push (node:internal/streams/readable:393:5)
+    at nextAsync (node:internal/streams/from:194:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)

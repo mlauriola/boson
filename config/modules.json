@@ -3,7 +3,10 @@
         "core": {
             "enabled": true,
             "path": "core",
-            "description": "Core system functionality (Auth, Users, Layout)"
+            "description": "Core system functionality (Auth, Users, Layout)",
+            "allowedRoles": [
+                1
+            ]
         },
         "common-codes": {
             "enabled": true,

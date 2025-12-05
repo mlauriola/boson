@@ -40,7 +40,7 @@ async function initSidebar(activePage) {
         </li>
         
         <!-- Administration Module (Core) -->
-        <li id="administrationMenuItem" class="has-submenu ${(activePage === 'users' || activePage === 'maintenance' || activePage === 'branding') ? 'open' : ''}" style="display: none;">
+        <li id="administrationMenuItem" class="has-submenu ${(activePage === 'users' || activePage === 'maintenance' || activePage === 'branding' || activePage === 'user-modules') ? 'open' : ''}" style="display: none;">
           <a href="#" class="nav-link" onclick="toggleSubmenu(event, 'administrationSubmenu')">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
@@ -49,7 +49,7 @@ async function initSidebar(activePage) {
             </svg>
             <span>Administration</span>
           </a>
-          <ul class="submenu ${(activePage === 'users' || activePage === 'maintenance' || activePage === 'branding') ? 'open' : ''}" id="administrationSubmenu" style="${(activePage === 'users' || activePage === 'maintenance' || activePage === 'branding') ? 'display: block;' : ''}">
+          <ul class="submenu ${(activePage === 'users' || activePage === 'maintenance' || activePage === 'branding' || activePage === 'user-modules') ? 'open' : ''}" id="administrationSubmenu" style="${(activePage === 'users' || activePage === 'maintenance' || activePage === 'branding' || activePage === 'user-modules') ? 'display: block;' : ''}">
             <li>
               <a href="users.html" class="nav-link ${activePage === 'users' ? 'active' : ''}">
                 <span>Users</span>
@@ -70,6 +70,11 @@ async function initSidebar(activePage) {
                 <span>Branding</span>
               </a>
             </li>
+            <li>
+              <a href="user-modules.html" class="nav-link ${activePage === 'user-modules' ? 'active' : ''}">
+                <span>Authorization</span>
+              </a>
+            </li>
           </ul>
         </li>
   `;
@@ -84,7 +89,7 @@ async function initSidebar(activePage) {
         const moduleRoles = module.roleAccess ? JSON.stringify(module.roleAccess) : null;
 
         sidebarHTML += `
-        <li class="has-submenu ${isModuleActive ? 'open' : ''}" style="display: none;" ${moduleRoles ? `data-roles='${moduleRoles}'` : ''}>
+        <li class="has-submenu ${isModuleActive ? 'open' : ''}" style="display: none;" ${moduleRoles ? `data-roles='${moduleRoles}'` : ''} data-module-key="${key}">
           <a href="#" class="nav-link" onclick="toggleSubmenu(event, '${key}Submenu')">
             ${menu.icon}
             <span>${menu.label}</span>
@@ -189,7 +194,7 @@ async function initSidebar(activePage) {
     if (authResponse.ok) {
       const authData = await authResponse.json();
       if (authData.authenticated) {
-        updateSidebarMenuVisibility(authData.roleId);
+        updateSidebarMenuVisibility(authData.roleId, authData.moduleRoles);
 
         // Restore submenu states from localStorage
         restoreSubmenuStates();
@@ -300,21 +305,48 @@ function toggleSubmenu(event, submenuId) {
   }
 }
 
-// Update sidebar menu visibility based on user role
-function updateSidebarMenuVisibility(roleId) {
+// Update sidebar menu visibility based on user role and module roles
+function updateSidebarMenuVisibility(roleId, moduleRoles = {}) {
   // Show Administration menu for ADMINISTRATOR role (roleId = 1)
+  // OR if they have Admin access to the 'core' module explicitly
   const administrationMenuItem = document.getElementById('administrationMenuItem');
-  if (roleId === 1 && administrationMenuItem) {
+
+  // Robust check with loose equality and safety
+  const isAdmin = (roleId == 1) || (moduleRoles && moduleRoles['core'] == 1);
+
+  console.log('Sidebar Visibility Check:', { roleId, moduleRoles, isAdmin, hasMenuItem: !!administrationMenuItem });
+
+  if (isAdmin && administrationMenuItem) {
     administrationMenuItem.style.display = 'block';
   }
 
   // Handle dynamic items with data-roles
+  // Now also checks data-module-key if present (backward compatibility with global role)
   const dynamicItems = document.querySelectorAll('[data-roles]');
+
+  // NOTE: In the future, we should add data-module-key to sidebar items generator
+  // to make this cleaner. For now, we rely on the implementation plan's sidebar generation
+  // which I should have updated or need to update now? 
+  // Wait, I haven't updated the generator yet. 
+  // The plan said: "Add data-module-key=\"${key}\" to the sidebar items."
+  // I need to update the generator code in initSidebar first or simultaneously.
+
   dynamicItems.forEach(item => {
     try {
       const roles = JSON.parse(item.dataset.roles);
+      // Try to find the module key associated with this item
+      // We haven't added data-module-key yet, so we can't easily map it unless we rely on ID logic
+      // But let's assume I will update the generator immediately after this.
+
+      const moduleKey = item.dataset.moduleKey;
+      let effectiveRole = roleId;
+
+      if (moduleKey && moduleRoles[moduleKey]) {
+        effectiveRole = moduleRoles[moduleKey];
+      }
+
       if (Array.isArray(roles)) {
-        if (roles.includes(roleId)) {
+        if (roles.includes(effectiveRole)) {
           item.style.display = 'block';
         } else {
           item.style.display = 'none';

@@ -65,13 +65,16 @@ const MessageManager = {
       helpLink.onclick = (e) => {
         e.preventDefault();
         if (typeof window.showHelp === 'function') {
-          // Determine current page help key
+          // Determine current page help key dynamically from filename
           const path = window.location.pathname;
-          let pageKey = 'index';
-          if (path.includes('users')) pageKey = 'users';
-          else if (path.includes('modules')) pageKey = 'modules';
-          else if (path.includes('Maintenance')) pageKey = 'maintenance';
-          else if (path.includes('Branding')) pageKey = 'branding';
+          // Extract filename without extension (e.g., /Branding.html -> Branding, /users.html -> users)
+          let filename = path.split('/').pop() || 'index';
+          // Remove extension if present
+          if (filename.indexOf('.') !== -1) {
+            filename = filename.split('.')[0];
+          }
+          // Convert to lowercase to match manual names (Branding -> branding)
+          const pageKey = filename.toLowerCase();
 
           window.showHelp(pageKey);
         }
@@ -98,6 +101,10 @@ const MessageManager = {
 
     this.messageContent.textContent = message;
     this.messageContent.className = `message-content ${type}`;
+
+    // Force visibility (overriding any inline styles)
+    this.messageContent.style.visibility = 'visible';
+    this.messageContent.style.opacity = '1';
 
     // Auto-clear only if duration is set (usually 0 for persistent bar)
     if (duration > 0) {

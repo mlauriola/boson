@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authorization - Administration</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="help-modal.css?v=4">
+    <script>
+        window.ACTIVE_PAGE = 'user-modules';
+        window.PAGE_TITLE = 'Authorization';
+        window.PAGE_DESCRIPTION = 'Manage granular access roles for each module per user.';
+    </script>
+    <script src="common.js"></script>
+    <script src="header-component.js?v=8"></script>
+    <script src="sidebar-component.js?v=14"></script>
+    <script src="maintenance-banner.js"></script>
+    <style>
+        .role-radio {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .global-role-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 10px;
+            color: #495057;
+        }
+
+        .matrix-table th {
+            text-align: center;
+        }
+
+        .matrix-table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .matrix-table td:first-child {
+            text-align: left;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header"></header>
+
+        <div class="layout-wrapper">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar" id="sidebar"></aside>
+
+            <!-- Main content -->
+            <main class="main-content">
+                <div style="padding: 0 20px; flex: 1; overflow-y: auto;">
+                    <!-- Message area -->
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0;">
+                        <!-- Global Message Bar injected by common.js will appear here or above -->
+                    </div>
+
+                    <div class="page-body">
+                        <div class="content-card">
+                            <div class="section-header" style="justify-content: flex-start; gap: 20px;">
+                                <div class="form-group" style="margin-bottom: 0; min-width: 300px;">
+                                    <label for="userSelect" style="margin-bottom: 5px; display: block;">Select
+                                        User</label>
+                                    <select id="userSelect"
+                                        style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                        <option value="">-- Select a User --</option>
+                                        <!-- Populated dynamically -->
+                                    </select>
+                                </div>
+
+                                <div class="page-actions" style="margin-left: auto; align-self: flex-end;">
+                                    <button id="savePermissionsBtn" class="btn btn-primary" disabled>
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive" id="matrixContainer" style="display: none;">
+                                <table class="table matrix-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Module</th>
+                                            <!-- Role Headers injected here -->
+                                        </tr>
+                                    </thead>
+                                    <tbody id="matrixBody">
+                                        <!-- Rows injected here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <script src="help-modal.js?v=4"></script>
+    <script src="user-modules.js"></script>
+</body>
+
+</html>
