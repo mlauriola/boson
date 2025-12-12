@@ -1,0 +1,66 @@
+/* Event Report specific styles */
+
+/* Modal Wizard Animations */
+.wizard-section {
+    width: 100%;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.wizard-section.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Wizard Blocks - Specific layouts for dynamic items */
+.issue-block {
+    border: 1px dashed #ffc107;
+}
+
+.bg-light-yellow {
+    background-color: #fff9e6;
+}
+
+.damaged-block {
+    border: 1px dashed #0d6efd;
+}
+
+.bg-light-blue {
+    background-color: #e6f3ff;
+}
+
+.missing-block {
+    border: 1px dashed #dc3545;
+}
+
+.bg-light-red {
+    background-color: #ffe6e6;
+}
+
+/* Wizard Actions */
+.wizard-actions {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Summary Box */
+.summary-box {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+}

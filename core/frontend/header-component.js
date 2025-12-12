@@ -94,6 +94,7 @@ async function updateUserInfo() {
     const data = await response.json();
 
     if (data.authenticated) {
+      window.CurrentAuth = data; // Expose globally
       const currentUserSpan = document.getElementById('currentUser');
       if (currentUserSpan) {
         currentUserSpan.textContent = `Welcome, ${data.referent || data.username}`;

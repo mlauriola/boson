@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Reports - List</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="event-report-form.css">
+    <script>
+        // Set active page for sidebar component
+        window.ACTIVE_PAGE = 'event-reports';
+        window.PAGE_TITLE = 'Event Reports';
+        window.PAGE_DESCRIPTION = 'View and manage event reports.';
+    </script>
+    <script src="/common.js"></script>
+    <script src="/header-component.js"></script>
+    <script src="/sidebar-component.js"></script>
+    <script src="/maintenance-banner.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header"></header>
+
+        <div class="layout-wrapper">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar" id="sidebar"></aside>
+
+            <!-- Main content -->
+            <main class="main-content">
+                <div style="padding: 0 20px; flex: 1; overflow-y: auto;">
+                    <!-- Message area -->
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0;">
+                        <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
+                    </div>
+
+                    <!-- Reports section -->
+                    <section class="users-section">
+                        <div class="users-table-section">
+                            <div class="filter-actions"
+                                style="margin-bottom: 15px; display: flex; justify-content: flex-end;">
+                                <button class="btn btn-danger" id="deleteSelectedBtn" style="margin-right: 10px;"
+                                    disabled>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" style="margin-right: 8px;">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    </svg>
+                                    Delete Selected
+                                </button>
+                                <button class="btn btn-primary" id="addReportBtn">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" style="margin-right: 8px;">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    New Report
+                                </button>
+                            </div>
+
+                            <div class="table-wrapper">
+                                <table id="reportsTable" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="checkbox-col"><input type="checkbox" id="selectAll"></th>
+                                            <th>ID</th>
+                                            <th>Created By</th>
+                                            <th>Event Name</th>
+                                            <th>Location</th>
+                                            <th>Date</th>
+                                            <th>Manager</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="reportsTableBody">
+                                        <tr>
+                                            <td colspan="7" style="text-align:center;">Loading reports...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Create Report Modal -->
+    <div id="addReportModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">New Event Report</h2>
+                <span class="close" id="closeAddModal">&times;</span>
+            </div>
+
+            <div class="modal-body" style="max-height: 75vh; overflow-y: auto; padding: 20px;">
+                <div id="wizard-container">
+                    <!-- SECTION 1: General Details -->
+                    <div id="section-1" class="wizard-section">
+                        <div class="form-group">
+                            <label for="eventName">Event Name *</label>
+                            <input type="text" id="eventName" class="form-control section1-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location *</label>
+                            <input type="text" id="location" class="form-control section1-input" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="dateFrom">From: *</label>
+                                <input type="date" id="dateFrom" class="form-control section1-input" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="dateTo">To: *</label>
+                                <input type="date" id="dateTo" class="form-control section1-input" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="manager">Manager *</label>
+                            <input type="text" id="manager" class="form-control section1-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="summary">Summary *</label>
+                            <textarea id="summary" class="form-control section1-input" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="servicesProvided">Services Provided *</label>
+                            <textarea id="servicesProvided" class="form-control section1-input" rows="4"
+                                required></textarea>
+                        </div>
+
+                        <div class="wizard-actions" style="display: flex; justify-content: flex-end;">
+                            <button type="button" id="saveDraftBtnS1" class="btn btn-outline-secondary"
+                                style="margin-right: 10px; display: none;" onclick="EventManager.saveDraft()">Save
+                                Draft</button>
+                            <button type="button" class="btn btn-primary" onclick="EventManager.nextSection(2)">Next:
+                                Issues</button>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: Issues -->
+                    <div id="section-2" class="wizard-section hidden">
+                        <p class="text-muted">Click "Add Issue" to report problems encountered.</p>
+                        <div id="issues-container"></div>
+                        <button type="button" class="btn btn-success mb-3" onclick="EventManager.addIssue()">+ Add
+                            Issue</button>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="EventManager.prevSection(1)">Back</button>
+                            <div>
+                                <button type="button" class="btn btn-outline-secondary"
+                                    onclick="EventManager.saveDraft()">Save Draft</button>
+                                <button type="button" class="btn btn-primary"
+                                    onclick="EventManager.nextSection(3)">Next: Damaged Items</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: Damaged Items -->
+                    <div id="section-3" class="wizard-section hidden">
+                        <div id="damaged-container"></div>
+                        <button type="button" class="btn btn-success mb-3" onclick="EventManager.addDamagedItem()">+ Add
+                            Item</button>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="EventManager.prevSection(2)">Back</button>
+                            <div>
+                                <button type="button" class="btn btn-outline-secondary"
+                                    onclick="EventManager.saveDraft()">Save Draft</button>
+                                <button type="button" class="btn btn-primary"
+                                    onclick="EventManager.nextSection(4)">Next: Missing Items</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 4: Missing Items -->
+                    <div id="section-4" class="wizard-section hidden">
+                        <div id="missing-container"></div>
+                        <button type="button" class="btn btn-success mb-3" onclick="EventManager.addMissingItem()">+ Add
+                            Missing Item</button>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="EventManager.prevSection(3)">Back</button>
+                            <div>
+                                <button type="button" class="btn btn-outline-secondary"
+                                    onclick="EventManager.saveDraft()">Save Draft</button>
+                                <button type="button" class="btn btn-primary"
+                                    onclick="EventManager.nextSection(5)">Next: Suggestions</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 5: Suggestions -->
+                    <div id="section-5" class="wizard-section hidden">
+                        <div class="form-group"><label>Logistics:</label><textarea id="suggLogistics"
+                                class="form-control section5-input" data-field="logistics"></textarea></div>
+                        <div class="form-group"><label>Operations:</label><textarea id="suggOperations"
+                                class="form-control section5-input" data-field="operations"></textarea></div>
+                        <div class="form-group"><label>Communication:</label><textarea id="suggCommunication"
+                                class="form-control section5-input" data-field="communication"></textarea></div>
+                        <div class="form-group"><label>Materials:</label><textarea id="suggMaterials"
+                                class="form-control section5-input" data-field="materials"></textarea></div>
+                        <div class="form-group"><label>Software:</label><textarea id="suggSoftware"
+                                class="form-control section5-input" data-field="software"></textarea></div>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="EventManager.prevSection(4)">Back</button>
+                            <div>
+                                <button type="button" class="btn btn-outline-secondary"
+                                    onclick="EventManager.saveDraft()">Save Draft</button>
+                                <button type="button" class="btn btn-primary"
+                                    onclick="EventManager.nextSection(6)">Next: Finalize</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 6: Finalize -->
+                    <div id="section-6" class="wizard-section hidden">
+                        <div class="form-group">
+                            <label>Final Notes (Optional):</label>
+                            <textarea id="finalNotes" class="form-control section6-input" rows="3"></textarea>
+                        </div>
+                        <div id="summary-preview" class="summary-box">
+                            <h4>Report Summary</h4>
+                            <div id="summary-content"></div>
+                        </div>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="EventManager.prevSection(5)">Back</button>
+                            <div>
+                                <button type="button" class="btn btn-outline-secondary"
+                                    onclick="EventManager.saveDraft()">Save Draft</button>
+                                <button type="button" class="btn btn-primary" style="background-color: #0d6efd;"
+                                    onclick="EventManager.submitReport('Published')">Publish Report</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="event-reports.js"></script>
+</body>
+
+</html>

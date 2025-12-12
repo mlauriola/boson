@@ -429,6 +429,7 @@ body {
   transition: background-color 0.3s, transform 0.1s;
   display: inline-block;
   text-align: center;
+  text-decoration: none;
 }
 
 .btn:active {
@@ -747,7 +748,9 @@ td {
 #logsTable th,
 #logsTable td,
 #versionsTable th,
-#versionsTable td {
+#versionsTable td,
+.data-table th,
+.data-table td {
   padding: 5px 15px;
 }
 
@@ -756,6 +759,15 @@ th {
   text-transform: uppercase;
   font-size: 13px;
   letter-spacing: 0.5px;
+}
+
+/* Standardize Data Table Checkboxes */
+.data-table input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  vertical-align: middle;
+  margin: 0;
 }
 
 th.checkbox-col,
@@ -1232,6 +1244,7 @@ tbody tr:hover {
 .sidebar.collapsed .btn-menu svg {
   transform: rotate(180deg);
 }
+
 .content-padding {
   padding: 0 20px;
   flex: 1;
