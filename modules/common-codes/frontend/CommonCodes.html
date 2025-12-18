@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +18,7 @@
   <script src="sidebar-component.js?v=14"></script>
   <script src="maintenance-banner.js"></script>
 </head>
+
 <body>
   <div class="dashboard-container">
     <!-- Header -->
@@ -35,23 +37,26 @@
             <select id="tableSelector" class="cc-select">
               <option value="">-- Select a table --</option>
             </select>
-            <div id="tableLongDescription" class="table-long-description">Please select a table from the dropdown above to view its contents.</div>
+            <div id="tableLongDescription" class="table-long-description">Please select a table from the dropdown above
+              to view its contents.</div>
           </div>
 
           <!-- Message area with Help button -->
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-            <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
-            <button class="btn btn-secondary" id="helpBtn" title="Help" style="min-width: 38px; height: 34px; padding: 6px 10px; flex-shrink: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: center;">
-              <span style="font-weight: bold; font-size: 16px;">?</span>
-            </button>
-          </div>
+
 
           <!-- Welcome Information (shown when no table is selected) -->
           <div id="welcomeInfo" class="welcome-info">
-            <p>An ODF Common Code is any code that is used in two or more systems or has some significant high use. In the IT Games context, this applies to Games systems and ODF users. As these systems generate and distribute all the results related information during Gamestime, any system that is a receiver of such information should be aligned in terms of Common Codes.</p>
-            <p>The default character set is UTF-8. All characters in all supported languages are used, including accented characters.</p>
-            <p>All Games systems using any or all ODF Common Codes should support the format as defined in Olympic Data Feed Common Codes Definition document.</p>
-            <p>RSC Codes are totally different and are defined separately. Each RSC ODF common code is defined uniquely throughout all the common codes tables. That is, each RSC code is only defined to the table/level it belongs (i.e Discipline RSCs are defined only in the Discipline table).</p>
+            <p>An ODF Common Code is any code that is used in two or more systems or has some significant high use. In
+              the IT Games context, this applies to Games systems and ODF users. As these systems generate and
+              distribute all the results related information during Gamestime, any system that is a receiver of such
+              information should be aligned in terms of Common Codes.</p>
+            <p>The default character set is UTF-8. All characters in all supported languages are used, including
+              accented characters.</p>
+            <p>All Games systems using any or all ODF Common Codes should support the format as defined in Olympic Data
+              Feed Common Codes Definition document.</p>
+            <p>RSC Codes are totally different and are defined separately. Each RSC ODF common code is defined uniquely
+              throughout all the common codes tables. That is, each RSC code is only defined to the table/level it
+              belongs (i.e Discipline RSCs are defined only in the Discipline table).</p>
           </div>
 
           <!-- Data Table Container -->
@@ -60,36 +65,44 @@
               <h2 id="tableTitle">Table Data</h2>
               <div class="header-actions">
                 <button class="btn btn-danger" id="deleteSelectedBtn" disabled>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right: 8px;">
                     <polyline points="3 6 5 6 21 6"></polyline>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                   </svg>
                   Delete Selected (<span id="selectedCount">0</span>)
                 </button>
                 <button class="btn btn-primary" id="addRecordBtn">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right: 8px;">
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                   </svg>
                   Add Record
                 </button>
-                <button class="btn btn-secondary" id="cloneRecordBtn" disabled style="background-color: #6b1d9e; border-color: #6b1d9e;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                <button class="btn btn-secondary" id="cloneRecordBtn" disabled
+                  style="background-color: #6b1d9e; border-color: #6b1d9e;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right: 8px;">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                   </svg>
                   Clone Record
                 </button>
-                <button class="btn btn-secondary" id="exportExcelBtn" style="background-color: #1c5ec8; border-color: #1c5ec8;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                <button class="btn btn-secondary" id="exportExcelBtn"
+                  style="background-color: #1c5ec8; border-color: #1c5ec8;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right: 8px;">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="7 10 12 15 17 10"></polyline>
                     <line x1="12" y1="15" x2="12" y2="3"></line>
                   </svg>
                   Export
                 </button>
-                <button class="btn btn-secondary" id="importExcelBtn" style="background-color: #51129b; border-color: #51129b;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                <button class="btn btn-secondary" id="importExcelBtn"
+                  style="background-color: #51129b; border-color: #51129b;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right: 8px;">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="17 8 12 3 7 8"></polyline>
                     <line x1="12" y1="3" x2="12" y2="15"></line>
@@ -115,4 +128,5 @@
   <script src="help-modal.js?v=1"></script>
   <script src="CommonCodes.js?v=114"></script>
 </body>
+
 </html>

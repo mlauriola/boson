@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,7 @@
       border-radius: 8px;
       padding: 24px;
       margin-bottom: 24px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .admin-section h2 {
@@ -146,6 +147,7 @@
   <script src="sidebar-component.js?v=14"></script>
   <script src="maintenance-banner.js"></script>
 </head>
+
 <body>
   <div class="dashboard-container">
     <!-- Header -->
@@ -158,12 +160,7 @@
       <!-- Main content -->
       <main class="main-content">
         <!-- Message area with Help button -->
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-          <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
-          <button class="btn btn-secondary" id="helpBtn" title="Help" style="min-width: 38px; height: 34px; padding: 6px 10px; flex-shrink: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: center;">
-            <span style="font-weight: bold; font-size: 16px;">?</span>
-          </button>
-        </div>
+
 
         <!-- RSC Code Verification Section -->
         <section class="admin-section">
@@ -178,36 +175,56 @@
             hierarchical order of their importance:
           </p>
 
-          <div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;">
-            <table style="width: 100%; border-collapse: collapse; font-family: 'Courier New', monospace; font-size: 14px;">
+          <div
+            style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;">
+            <table
+              style="width: 100%; border-collapse: collapse; font-family: 'Courier New', monospace; font-size: 14px;">
               <thead>
                 <tr>
-                  <th colspan="34" style="text-align: center; padding: 8px; border-bottom: 2px solid #495057; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;">
-                    Position: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
+                  <th colspan="34"
+                    style="text-align: center; padding: 8px; border-bottom: 2px solid #495057; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;">
+                    Position: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33
+                    34
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr style="text-align: center;">
-                  <td colspan="3" style="padding: 10px; background-color: #d1ecf1; border: 1px solid #bee5eb; font-weight: bold;">D</td>
-                  <td colspan="1" style="padding: 10px; background-color: #d4edda; border: 1px solid #c3e6cb; font-weight: bold;">G</td>
-                  <td colspan="18" style="padding: 10px; background-color: #fff3cd; border: 1px solid #ffeaa7; font-weight: bold;">E E E E E E E E E E E E E E E E E E</td>
-                  <td colspan="4" style="padding: 10px; background-color: #f8d7da; border: 1px solid #f5c6cb; font-weight: bold;">P P P P</td>
-                  <td colspan="8" style="padding: 10px; background-color: #e2d8f8; border: 1px solid #d1c4e9; font-weight: bold;">U U U U U U U U</td>
+                  <td colspan="3"
+                    style="padding: 10px; background-color: #d1ecf1; border: 1px solid #bee5eb; font-weight: bold;">D
+                  </td>
+                  <td colspan="1"
+                    style="padding: 10px; background-color: #d4edda; border: 1px solid #c3e6cb; font-weight: bold;">G
+                  </td>
+                  <td colspan="18"
+                    style="padding: 10px; background-color: #fff3cd; border: 1px solid #ffeaa7; font-weight: bold;">E E
+                    E E E E E E E E E E E E E E E E</td>
+                  <td colspan="4"
+                    style="padding: 10px; background-color: #f8d7da; border: 1px solid #f5c6cb; font-weight: bold;">P P
+                    P P</td>
+                  <td colspan="8"
+                    style="padding: 10px; background-color: #e2d8f8; border: 1px solid #d1c4e9; font-weight: bold;">U U
+                    U U U U U U</td>
                 </tr>
               </tbody>
             </table>
             <div style="margin-top: 15px; font-size: 13px; line-height: 1.8;">
-              <div style="margin-bottom: 8px;"><strong style="color: #0c5460;">D (3 chars):</strong> Discipline code (e.g., "SWM" for swimming, "ALP" for alpine skiing)</div>
-              <div style="margin-bottom: 8px;"><strong style="color: #155724;">G (1 char):</strong> Gender ("W" for women, "M" for men, "X" for mixed)</div>
-              <div style="margin-bottom: 8px;"><strong style="color: #856404;">E (18 chars):</strong> Event (8 chars for event type + 10 chars for modifier)</div>
-              <div style="margin-bottom: 8px;"><strong style="color: #721c24;">P (4 chars):</strong> Phase (e.g., "FNL-" for final, "SEMI" for semi-final)</div>
-              <div style="margin-bottom: 8px;"><strong style="color: #5a3c82;">U (8 chars):</strong> Unit and sub-unit (e.g., match, heat, group)</div>
+              <div style="margin-bottom: 8px;"><strong style="color: #0c5460;">D (3 chars):</strong> Discipline code
+                (e.g., "SWM" for swimming, "ALP" for alpine skiing)</div>
+              <div style="margin-bottom: 8px;"><strong style="color: #155724;">G (1 char):</strong> Gender ("W" for
+                women, "M" for men, "X" for mixed)</div>
+              <div style="margin-bottom: 8px;"><strong style="color: #856404;">E (18 chars):</strong> Event (8 chars for
+                event type + 10 chars for modifier)</div>
+              <div style="margin-bottom: 8px;"><strong style="color: #721c24;">P (4 chars):</strong> Phase (e.g., "FNL-"
+                for final, "SEMI" for semi-final)</div>
+              <div style="margin-bottom: 8px;"><strong style="color: #5a3c82;">U (8 chars):</strong> Unit and sub-unit
+                (e.g., match, heat, group)</div>
             </div>
           </div>
 
           <button class="btn btn-primary" id="verifyRscBtn" onclick="verifyRscCodes()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="margin-right: 8px;">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
             Verify RSC Codes
@@ -238,4 +255,5 @@
   <script src="help-modal.js?v=1"></script>
   <script src="RSCCodes.js?v=1"></script>
 </body>
+
 </html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competition Schedule</title>
+    <!-- Core Styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles.css?v=23">
+    <style>
+        .version-badge {
+            font-size: 0.8em;
+            padding: 5px 10px;
+            border-radius: 12px;
+        }
+
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-archived {
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
+
+        /* Table Styles */
+        .table-responsive {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            background-color: var(--table-header-bg);
+            color: var(--table-header-text) !important;
+            z-index: 10;
+            box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            background: #fdfdfd;
+        }
+
+        .upload-area:hover {
+            border-color: #007bff;
+            background: #f0f8ff;
+        }
+    </style>
+
+    <script>
+        window.ACTIVE_PAGE = 'competitionSchedule';
+        window.PAGE_TITLE = 'Competition Schedule';
+    </script>
+
+    <!-- Core Scripts -->
+    <script src="/common.js?v=22"></script>
+    <script src="/header-component.js?v=22"></script>
+    <script src="/sidebar-component.js?v=22"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="header" id="topBar"></header>
+
+        <div class="layout-wrapper">
+            <aside class="sidebar" id="sidebar"></aside>
+
+            <main class="main-content">
+                <div class="content-card">
+                    <div class="content-card">
+                        <!-- Title and Selector removed as per request -->
+
+
+                        <div id="loadingIndicator" class="text-center py-5" style="display: none;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Loading Schedule Data...</p>
+                        </div>
+
+                        <div id="scheduleContainer" class="table-responsive">
+                            <table class="table table-hover table-bordered" id="scheduleTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sheet</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Activity / Task</th>
+                                        <th>Location</th>
+                                        <th>Venue</th>
+                                        <th>Session ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be injected here -->
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted py-4">Loading active schedule...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </main>
+        </div>
+    </div>
+
+
+
+    <script src="script.js?v=22"></script>
+</body>
+
+</html>

@@ -8,6 +8,42 @@
                 1
             ]
         },
+        "competition-schedule": {
+            "enabled": true,
+            "path": "modules/competition-schedule",
+            "description": "Master Competition Schedule Management",
+            "entryPoint": "backend/index.js",
+            "roleAccess": [
+                1,
+                2,
+                3
+            ],
+            "menu": {
+                "label": "Schedule",
+                "icon": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\"></rect><line x1=\"16\" y1=\"2\" x2=\"16\" y2=\"6\"></line><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"6\"></line><line x1=\"3\" y1=\"10\" x2=\"21\" y2=\"10\"></line></svg>",
+                "items": [
+                    {
+                        "label": "View Schedule",
+                        "link": "competition-schedule.html",
+                        "id": "competitionSchedule",
+                        "roles": [
+                            1,
+                            2,
+                            3
+                        ]
+                    },
+                    {
+                        "label": "Manage Versions",
+                        "link": "version-management.html",
+                        "id": "scheduleManagement",
+                        "roles": [
+                            1,
+                            2
+                        ]
+                    }
+                ]
+            }
+        },
         "common-codes": {
             "enabled": true,
             "path": "modules/common-codes",
@@ -83,24 +119,44 @@
                 ]
             }
         },
-        "event-report": {
+        "event-management": {
             "enabled": true,
-            "path": "modules/event-report",
+            "path": "modules/event-management",
+            "database": "EventManagement",
             "description": "Event Reporting Module",
             "entryPoint": "backend/index.js",
             "roleAccess": [
                 1,
                 2,
-                3
+                3,
+                4
             ],
             "menu": {
-                "label": "Event Report",
+                "label": "Event Management",
                 "icon": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"></path><polyline points=\"14 2 14 8 20 8\"></polyline><line x1=\"16\" y1=\"13\" x2=\"8\" y2=\"13\"></line><line x1=\"16\" y1=\"17\" x2=\"8\" y2=\"17\"></line><polyline points=\"10 9 9 9 8 9\"></polyline></svg>",
                 "items": [
                     {
-                        "label": "Reports List",
-                        "link": "event-reports.html",
+                        "label": "Event Reports",
+                        "link": "event-management.html",
                         "id": "eventReportList"
+                    },
+                    {
+                        "label": "Damaged Items",
+                        "link": "damaged-items.html",
+                        "id": "damagedItemsList",
+                        "roles": [
+                            1,
+                            2
+                        ]
+                    },
+                    {
+                        "label": "Missing Items",
+                        "link": "missing-items.html",
+                        "id": "missingItemsList",
+                        "roles": [
+                            1,
+                            2
+                        ]
                     }
                 ]
             }

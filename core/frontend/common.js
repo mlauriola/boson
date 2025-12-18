@@ -19,6 +19,7 @@ const MessageManager = {
         // If the element is the message area itself (inner div)
         if (existingEl.classList.contains('message')) {
           this.messageContent = existingEl;
+          // Try to find the wrapper to control visibility if needed, or just use parent
           this.messageBar = existingEl.parentElement;
         } else {
           // Assume it's the container
@@ -31,6 +32,7 @@ const MessageManager = {
           return this;
         }
       }
+      // If containerId was provided but not found, we FALL THROUGH to create the default one.
     }
 
     // Find the main content area to inject the bar
@@ -83,6 +85,12 @@ const MessageManager = {
 
       // Insert at the top of main content
       mainContent.insertBefore(container, mainContent.firstChild);
+
+      // Add a spacer for explicit separation as requested
+      const spacer = document.createElement('div');
+      spacer.className = 'message-bar-spacer';
+      spacer.style.height = '20px'; // Explicit height for the "empty line"
+      mainContent.insertBefore(spacer, container.nextSibling);
     }
 
     this.messageBar = container;

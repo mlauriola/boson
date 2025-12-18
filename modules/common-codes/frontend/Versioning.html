@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +18,7 @@
   <script src="sidebar-component.js?v=14"></script>
   <script src="maintenance-banner.js"></script>
 </head>
+
 <body>
   <div class="dashboard-container">
     <!-- Header -->
@@ -33,16 +35,13 @@
           <!-- Search Section -->
           <div class="filters-section" style="display: block;">
             <div class="search-bar">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                class="search-icon">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
               </svg>
-              <input
-                type="text"
-                id="searchInput"
-                placeholder="Search by release, author, description..."
-                class="search-input"
-              >
+              <input type="text" id="searchInput" placeholder="Search by release, author, description..."
+                class="search-input">
               <button id="clearSearch" class="btn-clear" style="display: none;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -53,12 +52,7 @@
           </div>
 
           <!-- Message area with Help button -->
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-            <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
-            <button class="btn btn-secondary" id="helpBtn" title="Help" style="min-width: 38px; height: 34px; padding: 6px 10px; flex-shrink: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: center;">
-              <span style="font-weight: bold; font-size: 16px;">?</span>
-            </button>
-          </div>
+
 
           <!-- Versions Table Container -->
           <div class="table-container">
@@ -66,21 +60,25 @@
               <h2>Versions List</h2>
               <div class="header-actions">
                 <button class="btn btn-danger" id="deleteSelectedBtn" disabled>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right: 8px;">
                     <polyline points="3 6 5 6 21 6"></polyline>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                   </svg>
                   Delete Selected
                 </button>
                 <button class="btn btn-primary" id="addVersionBtn">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right: 8px;">
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                   </svg>
                   Add Version
                 </button>
-                <button class="btn btn-secondary" id="publishBtn" disabled style="background-color: #6b1d9e; border-color: #6b1d9e;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                <button class="btn btn-secondary" id="publishBtn" disabled
+                  style="background-color: #6b1d9e; border-color: #6b1d9e;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right: 8px;">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="17 8 12 3 7 8"></polyline>
                     <line x1="12" y1="3" x2="12" y2="15"></line>
@@ -138,32 +136,35 @@
 
         <div class="modal-body">
           <form id="addVersionForm">
-          <div class="form-group">
-            <label for="addRelease">Release *</label>
-            <input type="text" id="addRelease" name="Release" maxlength="40" required placeholder="Enter release name">
-          </div>
+            <div class="form-group">
+              <label for="addRelease">Release *</label>
+              <input type="text" id="addRelease" name="Release" maxlength="40" required
+                placeholder="Enter release name">
+            </div>
 
-          <div class="form-group">
-            <label for="addDescription">Description</label>
-            <textarea id="addDescription" name="Description" rows="4" maxlength="4000" placeholder="Enter description"></textarea>
-          </div>
+            <div class="form-group">
+              <label for="addDescription">Description</label>
+              <textarea id="addDescription" name="Description" rows="4" maxlength="4000"
+                placeholder="Enter description"></textarea>
+            </div>
 
-          <div class="form-group">
-            <label for="addMessage">Release Message</label>
-            <div id="addMessageEditor" style="background: white; min-height: 200px;"></div>
-            <input type="hidden" id="addMessage" name="Message">
-            <div style="font-size: 0.85rem; color: #666; margin-top: 8px;">This message will be displayed to users in the public view</div>
-          </div>
+            <div class="form-group">
+              <label for="addMessage">Release Message</label>
+              <div id="addMessageEditor" style="background: white; min-height: 200px;"></div>
+              <input type="hidden" id="addMessage" name="Message">
+              <div style="font-size: 0.85rem; color: #666; margin-top: 8px;">This message will be displayed to users in
+                the public view</div>
+            </div>
 
-          <div class="form-group" style="display: none;">
-            <label for="addFileExcel">Excel File Path</label>
-            <input type="text" id="addFileExcel" name="File_Excel" maxlength="510" placeholder="Path to Excel file">
-          </div>
+            <div class="form-group" style="display: none;">
+              <label for="addFileExcel">Excel File Path</label>
+              <input type="text" id="addFileExcel" name="File_Excel" maxlength="510" placeholder="Path to Excel file">
+            </div>
 
-          <div class="form-group" style="display: none;">
-            <label for="addFileODF">ODF File Path</label>
-            <input type="text" id="addFileODF" name="File_ODF" maxlength="510" placeholder="Path to ODF file">
-          </div>
+            <div class="form-group" style="display: none;">
+              <label for="addFileODF">ODF File Path</label>
+              <input type="text" id="addFileODF" name="File_ODF" maxlength="510" placeholder="Path to ODF file">
+            </div>
           </form>
         </div>
 
@@ -186,42 +187,47 @@
           <form id="editVersionForm">
             <input type="hidden" id="editOriginalCode" name="originalCode">
 
-          <div class="form-group">
-            <label for="editRelease">Release</label>
-            <input type="text" id="editRelease" name="Release" maxlength="40" readonly style="background-color: #f0f0f0; cursor: not-allowed;">
-          </div>
+            <div class="form-group">
+              <label for="editRelease">Release</label>
+              <input type="text" id="editRelease" name="Release" maxlength="40" readonly
+                style="background-color: #f0f0f0; cursor: not-allowed;">
+            </div>
 
-          <div class="form-group">
-            <label for="editPublished">Published</label>
-            <input type="text" id="editPublished" name="Published" readonly style="background-color: #f0f0f0; cursor: not-allowed;">
-          </div>
+            <div class="form-group">
+              <label for="editPublished">Published</label>
+              <input type="text" id="editPublished" name="Published" readonly
+                style="background-color: #f0f0f0; cursor: not-allowed;">
+            </div>
 
-          <div class="form-group">
-            <label for="editAuthorName">Author</label>
-            <input type="text" id="editAuthorName" name="AuthorName" readonly style="background-color: #f0f0f0; cursor: not-allowed;">
-          </div>
+            <div class="form-group">
+              <label for="editAuthorName">Author</label>
+              <input type="text" id="editAuthorName" name="AuthorName" readonly
+                style="background-color: #f0f0f0; cursor: not-allowed;">
+            </div>
 
-          <div class="form-group">
-            <label for="editDescription">Description</label>
-            <textarea id="editDescription" name="Description" rows="4" maxlength="4000" placeholder="Enter description"></textarea>
-          </div>
+            <div class="form-group">
+              <label for="editDescription">Description</label>
+              <textarea id="editDescription" name="Description" rows="4" maxlength="4000"
+                placeholder="Enter description"></textarea>
+            </div>
 
-          <div class="form-group">
-            <label for="editMessage">Release Message</label>
-            <div id="editMessageEditor" style="background: white; min-height: 200px;"></div>
-            <input type="hidden" id="editMessage" name="Message">
-            <div style="font-size: 0.85rem; color: #666; margin-top: 8px;">This message will be displayed to users in the public view</div>
-          </div>
+            <div class="form-group">
+              <label for="editMessage">Release Message</label>
+              <div id="editMessageEditor" style="background: white; min-height: 200px;"></div>
+              <input type="hidden" id="editMessage" name="Message">
+              <div style="font-size: 0.85rem; color: #666; margin-top: 8px;">This message will be displayed to users in
+                the public view</div>
+            </div>
 
-          <div class="form-group" style="display: none;">
-            <label for="editFileExcel">Excel File Path</label>
-            <input type="text" id="editFileExcel" name="File_Excel" maxlength="510" placeholder="Path to Excel file">
-          </div>
+            <div class="form-group" style="display: none;">
+              <label for="editFileExcel">Excel File Path</label>
+              <input type="text" id="editFileExcel" name="File_Excel" maxlength="510" placeholder="Path to Excel file">
+            </div>
 
-          <div class="form-group" style="display: none;">
-            <label for="editFileODF">ODF File Path</label>
-            <input type="text" id="editFileODF" name="File_ODF" maxlength="510" placeholder="Path to ODF file">
-          </div>
+            <div class="form-group" style="display: none;">
+              <label for="editFileODF">ODF File Path</label>
+              <input type="text" id="editFileODF" name="File_ODF" maxlength="510" placeholder="Path to ODF file">
+            </div>
           </form>
         </div>
 
@@ -242,7 +248,8 @@
       </div>
       <div class="modal-body" style="padding: 20px;">
         <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2" style="margin-right: 15px; flex-shrink: 0;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2"
+            style="margin-right: 15px; flex-shrink: 0;">
             <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
             <line x1="12" y1="9" x2="12" y2="13"></line>
             <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -269,7 +276,8 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="cancelDeleteVersion">Cancel</button>
         <button type="button" class="btn btn-danger" id="confirmDeleteVersion">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            style="margin-right: 8px;">
             <polyline points="3 6 5 6 21 6"></polyline>
             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
           </svg>
@@ -288,7 +296,8 @@
       </div>
       <div class="modal-body" style="padding: 20px;">
         <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2" style="margin-right: 15px; flex-shrink: 0;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2"
+            style="margin-right: 15px; flex-shrink: 0;">
             <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
             <line x1="12" y1="9" x2="12" y2="13"></line>
             <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -314,8 +323,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="cancelPublishWorking">Cancel</button>
-        <button type="button" class="btn btn-primary" id="confirmPublishWorking" style="background-color: #6b1d9e; border-color: #6b1d9e;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+        <button type="button" class="btn btn-primary" id="confirmPublishWorking"
+          style="background-color: #6b1d9e; border-color: #6b1d9e;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            style="margin-right: 8px;">
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
           Yes, Continue
@@ -333,7 +344,8 @@
       </div>
       <div class="modal-body" style="padding: 20px;">
         <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6b1d9e" stroke-width="2" style="margin-right: 15px; flex-shrink: 0;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6b1d9e" stroke-width="2"
+            style="margin-right: 15px; flex-shrink: 0;">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
             <polyline points="17 8 12 3 7 8"></polyline>
             <line x1="12" y1="3" x2="12" y2="15"></line>
@@ -359,8 +371,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="cancelPublish">Cancel</button>
-        <button type="button" class="btn btn-primary" id="confirmPublish" style="background-color: #6b1d9e; border-color: #6b1d9e;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+        <button type="button" class="btn btn-primary" id="confirmPublish"
+          style="background-color: #6b1d9e; border-color: #6b1d9e;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            style="margin-right: 8px;">
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
           Yes, Publish Version
@@ -393,7 +407,8 @@
             <span id="publishProgressPercent" style="color: #6b1d9e; font-size: 14px; font-weight: 600;">0%</span>
           </div>
           <div style="width: 100%; height: 8px; background-color: #e9ecef; border-radius: 4px; overflow: hidden;">
-            <div id="publishProgressBar" style="width: 0%; height: 100%; background-color: #6b1d9e; transition: width 0.3s ease;"></div>
+            <div id="publishProgressBar"
+              style="width: 0%; height: 100%; background-color: #6b1d9e; transition: width 0.3s ease;"></div>
           </div>
         </div>
 
@@ -402,17 +417,24 @@
           <h4 style="margin: 0 0 15px 0; color: #333; font-size: 16px;">Publication Tasks</h4>
           <div id="publishTaskList">
             <!-- Task 1 -->
-            <div class="publish-task" data-task="publish-flag" style="display: flex; align-items: flex-start; margin-bottom: 15px;">
-              <div class="task-icon" style="width: 24px; height: 24px; margin-right: 12px; display: flex; align-items: center; justify-content: center;">
-                <svg class="task-pending" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+            <div class="publish-task" data-task="publish-flag"
+              style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+              <div class="task-icon"
+                style="width: 24px; height: 24px; margin-right: 12px; display: flex; align-items: center; justify-content: center;">
+                <svg class="task-pending" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999"
+                  stroke-width="2">
                   <circle cx="12" cy="12" r="10"></circle>
                 </svg>
-                <svg class="task-loading" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b1d9e" stroke-width="2" style="display: none;">
-                  <circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="40" style="animation: spin 1s linear infinite;">
-                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+                <svg class="task-loading" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b1d9e"
+                  stroke-width="2" style="display: none;">
+                  <circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="40"
+                    style="animation: spin 1s linear infinite;">
+                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s"
+                      repeatCount="indefinite" />
                   </circle>
                 </svg>
-                <svg class="task-complete" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" style="display: none;">
+                <svg class="task-complete" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28a745"
+                  stroke-width="2" style="display: none;">
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="8 12 11 15 16 9"></polyline>
                 </svg>
@@ -424,17 +446,23 @@
             </div>
 
             <!-- Task 2 -->
-            <div class="publish-task" data-task="release-notes" style="display: flex; align-items: flex-start; margin-bottom: 15px;">
-              <div class="task-icon" style="width: 24px; height: 24px; margin-right: 12px; display: flex; align-items: center; justify-content: center;">
-                <svg class="task-pending" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+            <div class="publish-task" data-task="release-notes"
+              style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+              <div class="task-icon"
+                style="width: 24px; height: 24px; margin-right: 12px; display: flex; align-items: center; justify-content: center;">
+                <svg class="task-pending" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999"
+                  stroke-width="2">
                   <circle cx="12" cy="12" r="10"></circle>
                 </svg>
-                <svg class="task-loading" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b1d9e" stroke-width="2" style="display: none;">
+                <svg class="task-loading" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b1d9e"
+                  stroke-width="2" style="display: none;">
                   <circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="40">
-                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s"
+                      repeatCount="indefinite" />
                   </circle>
                 </svg>
-                <svg class="task-complete" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" style="display: none;">
+                <svg class="task-complete" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28a745"
+                  stroke-width="2" style="display: none;">
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="8 12 11 15 16 9"></polyline>
                 </svg>
@@ -446,17 +474,23 @@
             </div>
 
             <!-- Task 3 -->
-            <div class="publish-task" data-task="dt-codes" style="display: flex; align-items: flex-start; margin-bottom: 15px;">
-              <div class="task-icon" style="width: 24px; height: 24px; margin-right: 12px; display: flex; align-items: center; justify-content: center;">
-                <svg class="task-pending" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+            <div class="publish-task" data-task="dt-codes"
+              style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+              <div class="task-icon"
+                style="width: 24px; height: 24px; margin-right: 12px; display: flex; align-items: center; justify-content: center;">
+                <svg class="task-pending" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999"
+                  stroke-width="2">
                   <circle cx="12" cy="12" r="10"></circle>
                 </svg>
-                <svg class="task-loading" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b1d9e" stroke-width="2" style="display: none;">
+                <svg class="task-loading" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b1d9e"
+                  stroke-width="2" style="display: none;">
                   <circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="40">
-                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s"
+                      repeatCount="indefinite" />
                   </circle>
                 </svg>
-                <svg class="task-complete" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" style="display: none;">
+                <svg class="task-complete" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28a745"
+                  stroke-width="2" style="display: none;">
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="8 12 11 15 16 9"></polyline>
                 </svg>
@@ -469,20 +503,26 @@
 
             <!-- Task 4 -->
             <div class="publish-task" data-task="excel-export" style="display: flex; align-items: flex-start;">
-              <div class="task-icon" style="width: 24px; height: 24px; margin-right: 12px; display: flex; align-items: center; justify-content: center;">
-                <svg class="task-pending" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+              <div class="task-icon"
+                style="width: 24px; height: 24px; margin-right: 12px; display: flex; align-items: center; justify-content: center;">
+                <svg class="task-pending" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999"
+                  stroke-width="2">
                   <circle cx="12" cy="12" r="10"></circle>
                 </svg>
-                <svg class="task-loading" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b1d9e" stroke-width="2" style="display: none;">
+                <svg class="task-loading" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b1d9e"
+                  stroke-width="2" style="display: none;">
                   <circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="40">
-                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s"
+                      repeatCount="indefinite" />
                   </circle>
                 </svg>
-                <svg class="task-complete" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" style="display: none;">
+                <svg class="task-complete" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28a745"
+                  stroke-width="2" style="display: none;">
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="8 12 11 15 16 9"></polyline>
                 </svg>
-                <svg class="task-warning" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffc107" stroke-width="2" style="display: none;">
+                <svg class="task-warning" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffc107"
+                  stroke-width="2" style="display: none;">
                   <circle cx="12" cy="12" r="10"></circle>
                   <line x1="12" y1="8" x2="12" y2="12"></line>
                   <line x1="12" y1="16" x2="12.01" y2="16"></line>
@@ -497,9 +537,11 @@
         </div>
 
         <!-- Completion Message (hidden initially) -->
-        <div id="publishCompleteMessage" style="display: none; margin-top: 20px; padding: 15px; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
+        <div id="publishCompleteMessage"
+          style="display: none; margin-top: 20px; padding: 15px; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
           <div style="display: flex; align-items: center;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 10px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="margin-right: 10px;">
               <circle cx="12" cy="12" r="10"></circle>
               <polyline points="8 12 11 15 16 9"></polyline>
             </svg>
@@ -522,7 +564,8 @@
       </div>
       <div class="modal-body" style="padding: 20px;">
         <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" style="margin-right: 15px; flex-shrink: 0;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2"
+            style="margin-right: 15px; flex-shrink: 0;">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
           </svg>
@@ -549,7 +592,8 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="cancelCreate">Cancel</button>
         <button type="button" class="btn btn-primary" id="confirmCreate">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            style="margin-right: 8px;">
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
@@ -564,4 +608,5 @@
   <script src="help-modal.js?v=1"></script>
   <script src="Versioning.js?v=1"></script>
 </body>
+
 </html>

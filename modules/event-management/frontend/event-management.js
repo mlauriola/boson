@@ -1,3 +1,17 @@
+// Global State
+let allReports = [];
+let filteredReports = [];
+
+// Global Permissions State
+let currentPermissions = {
+    roleId: 4,
+    canCreate: false,
+    canEditAll: false,
+    canDeleteAll: false,
+    isViewer: true,
+    currentUser: null
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize MessageManager if available
     if (typeof MessageManager !== 'undefined') {
@@ -6,29 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadReports();
     EventManager.init();
 
-    // Modal Handling
-    const modal = document.getElementById('addReportModal');
-    const btn = document.getElementById('addReportBtn');
-    const closeBtn = document.getElementById('closeAddModal');
-
-    // Open Modal
-    btn.onclick = function () {
-        modal.style.display = 'flex'; // Use flex to center like users.html styles
-        // Reset Wizard
-        EventManager.reset();
-    }
-
-    // Close Modal
-    closeBtn.onclick = function () {
-        modal.style.display = 'none';
-    }
-
-    // Close on click outside
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
-    }
     // Event delegation for Edit buttons
     document.getElementById('reportsTableBody').addEventListener('click', function (e) {
         if (e.target && e.target.closest('.btn-edit')) {
@@ -37,16 +28,121 @@ document.addEventListener('DOMContentLoaded', () => {
             EventManager.loadReportForEdit(id);
         }
     });
+
+    // Search Functionality
+    const searchInput = document.getElementById('searchInput');
+    const clearSearch = document.getElementById('clearSearch');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            clearSearch.style.display = searchTerm ? 'flex' : 'none';
+
+            if (searchTerm === '') {
+                filteredReports = allReports;
+            } else {
+                filteredReports = allReports.filter(report => {
+                    // Filter based on flat properties returned by API
+                    // Properties are typically PascalCase from SQL: EventName, Location, ManagerName, Id
+                    const name = (report.EventName || '').toLowerCase();
+                    const loc = (report.Location || '').toLowerCase();
+                    const mgr = (report.ManagerName || '').toLowerCase();
+                    const createdBy = (report.CreatedBy || '').toLowerCase();
+                    const id = String(report.Id || '');
+
+                    return name.includes(searchTerm) ||
+                        loc.includes(searchTerm) ||
+                        mgr.includes(searchTerm) ||
+                        createdBy.includes(searchTerm) ||
+                        id.includes(searchTerm);
+                });
+            }
+            renderTable(filteredReports);
+        });
+    }
+
+    if (clearSearch) {
+        clearSearch.addEventListener('click', () => {
+            searchInput.value = '';
+            clearSearch.style.display = 'none';
+            filteredReports = allReports;
+            renderTable(filteredReports);
+            searchInput.focus();
+        });
+    }
 });
+
+async function loadPermissions() {
+    try {
+        const response = await fetch('/api/event-management/permissions');
+        if (response.ok) {
+            currentPermissions = await response.json();
+            console.log('DEBUG: Permissions loaded:', currentPermissions);
+            applyGlobalUIPermissions();
+        } else {
+            console.error('Failed to load permissions');
+        }
+    } catch (e) {
+        console.error('Error loading permissions:', e);
+    }
+}
+
+function applyGlobalUIPermissions() {
+    const addBtn = document.getElementById('addReportBtn');
+    const delBtn = document.getElementById('deleteSelectedBtn');
+
+    const selectAllCb = document.getElementById('selectAll');
+
+    if (currentPermissions.isViewer) {
+        if (addBtn) addBtn.style.display = 'none';
+        if (delBtn) delBtn.style.display = 'none';
+
+        // Hide Created By Header
+        const createdByHeader = document.getElementById('createdByHeader');
+        if (createdByHeader) createdByHeader.style.display = 'none';
+
+        // Hide Actions Header
+        const actionsHeader = document.getElementById('actionsHeader');
+        if (actionsHeader) actionsHeader.style.display = 'none';
+    } else {
+        // Normal Editors and Admins
+        if (addBtn) addBtn.style.display = 'inline-flex'; // Restore matching CSS
+        if (delBtn) delBtn.style.display = 'inline-flex';
+    }
+
+    // Hide Select All for anyone who isn't an Admin/Super (cannot delete all)
+    // This covers Viewers (Role 4) and Normal Editors (Role 3)
+    if (!currentPermissions.canDeleteAll) {
+        if (selectAllCb) selectAllCb.style.visibility = 'hidden';
+    } else {
+        if (selectAllCb) selectAllCb.style.visibility = 'visible';
+    }
+}
 
 async function loadReports() {
     const tableBody = document.getElementById('reportsTableBody');
 
     try {
-        const response = await fetch('/api/event-reports');
+        await loadPermissions(); // Ensure permissions are loaded first
+
+        const response = await fetch('/api/event-management');
+        if (response.status === 401) {
+            window.location.href = '/login.html';
+            return;
+        }
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-        const reports = await response.json();
-        renderTable(reports);
+
+        // Update global state
+        allReports = await response.json();
+        filteredReports = allReports;
+
+        // Re-apply search filter if input exists
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput && searchInput.value.trim()) {
+            searchInput.dispatchEvent(new Event('input'));
+        } else {
+            renderTable(filteredReports);
+        }
     } catch (error) {
         console.error('Error loading reports:', error);
         tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red;">Error loading reports: ${error.message}</td></tr>`;
@@ -56,30 +152,51 @@ async function loadReports() {
 function renderTable(data) {
     const tableBody = document.getElementById('reportsTableBody');
     tableBody.innerHTML = '';
+
+    // Check global perms again just to be safe (though loadReports calls it)
+    const { canEditAll, currentUser, isViewer } = currentPermissions;
+
     if (data.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No reports found.</td></tr>';
         return;
     }
     data.forEach(report => {
+        const isOwner = report.CreatedBy === currentUser;
+        const canEditThis = canEditAll || isOwner;
+
         const row = document.createElement('tr');
         const dateFrom = new Date(report.DateFrom).toLocaleDateString();
         const dateTo = new Date(report.DateTo).toLocaleDateString();
         const dateRange = (dateFrom === dateTo) ? dateFrom : `${dateFrom} - ${dateTo}`;
         const statusClass = (report.Status === 'Published') ? 'status-published' : 'status-draft';
 
+        // Conditional Checkbox for EVERYONE (needed for View)
+        const checkboxHtml = `<input type="checkbox" class="row-checkbox" data-id="${report.Id}" data-name="${escapeHtml(report.EventName)}">`;
+
+        // Conditional Actions
+        let actionsHtml = '';
+        if (canEditThis && !isViewer) {
+            actionsHtml = `
+                <button class="btn btn-small btn-edit" title="Edit" data-id="${report.Id}">
+                     Edit
+                </button>`;
+        }
+
+        // Conditional Created By Column Visibility
+        const createdByColStyle = isViewer ? 'display: none;' : '';
+        const actionsColStyle = isViewer ? 'display: none;' : '';
+
         row.innerHTML = `
-            <td class="checkbox-col"><input type="checkbox" class="row-checkbox" data-id="${report.Id}" data-name="${escapeHtml(report.EventName)}"></td>
+            <td class="checkbox-col">${checkboxHtml}</td>
             <td>${report.Id}</td>
-            <td>${escapeHtml(report.CreatedBy || '')}</td>
+            <td style="${createdByColStyle}">${escapeHtml(report.CreatedBy || '')}</td>
             <td><strong>${escapeHtml(report.EventName)}</strong></td>
             <td>${escapeHtml(report.Location)}</td>
             <td>${dateRange}</td>
             <td>${escapeHtml(report.ManagerName)}</td>
             <td><span class="status-badge ${statusClass}">${escapeHtml(report.Status || 'Draft')}</span></td>
-            <td>
-                <button class="btn btn-small btn-edit" title="Edit" data-id="${report.Id}">
-                     Edit
-                </button>
+            <td style="${actionsColStyle}">
+                ${actionsHtml}
             </td>
         `;
         tableBody.appendChild(row);
@@ -118,13 +235,12 @@ const EventManager = {
         // Initial setup if needed
     },
 
-    async loadReportForEdit(id) {
+    async loadReportForEdit(id, viewOnly = false) {
         try {
-            const response = await fetch(`/api/event-reports/${id}`);
+            const response = await fetch(`/api/event-management/${id}`);
             if (!response.ok) throw new Error('Failed to fetch report');
             const report = await response.json();
 
-            // Populate internal data structure
             // Populate internal data structure
             this.reset(); // Clear previous data
             this.currentReportId = id; // Set ID for Update
@@ -183,6 +299,7 @@ const EventManager = {
                     const lastBlock = blocks[blocks.length - 1];
                     lastBlock.querySelector('[data-field="code"]').value = item.ItemCode || '';
                     lastBlock.querySelector('[data-field="description"]').value = item.Description || '';
+                    lastBlock.querySelector('[data-field="status"]').value = item.Status || 'Missing';
                 });
             }
 
@@ -203,7 +320,14 @@ const EventManager = {
 
             // Open Modal
             document.getElementById('addReportModal').style.display = 'flex';
-            document.getElementById('modalTitle').textContent = `Edit Report #${id}`;
+
+            if (viewOnly) {
+                document.getElementById('modalTitle').textContent = `View Report #${id}`;
+                this.setReadOnlyMode(true);
+            } else {
+                document.getElementById('modalTitle').textContent = `Edit Report #${id}`;
+                this.setReadOnlyMode(false);
+            }
 
             // Refresh Section 1 UI to ensure "Save Draft" button visibility matches Edit Mode
             this.showSection(1);
@@ -214,8 +338,44 @@ const EventManager = {
         }
     },
 
+    setReadOnlyMode(isReadOnly) {
+        // Disable/Enable all inputs
+        const modal = document.getElementById('addReportModal');
+        const inputs = modal.querySelectorAll('input, textarea, select, button.btn-outline-danger'); // inputs + remove buttons
+        inputs.forEach(el => {
+            if (el.classList.contains('btn-close') || el.classList.contains('btn-secondary')) return; // Don't disable close/prev/next buttons
+            el.disabled = isReadOnly;
+        });
+
+        // Toggle View Mode Class
+        if (isReadOnly) {
+            modal.classList.add('view-mode');
+            // Show all sections
+            document.querySelectorAll('.wizard-section').forEach(s => s.classList.remove('hidden'));
+            // Show headers
+            document.querySelectorAll('.view-only-header').forEach(h => h.style.display = 'block');
+        } else {
+            modal.classList.remove('view-mode');
+            // Hide headers
+            document.querySelectorAll('.view-only-header').forEach(h => h.style.display = 'none');
+        }
+
+        // Hide/Show Save Buttons
+        const saveDraftBtn = document.getElementById('saveDraftBtnS1');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (isReadOnly) {
+            if (saveDraftBtn) saveDraftBtn.style.visibility = 'hidden'; // using visibility to keep layout
+            if (submitBtn) submitBtn.style.display = 'none';
+        } else {
+            if (saveDraftBtn) saveDraftBtn.style.visibility = 'visible';
+            if (submitBtn) submitBtn.style.display = 'inline-block';
+        }
+    },
+
     reset() {
         this.currentReportId = null;
+        this.setReadOnlyMode(false); // Reset to editable (removes view-mode)
         this.data = {
             section1: {},
             section2: [],
@@ -231,10 +391,20 @@ const EventManager = {
         };
 
         // Reset Inputs
-        document.querySelectorAll('input, textarea, select').forEach(el => el.value = '');
+        document.querySelectorAll('input, textarea, select').forEach(el => {
+            el.value = '';
+            el.disabled = false;
+        });
         document.getElementById('issues-container').innerHTML = '';
         document.getElementById('damaged-container').innerHTML = '';
         document.getElementById('missing-container').innerHTML = '';
+
+        // Reset buttons visibility in case they were hidden
+        const saveDraftBtn = document.getElementById('saveDraftBtnS1');
+        const submitBtn = document.getElementById('submitBtn');
+        if (saveDraftBtn) saveDraftBtn.style.visibility = 'visible';
+        if (submitBtn) submitBtn.style.display = 'inline-block';
+
 
         // Show first section
         this.showSection(1);
@@ -242,9 +412,23 @@ const EventManager = {
 
     nextSection(targetSection) {
         if (targetSection > 1) {
-            const prevSection = targetSection - 1;
-            if (!this.validateSection(prevSection)) return;
-            this.saveSectionData(prevSection);
+            // Skip validation if Read Only? No, navigation should work. 
+            // But validation checks required fields, which might be populated.
+            // If it's read only, we shouldn't fail validation if something is missing/invalid?
+            // Ideally existing reports define valid data. But let's check.
+
+            // Actually, we should probably SAVE only if not read-only.
+            // But we need to switch sections.
+
+            // If ReadOnly, skip saveSectionData
+            const modalTitle = document.getElementById('modalTitle').textContent;
+            const isReadOnly = modalTitle.includes('View Report');
+
+            if (!isReadOnly) {
+                const prevSection = targetSection - 1;
+                if (!this.validateSection(prevSection)) return;
+                this.saveSectionData(prevSection);
+            }
         }
         this.showSection(targetSection);
     },
@@ -261,11 +445,9 @@ const EventManager = {
         const stepTitle = this.sectionTitles[num - 1] || '';
         const titleEl = document.getElementById('modalTitle');
         if (titleEl) {
-            if (this.currentReportId) {
-                titleEl.textContent = `Report #${this.currentReportId} - ${stepTitle}`;
-            } else {
-                titleEl.textContent = `New Report - ${stepTitle}`;
-            }
+            const currentTitle = titleEl.textContent;
+            const baseTitle = currentTitle.split(' - ')[0]; // Extract "Edit Report #123" or "View Report #123"
+            titleEl.textContent = `${baseTitle} - ${stepTitle}`;
         }
 
         // Scroll modal to top
@@ -275,7 +457,11 @@ const EventManager = {
         if (num === 1) {
             const saveDraftBtn = document.getElementById('saveDraftBtnS1');
             if (saveDraftBtn) {
-                saveDraftBtn.style.display = this.currentReportId ? 'inline-block' : 'none';
+                // Check if ReadOnly
+                const isReadOnly = titleEl.textContent.includes('View Report');
+                if (!isReadOnly) {
+                    saveDraftBtn.style.display = this.currentReportId ? 'inline-block' : 'none';
+                }
             }
         }
 
@@ -386,7 +572,8 @@ const EventManager = {
             document.querySelectorAll('.missing-block').forEach(block => {
                 this.data.section4.push({
                     code: block.querySelector('[data-field="code"]').value,
-                    description: block.querySelector('[data-field="description"]').value
+                    description: block.querySelector('[data-field="description"]').value,
+                    status: block.querySelector('[data-field="status"]').value
                 });
             });
         }
@@ -455,6 +642,13 @@ const EventManager = {
             </div>
             <div class="form-group"><label>Item Code</label><input type="text" class="form-control" data-field="code"></div>
             <div class="form-group"><label>Description *</label><textarea class="form-control" data-field="description" required></textarea></div>
+            <div class="form-group">
+                <label>Status</label>
+                <select class="form-control" data-field="status">
+                    <option value="Missing">Missing</option>
+                    <option value="Lost">Lost</option>
+                </select>
+            </div>
         `;
         document.getElementById('missing-container').appendChild(div);
     },
@@ -493,12 +687,20 @@ const EventManager = {
                                         <td class="font-weight-bold pl-0 text-truncate text-dark py-0" style="max-width: 200px;">${s1.location}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-muted text-right pl-1 pr-1 py-0">Manager:</td>
+                                        <td class="text-muted text-right pl-1 pr-1 py-0" style="white-space: nowrap;">Event Coordinator:</td>
                                         <td class="font-weight-bold pl-0 text-truncate text-dark py-0" style="max-width: 200px;">${s1.manager}</td>
                                     </tr>
                                     <tr>
                                         <td class="text-muted text-right pl-1 pr-1 py-0">Period:</td>
                                         <td class="font-weight-bold pl-0 text-dark py-0">${s1.dateFrom} - ${s1.dateTo}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted text-right pl-1 pr-1 py-0" style="vertical-align: top;">Description:</td>
+                                        <td class="font-weight-bold pl-0 text-dark py-0" style="white-space: pre-wrap; font-size: 0.85rem;">${s1.summary || '<span class="text-muted font-italic">No description provided.</span>'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted text-right pl-1 pr-1 py-0" style="vertical-align: top;">Services:</td>
+                                        <td class="font-weight-bold pl-0 text-dark py-0" style="white-space: pre-wrap; font-size: 0.85rem;">${s1.servicesProvided || '<span class="text-muted font-italic">No services provided.</span>'}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -509,16 +711,6 @@ const EventManager = {
                 <!-- Right: Executive Summary + Stats -->
                 <div class="col-md-5">
                     <div class="row no-gutters h-100 align-content-start">
-                        <!-- Executive Summary (Moved Top) -->
-                        <div class="col-12 mb-2">
-                            <div class="card border-0 bg-light">
-                                <div class="card-body py-2 px-3 rounded">
-                                    <div class="text-uppercase text-muted mb-1" style="font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px;">Executive Summary</div>
-                                    <p class="card-text text-dark mb-0" style="white-space: pre-wrap; line-height: 1.3; font-size: 0.85rem;">${s1.summary || '<span class="text-muted font-italic">No summary provided.</span>'}</p>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Suggestions (Moved Here) -->
                         <div class="col-12 mb-0 p-0 px-1">
                             ${getStatBlock('Suggestions', Object.values(this.data.section5).filter(v => v && v.trim().length > 0).length, 'bg-light')}
@@ -571,13 +763,13 @@ const EventManager = {
         };
 
         try {
-            let url = '/api/event-reports';
+            let url = '/api/event-management';
             let method = 'POST';
 
             console.log('DEBUG: Submitting. Status:', status, 'Current ID:', this.currentReportId);
 
             if (this.currentReportId) {
-                url = `/api/event-reports/${this.currentReportId}`;
+                url = `/api/event-management/${this.currentReportId}`;
                 method = 'PUT';
             }
             console.log('DEBUG: Method:', method, 'URL:', url);
@@ -652,6 +844,12 @@ function updateSelectedCount() {
         deleteBtn.disabled = checkedBoxes.length === 0;
     }
 
+    // View Button Logic
+    const viewBtn = document.getElementById('viewReportBtn');
+    if (viewBtn) {
+        viewBtn.disabled = checkedBoxes.length !== 1;
+    }
+
     // Update Select All Checkbox
     const allCheckboxes = document.querySelectorAll('.row-checkbox');
     const selectAll = document.getElementById('selectAll');
@@ -659,6 +857,14 @@ function updateSelectedCount() {
         selectAll.checked = allCheckboxes.length > 0 && checkedBoxes.length === allCheckboxes.length;
         selectAll.indeterminate = checkedBoxes.length > 0 && checkedBoxes.length < allCheckboxes.length;
     }
+}
+
+async function viewSelectedReport() {
+    const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+    if (checkedBoxes.length !== 1) return;
+
+    const id = checkedBoxes[0].dataset.id;
+    await EventManager.loadReportForEdit(id, true); // true = viewOnly
 }
 
 async function deleteSelectedReports() {
@@ -673,7 +879,14 @@ async function deleteSelectedReports() {
 
     try {
         const deletePromises = ids.map(id =>
-            fetch(`/api/event-reports/${id}`, { method: 'DELETE' })
+            fetch(`/api/event-management/${id}`, { method: 'DELETE' })
+                .then(res => {
+                    if (res.status === 401) {
+                        window.location.href = '/login.html';
+                        throw new Error('Unauthorized');
+                    }
+                    return res;
+                })
         );
 
         const results = await Promise.all(deletePromises);
@@ -711,5 +924,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const deleteBtn = document.getElementById('deleteSelectedBtn');
     if (deleteBtn) {
         deleteBtn.addEventListener('click', deleteSelectedReports);
+    }
+
+    const viewBtn = document.getElementById('viewReportBtn');
+    if (viewBtn) {
+        viewBtn.addEventListener('click', viewSelectedReport);
+    }
+
+    const addBtn = document.getElementById('addReportBtn');
+    if (addBtn) {
+        addBtn.addEventListener('click', () => {
+            EventManager.reset();
+            document.getElementById('modalTitle').textContent = 'New Report';
+            document.getElementById('addReportModal').style.display = 'flex';
+        });
     }
 });

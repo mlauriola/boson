@@ -226,6 +226,7 @@ async function initDashboard(roleId) {
     const modules = config.modules || {};
     const settingsCard = document.getElementById('settingsCard');
     const dashboardGrid = document.querySelector('.dashboard-grid');
+    if (!dashboardGrid) return;
 
     for (const [key, module] of Object.entries(modules)) {
       // Skip core (handled manually) and disabled modules

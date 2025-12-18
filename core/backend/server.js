@@ -59,6 +59,8 @@ app.use(session({
 // Static Files - Core Frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
 app.use('/img', express.static(path.join(__dirname, '../frontend/img')));
+// Static Files - Modules
+app.use('/modules', express.static(path.join(__dirname, '../../modules')));
 
 // Configurazione Nodemailer
 const transporter = nodemailer.createTransport({
@@ -158,6 +160,7 @@ async function loadModules() {
           await moduleInit.default(app, {
             pool,
             config: appConfig,
+            moduleConfig: module,
             middleware: {
               isAuthenticated,
               isAdministrator,

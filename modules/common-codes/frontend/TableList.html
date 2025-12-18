@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
   <script src="sidebar-component.js?v=14"></script>
   <script src="maintenance-banner.js"></script>
 </head>
+
 <body>
   <div class="dashboard-container">
     <!-- Header -->
@@ -30,16 +32,13 @@
           <!-- Search Section -->
           <div class="filters-section" style="display: block;">
             <div class="search-bar">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                class="search-icon">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.35-4.35"></path>
               </svg>
-              <input
-                type="text"
-                id="searchInput"
-                placeholder="Search by description, table name..."
-                class="search-input"
-              >
+              <input type="text" id="searchInput" placeholder="Search by description, table name..."
+                class="search-input">
               <button id="clearSearch" class="btn-clear" style="display: none;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -49,14 +48,7 @@
             </div>
           </div>
 
-          <!-- Message area (always reserves space) -->
-          <!-- Message area with Help button -->
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-            <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
-            <button class="btn btn-secondary" id="helpBtn" title="Help" style="min-width: 38px; height: 34px; padding: 6px 10px; flex-shrink: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: center;">
-              <span style="font-weight: bold; font-size: 16px;">?</span>
-            </button>
-          </div>
+
 
           <!-- Tables Container -->
           <div class="table-container">
@@ -111,33 +103,19 @@
 
           <div class="form-group">
             <label for="editDescription">Description</label>
-            <input
-              type="text"
-              id="editDescription"
-              name="description"
-              readonly
-              style="background-color: #e9ecef; cursor: not-allowed;"
-            >
+            <input type="text" id="editDescription" name="description" readonly
+              style="background-color: #e9ecef; cursor: not-allowed;">
           </div>
 
           <div class="form-group">
             <label for="editRefTable">Table Name</label>
-            <input
-              type="text"
-              id="editRefTable"
-              name="refTable"
-              readonly
-              style="background-color: #e9ecef; cursor: not-allowed;"
-            >
+            <input type="text" id="editRefTable" name="refTable" readonly
+              style="background-color: #e9ecef; cursor: not-allowed;">
           </div>
 
           <div class="form-group">
             <label for="editHasToBeManaged">Visibility *</label>
-            <select
-              id="editHasToBeManaged"
-              name="hasToBeManaged"
-              required
-            >
+            <select id="editHasToBeManaged" name="hasToBeManaged" required>
               <option value="1">Visible</option>
               <option value="0">Hidden</option>
               <option value="2">Excluded</option>
@@ -146,12 +124,8 @@
 
           <div class="form-group">
             <label for="editLongDescription">Long Description</label>
-            <textarea
-              id="editLongDescription"
-              name="longDescription"
-              rows="4"
-              placeholder="Enter detailed description..."
-            ></textarea>
+            <textarea id="editLongDescription" name="longDescription" rows="4"
+              placeholder="Enter detailed description..."></textarea>
           </div>
         </form>
       </div>
@@ -166,4 +140,5 @@
   <script src="help-modal.js?v=1"></script>
   <script src="TableList.js?v=1"></script>
 </body>
+
 </html>

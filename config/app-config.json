@@ -1,6 +1,6 @@
 {
     "branding": {
-        "appName": "Microplus B O S",
+        "appName": "B O S",
         "logo": "",
         "favicon": "/favicon.ico",
         "colors": {
@@ -9,9 +9,9 @@
             "btnPrimaryBg": "#10bcc7",
             "btnPrimaryText": "#ffffff",
             "btnPrimaryHover": "#00a8b3",
-            "btnSecondaryBg": "#1a4480",
+            "btnSecondaryBg": "#33c481",
             "btnSecondaryText": "#ffffff",
-            "btnSecondaryHover": "#06306c",
+            "btnSecondaryHover": "#1fb06d",
             "btnDangerBg": "#f10404",
             "btnDangerText": "#ffffff",
             "btnDangerHover": "#dd0000",
@@ -25,7 +25,7 @@
         }
     },
     "server": {
-        "port": 3000,
+        "port": 3001,
         "sessionSecret": "change-this-in-production"
     },
     "database": {

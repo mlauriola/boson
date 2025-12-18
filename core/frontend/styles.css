@@ -58,6 +58,11 @@ body {
   line-height: 1.6;
 }
 
+/* Global Message Bar */
+.message-bar-container {
+  margin-bottom: 20px;
+}
+
 /* ============= LAYOUT & DASHBOARD ============= */
 .dashboard-container {
   display: flex;

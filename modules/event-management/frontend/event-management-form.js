@@ -274,11 +274,15 @@ const EventManager = {
         const payload = this.data;
 
         try {
-            const response = await fetch('/api/event-reports', {
+            const response = await fetch('/api/event-management', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
+            if (response.status === 401) {
+                window.location.href = '/login.html';
+                return;
+            }
 
             const result = await response.json();
 

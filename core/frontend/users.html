@@ -31,10 +31,7 @@
       <!-- Main content -->
       <main class="main-content">
         <div style="padding: 0 20px; flex: 1; overflow-y: auto;">
-          <!-- Message area -->
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0;">
-            <div id="messageArea" class="message" style="visibility: hidden; opacity: 0; flex: 1;"></div>
-          </div>
+
 
           <!-- Users section -->
           <section class="users-section">
@@ -57,7 +54,7 @@
               </div>
             </div>
 
-            <div class="users-table-section">
+            <div class="content-card">
               <div class="filter-actions" style="margin-bottom: 15px;">
                 <button class="btn btn-danger" id="deleteSelectedBtn" disabled>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -159,7 +156,6 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="cancelAdd">Cancel</button>
         <button type="submit" class="btn btn-primary" form="addUserForm">Create</button>
       </div>
     </div>
@@ -226,7 +222,6 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="cancelEdit">Cancel</button>
         <button type="submit" class="btn btn-primary" form="editUserForm">Update</button>
       </div>
     </div>
