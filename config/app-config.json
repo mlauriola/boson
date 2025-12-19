@@ -6,12 +6,12 @@
         "colors": {
             "brandColor": "#1a4480",
             "brandColorHover": "#06306c",
-            "btnPrimaryBg": "#10bcc7",
+            "btnPrimaryBg": "#51129b",
             "btnPrimaryText": "#ffffff",
-            "btnPrimaryHover": "#00a8b3",
-            "btnSecondaryBg": "#33c481",
+            "btnPrimaryHover": "#3d0087",
+            "btnSecondaryBg": "#f259b0",
             "btnSecondaryText": "#ffffff",
-            "btnSecondaryHover": "#1fb06d",
+            "btnSecondaryHover": "#de459c",
             "btnDangerBg": "#f10404",
             "btnDangerText": "#ffffff",
             "btnDangerHover": "#dd0000",
@@ -19,7 +19,7 @@
             "headerText": "#1a4480",
             "sidebarBg": "#ffffff",
             "sidebarActiveBg": "#e7f3ff",
-            "sidebarActiveBorder": "#10bcc7",
+            "sidebarActiveBorder": "#51129b",
             "tableHeaderBg": "#2084c6",
             "tableHeaderText": "#ffffff"
         }

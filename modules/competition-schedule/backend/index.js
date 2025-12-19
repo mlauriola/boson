@@ -89,91 +89,240 @@ export default function (app, globalPool) { // globalPool is ignored for DB ops,
             const versionId = versionResult.output.NewId;
 
             // 2. Process Sheets
-            // We assume sheets with name pattern DD.MM.YY contain data, or just process likely candidates.
             // Based on example: Data starts Row 4. Headers Row 3.
 
+            const dateRegex = /^\d{2}\.\d{2}\.\d{2}$/; // Format: DD.MM.YY
+
             for (const worksheet of workbook.worksheets) {
-                // Heuristic: Skip "Instructions", "Overview", etc. 
-                // Checks if sheet name has a digit or simple filter.
-                // For now, let's process ALL sheets that have data in Row 4.
-                if (worksheet.name.toLowerCase().includes('instruction')) continue;
+                // Skip hidden sheets
+                if (worksheet.state !== 'visible') continue;
 
-                // Iterate Rows (Start from 4)
-                worksheet.eachRow((row, rowNumber) => {
-                    if (rowNumber < 4) return;
+                // Strict Filter: Only allow sheets named as Dates (e.g., 29.07.22)
+                // User instruction: "considera solo i tab che hanno una data come nome"
+                if (!dateRegex.test(worksheet.name.trim())) continue;
 
-                    // SKIP empty rows based on critical column (e.g. Session ID at index 11 or Activity at 7)
-                    // Row values are 1-based arrays.
-                    const rowVals = row.values; // index 0 is undefined/null usually.
-                    if (!rowVals[7] && !rowVals[11]) return; // Skip if no Activity AND no SessionID
+                // Headers (Row 3) - Iterate 1 to MAX Column Index
+                const headerRow = worksheet.getRow(3);
+                const headers = {};
 
-                    // Extract Data
-                    // Mapping based on previous analysis:
-                    // 4: Start, 5: Duration, 6: Finish (Time objects)
-                    // 7: Activity
-                    // 8: Location
-                    // 9: Location Code
-                    // 10: Venue
-                    // 11: Session ID
-                    // 12: RSC
-
-                    const startTime = rowVals[4] ? rowVals[4].toString() : null;
-                    const endTime = rowVals[6] ? rowVals[6].toString() : null;
-                    const activity = rowVals[7];
-                    const loc = rowVals[8];
-                    const locCode = rowVals[9];
-                    const venue = rowVals[10];
-                    const sessionId = rowVals[11]; // Session ID
-                    const rsc = rowVals[12];
-
-                    // Insert Session
-                    // We need a NEW Request for each execution inside loop? Yes.
-                    // But we can reuse the transaction object.
-                    // Note: In mssql, you can reuse the request object if you reset params, or create new one.
-                    // Creating new one is safest.
-
-                    // We can't await inside forEach easily unless we use for...of loop or Promise.all.
-                    // Converting to for loop for async/await support.
+                // Find true max column index (cellCount is just count of objects, not max index)
+                let maxCol = 0;
+                headerRow.eachCell({ includeEmpty: true }, (cell, colNum) => {
+                    if (colNum > maxCol) maxCol = colNum;
                 });
-            }
+                // Fallback if empty?
+                if (maxCol === 0) maxCol = headerRow.cellCount || 20;
 
-            // Using standard for loop for async support
-            for (const worksheet of workbook.worksheets) {
-                if (worksheet.name.toLowerCase().includes('instruction')) continue;
+                const usedHeaders = new Map(); // Track frequency
 
-                // Get rows first to iterate standardly
+                for (let c = 1; c <= maxCol; c++) {
+                    const cell = headerRow.getCell(c);
+                    const val = cell.value;
+                    // Simple text extraction for header
+                    let text = '';
+                    if (val) {
+                        if (typeof val === 'object' && 'richText' in val) {
+                            text = val.richText.map(t => t.text).join('');
+                        } else if (typeof val === 'object' && 'text' in val) {
+                            text = val.text;
+                        } else if (typeof val === 'object' && 'result' in val) {
+                            text = String(val.result);
+                        } else {
+                            text = String(val);
+                        }
+                    }
+
+                    let headerName = text.trim() || `Col${c}`;
+
+                    // Ensure Uniqueness
+                    if (usedHeaders.has(headerName)) {
+                        const count = usedHeaders.get(headerName) + 1;
+                        usedHeaders.set(headerName, count);
+                        headerName = `${headerName}_${count}`;
+                    } else {
+                        usedHeaders.set(headerName, 1);
+                    }
+
+                    headers[c] = headerName;
+                }
+
+                // Helper to get text from a cell (handling merges and types)
+                const getCellText = (cell) => {
+                    const val = cell.value;
+                    if (!val) return '';
+                    if (typeof val === 'object') {
+                        if ('result' in val) return val.result;
+                        if ('text' in val) return val.text;
+                        if ('richText' in val) return val.richText.map(t => t.text).join('');
+                    }
+                    return String(val).trim();
+                };
+
+                // 1. Extract Sheet Title from Row 1
+                // 1. Extract Sheet Title from Row 1
+                const titleRow = worksheet.getRow(1);
+                let sheetTitle = worksheet.name; // Fallback
+
+                // Robust scan of first row (like headers)
+                const titleMaxCol = titleRow.cellCount || 20;
+
+                for (let c = 1; c <= titleMaxCol; c++) {
+                    // Stop if we found a long title (heuristic: longer than sheet name + 5 chars?)
+                    // Or just take the first meaningful string that isn't the sheet name? 
+                    // User says B1 has the title.
+                    // Simple logic: Take THE FIRST non-empty string that is NOT the sheet name.
+                    // If we haven't found a better title yet:
+                    if (sheetTitle === worksheet.name) {
+                        const cell = titleRow.getCell(c);
+                        // Check master if merged
+                        const effectiveCell = cell.isMerged && cell.master ? cell.master : cell;
+                        const text = getCellText(effectiveCell);
+
+                        if (text && text.length > 0 && text !== worksheet.name) {
+                            sheetTitle = text;
+                            break; // Found it, stop scanning
+                        }
+                    }
+                }
+
+                // 2. Get rows starting from 4 (Data) - User confirmed Data starts at 4.
                 const rows = worksheet.getRows(4, worksheet.actualRowCount);
                 if (!rows) continue;
 
                 for (let i = 0; i < rows.length; i++) {
                     const row = rows[i];
+
+                    // Helper: Resolve Excel Color (ARGB or Theme)
+                    const resolveExcelColor = (colorObj) => {
+                        if (!colorObj) return null;
+
+                        // 1. Handle ARGB
+                        if (colorObj.argb) {
+                            let argb = colorObj.argb;
+                            return (argb.length === 8) ? ('#' + argb.substring(2)) : ('#' + argb);
+                        }
+
+                        // 2. Handle Theme
+                        if ('theme' in colorObj) {
+                            // Standard Office 2013+ Theme Palette
+                            const themeColors = [
+                                'FFFFFF', // 0: White / Light 1
+                                '000000', // 1: Black / Dark 1
+                                'E7E6E6', // 2: Light Gray / Light 2
+                                '44546A', // 3: Dark Blue-Gray / Dark 2
+                                '4472C4', // 4: Blue / Accent 1  (Was 5B9BD5)
+                                'ED7D31', // 5: Orange / Accent 2
+                                'A5A5A5', // 6: Gray / Accent 3
+                                'FFC000', // 7: Gold / Accent 4
+                                '5B9BD5', // 8: Blue / Accent 5  (Was 4472C4)
+                                '70AD47'  // 9: Green / Accent 6
+                            ];
+
+                            let hex = themeColors[colorObj.theme] || 'FFFFFF';
+
+                            // Apply Tint if present
+                            if (colorObj.tint !== undefined) {
+                                const tint = colorObj.tint;
+                                // Convert Hex to RGB
+                                let r = parseInt(hex.substring(0, 2), 16);
+                                let g = parseInt(hex.substring(2, 4), 16);
+                                let b = parseInt(hex.substring(4, 6), 16);
+
+                                if (tint > 0) {
+                                    // Lighten: value + (255 - value) * tint
+                                    r = Math.round(r + (255 - r) * tint);
+                                    g = Math.round(g + (255 - g) * tint);
+                                    b = Math.round(b + (255 - b) * tint);
+                                } else {
+                                    // Darken: value * (1 + tint)
+                                    r = Math.round(r * (1 + tint));
+                                    g = Math.round(g * (1 + tint));
+                                    b = Math.round(b * (1 + tint));
+                                }
+                                // Back to Hex
+                                hex = ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+                            }
+                            return '#' + hex;
+                        }
+
+                        return null;
+                    };
+
+                    // Helper to get simple value
+                    const getVal = (cellVal) => {
+                        if (cellVal instanceof Date) return cellVal.toISOString(); // Handle Date objects directly
+
+                        if (cellVal && typeof cellVal === 'object') {
+                            // Prioritize calculated result for formulas
+                            if ('result' in cellVal) {
+                                let res = cellVal.result;
+                                if (res instanceof Date) return res.toISOString();
+                                return res;
+                            }
+                            if ('text' in cellVal) return cellVal.text;     // Hyperlink
+                            if ('richText' in cellVal) return cellVal.richText.map(t => t.text).join(''); // Rich Text
+                        }
+                        return cellVal;
+                    };
+
                     const rowVals = row.values;
 
-                    // Indexing in ExcelJS values array:
-                    // formatted values are better? row.model.cells...
-                    // Let's stick to values. values[1] is Col A.
+                    // Permissive Filter: Keep row if it has ANY meaningful values.
+                    if (!row.hasValues && !rowVals.some(v => v !== null && v !== undefined && String(v).trim() !== '')) continue;
+                    // Note: row.hasValues might be false if only styles exist? Check.
+                    // Actually, if row has no values but HAS colors, we might want to keep it?
+                    // User said "colora anche singole celle". Assuming they have text.
+                    // If empty cell has color, it won't be in `rowVals` as a value, but `row.getCell` works.
+                    // Let's keep existing filter for now, usually colored cells have content or context.
 
-                    // Map (Adjusted for 1-based index if using row.values directly)
-                    // If Row 1 in Excel is Index 1 in values.
-                    const activity = rowVals[7];
-                    const sessionId = rowVals[11];
+                    // Legacy Column Mapping (still needed for DB columns)
+                    const activity = getVal(rowVals[7]);
+                    const sessionId = getVal(rowVals[11]);
 
-                    if (!activity && !sessionId) continue;
+                    // Construct JSON Data with Styles
+                    const rowJson = {};
+
+                    // Iterate generic headers
+                    Object.keys(headers).forEach(colIdx => {
+                        // Get exact cell to reuse getVal logic and get Style
+                        // row.getCell(colIdx) is reliable.
+                        const cell = row.getCell(Number(colIdx));
+                        const val = getVal(cell.value);
+
+                        // Background
+                        const fill = cell.fill;
+                        const bg = (fill && fill.type === 'pattern' && fill.fgColor) ? resolveExcelColor(fill.fgColor) : null;
+
+                        // Font Color
+                        const font = cell.font;
+                        const color = (font && font.color) ? resolveExcelColor(font.color) : null;
+
+                        // Store complex object
+                        rowJson[headers[colIdx]] = {
+                            v: (val !== undefined && val !== null) ? val : null,
+                            bg: bg,
+                            c: color // 'c' for color (font)
+                        };
+                    });
+
+                    const jsonDataString = JSON.stringify(rowJson);
 
                     const itemReq = new sql.Request(transaction);
                     // Careful with large loops strings.
                     await itemReq
                         .input('VersionId', sql.Int, versionId)
                         .input('SheetName', sql.NVarChar, worksheet.name)
-                        .input('StartTime', sql.NVarChar, rowVals[4] ? String(rowVals[4]) : null)
-                        .input('EndTime', sql.NVarChar, rowVals[6] ? String(rowVals[6]) : null)
+                        .input('StartTime', sql.NVarChar, rowVals[4] ? String(getVal(rowVals[4])) : null)
+                        .input('EndTime', sql.NVarChar, rowVals[6] ? String(getVal(rowVals[6])) : null)
                         .input('Activity', sql.NVarChar, activity ? String(activity) : null)
-                        .input('Location', sql.NVarChar, rowVals[8] ? String(rowVals[8]) : null)
-                        .input('LocationCode', sql.NVarChar, rowVals[9] ? String(rowVals[9]) : null)
-                        .input('Venue', sql.NVarChar, rowVals[10] ? String(rowVals[10]) : null)
+                        .input('Location', sql.NVarChar, rowVals[8] ? String(getVal(rowVals[8])) : null)
+                        .input('LocationCode', sql.NVarChar, rowVals[9] ? String(getVal(rowVals[9])) : null)
+                        .input('Venue', sql.NVarChar, rowVals[10] ? String(getVal(rowVals[10])) : null)
                         .input('SessionCode', sql.NVarChar, sessionId ? String(sessionId) : null)
-                        .input('RSC', sql.NVarChar, rowVals[12] ? String(rowVals[12]) : null)
+                        .input('RSC', sql.NVarChar, rowVals[12] ? String(getVal(rowVals[12])) : null)
                         .input('RowIndex', sql.Int, row.number)
+                        .input('JsonData', sql.NVarChar(sql.MAX), jsonDataString)
+                        .input('SheetTitle', sql.NVarChar, sheetTitle) // Add Missing Parameter
                         .execute('sp_Schedule_AddSession');
                 }
             }

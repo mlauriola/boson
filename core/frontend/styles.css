@@ -782,11 +782,11 @@ td.checkbox-col {
   padding: 8px;
 }
 
-.row-checkbox {
-  cursor: pointer;
-  width: 18px;
-  height: 18px;
-  margin: 0;
+
+/* BRAND UTILITIES */
+.bg-brand-secondary {
+  background-color: var(--btn-secondary-bg) !important;
+  color: var(--btn-secondary-text) !important;
 }
 
 th.sortable {
@@ -1256,4 +1256,41 @@ tbody tr:hover {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+}
+
+/* Upload Area */
+.upload-area {
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
+  background: #fdfdfd;
+}
+
+.upload-area:hover,
+.upload-area.drag-over {
+  border-color: var(--primary-color);
+  background: #f0f8ff;
+}
+
+/* Active Row Highlight */
+.row-active {
+  background-color: color-mix(in srgb, var(--btn-primary-bg), transparent 80%) !important;
+  color: var(--brand-color) !important;
+}
+
+.row-active td,
+.row-active strong,
+.row-active small,
+.row-active code,
+.row-active svg {
+  color: var(--brand-color) !important;
+}
+
+/* BRAND UTILITIES */
+.bg-brand-secondary {
+  background-color: var(--btn-secondary-bg) !important;
+  color: var(--btn-secondary-text) !important;
 }

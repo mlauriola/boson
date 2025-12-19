@@ -209,8 +209,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const versionId = v.Id || v.id;
             const versionName = v.VersionName || v.versionName || '';
             const fileName = v.FileName || v.fileName || '';
-            const statusVal = (v.Status === 1 || v.status === 1) ? 'Active' : 'Archive';
-            const statusClass = statusVal.toLowerCase();
+            const isActive = (v.Status === 1 || v.status === 1);
+            const statusVal = isActive ? 'Active' : 'Archive';
+
+            if (isActive) {
+                tr.classList.add('row-active');
+            }
 
             tr.innerHTML = `
                 <td class="checkbox-col"><input type="checkbox" class="row-checkbox" data-id="${versionId}" data-name="${versionName}" data-filename="${fileName}"></td>
@@ -218,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><small>${fileName}</small></td>
                 <td>${date}</td>
                 <td>${v.CreatedBy || v.createdBy || 'System'}</td>
-                <td><span class="status-badge status-${statusClass}">${statusVal}</span></td>
+                <td>${statusVal}</td>
                 <td>
                     <button class="btn btn-small btn-edit" data-id="${versionId}">Edit</button>
                 </td>
