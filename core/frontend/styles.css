@@ -517,6 +517,10 @@ body {
 }
 
 /* ============= MESSAGES & ALERTS ============= */
+.text-danger {
+  color: var(--error-color) !important;
+}
+
 .error-message,
 .message {
   padding: 6px 10px;

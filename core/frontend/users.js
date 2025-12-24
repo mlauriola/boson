@@ -42,9 +42,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const cancelEdit = document.getElementById('cancelEdit');
   const editUserForm = document.getElementById('editUserForm');
 
+  // Confirm Delete Modal
+  const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+  const closeConfirmDeleteModal = document.getElementById('closeConfirmDeleteModal');
+  const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+  const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+  const confirmDeleteMessage = document.getElementById('confirmDeleteMessage');
+
   // Variable to store user data
   let users = [];
   let filteredUsers = [];
+  let userIdToDelete = null;
 
   // Sorting state
   let currentSortColumn = null;
@@ -106,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Delete selected users
+  // Delete selected users
   deleteSelectedBtn.addEventListener('click', async () => {
     const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
     const userIds = Array.from(checkedBoxes).map(cb => cb.dataset.userId);
@@ -113,39 +122,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (userIds.length === 0) return;
 
-    const confirmed = confirm(`Are you sure you want to delete ${userIds.length} user(s)?\n\n${usernames.join('\n')}`);
-    if (!confirmed) return;
-
-    // Show loading
-    showLoading(true);
-
-    try {
-      // Delete each user
-      const deletePromises = userIds.map(userId =>
-        fetch(`/api/users/${userId}`, { method: 'DELETE' })
-      );
-
-      const results = await Promise.all(deletePromises);
-
-      // Check if all deletions were successful
-      const allSuccessful = results.every(res => res.ok);
-
-      if (allSuccessful) {
-        showMessage(`Successfully deleted ${userIds.length} user(s)!`, 'success');
-        // Uncheck select all
-        selectAll.checked = false;
-        // Reload users
-        await loadUsers();
-      } else {
-        showMessage('Some users could not be deleted', 'error');
-        await loadUsers();
-      }
-    } catch (error) {
-      console.error('Error deleting users:', error);
-      showMessage('Error deleting users', 'error');
-    } finally {
-      showLoading(false);
-    }
+    const count = userIds.length;
+    userIdToDelete = userIds; // Store array or single ID
+    confirmDeleteMessage.innerHTML = `Are you sure you want to delete <strong>${count}</strong> selected user(s)?`;
+    confirmDeleteModal.style.display = 'flex';
   });
 
 
@@ -377,6 +357,15 @@ document.addEventListener('DOMContentLoaded', () => {
         openEditModal(userId);
       });
     });
+
+    // Delete buttons
+    document.querySelectorAll('.btn-delete-user').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const userId = e.target.getAttribute('data-id');
+        const username = e.target.getAttribute('data-username');
+        openDeleteModal(userId, username);
+      });
+    });
   }
 
   // Add event listeners to checkboxes
@@ -555,6 +544,66 @@ document.addEventListener('DOMContentLoaded', () => {
       showMessage('Server connection error', 'error');
     }
   });
+
+  function openDeleteModal(userId, username) {
+    userIdToDelete = userId;
+    confirmDeleteMessage.innerHTML = `Are you sure you want to delete <strong>1</strong> selected user(s)?`;
+    confirmDeleteModal.style.display = 'flex';
+  }
+
+  function hideDeleteModal() {
+    confirmDeleteModal.style.display = 'none';
+    userIdToDelete = null;
+  }
+
+  if (closeConfirmDeleteModal) closeConfirmDeleteModal.addEventListener('click', hideDeleteModal);
+  if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+
+  // Close modal clicking outside
+  window.addEventListener('click', (e) => {
+    if (e.target === confirmDeleteModal) {
+      hideDeleteModal();
+    }
+  });
+
+  if (confirmDeleteBtn) {
+    confirmDeleteBtn.addEventListener('click', async () => {
+      if (!userIdToDelete) return;
+
+      const idsToDelete = userIdToDelete; // Capture ID(s) before hideDeleteModal wipes it
+      hideDeleteModal();
+      showLoading(true);
+
+      const ids = Array.isArray(idsToDelete) ? idsToDelete : [idsToDelete];
+
+      try {
+        // Delete each user
+        const deletePromises = ids.map(id =>
+          fetch(`/api/users/${id}`, { method: 'DELETE' })
+        );
+
+        const results = await Promise.all(deletePromises);
+        const allSuccessful = results.every(res => res.ok);
+
+        if (allSuccessful) {
+          showMessage(`User(s) deleted successfully`, 'success');
+          await loadUsers();
+        } else {
+          // If mixed results or failure
+          const data = results.find(r => !r.ok);
+          // Try to get error text if possible, but response body might be consumed or tough to get from here easily without reading
+          showMessage('Error deleting some or all users', 'error');
+          await loadUsers();
+        }
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        showMessage('Server connection error', 'error');
+      } finally {
+        showLoading(false);
+        userIdToDelete = null; // Reset
+      }
+    });
+  }
 
 
   // Utility functions

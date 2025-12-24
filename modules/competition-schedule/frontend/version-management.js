@@ -96,8 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Show Custom Confirmation Modal
             if (confirmDeleteModal) {
-                confirmDeleteMessage.textContent = `Are you sure you want to delete ${idsToDelete.length} version(s)?`;
-                confirmDeleteList.innerHTML = names.map(n => `• ${n}`).join('<br>');
+                confirmDeleteMessage.innerHTML = `Are you sure you want to delete <strong>${idsToDelete.length}</strong> selected version(s)?`;
+                confirmDeleteList.innerHTML = '';
                 confirmDeleteModal.style.display = 'flex';
             }
         });

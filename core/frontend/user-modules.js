@@ -82,6 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
             headerRow.removeChild(headerRow.lastChild);
         }
 
+        // Add "None" column header
+        const thNone = document.createElement('th');
+        thNone.textContent = 'None';
+        thNone.style.color = '#999';
+        headerRow.appendChild(thNone);
+
         roles.forEach(role => {
             const th = document.createElement('th');
             th.textContent = role.Description;
@@ -145,6 +151,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentRoleId = currentUserRoles[moduleKey] || 0;
             // Use specific allowedRoles config, or fallback to general roleAccess, or allow all if neither exists
             const allowedRoles = module.allowedRoles || module.roleAccess;
+
+            // Add "None" option (Value 0)
+            const tdNone = document.createElement('td');
+            const isNoneChecked = !currentRoleId || currentRoleId === 0;
+            tdNone.innerHTML = `
+                <input type="radio" 
+                       name="role_${moduleKey}" 
+                       value="0" 
+                       class="role-radio" 
+                       ${isNoneChecked ? 'checked' : ''}>
+            `;
+            tr.appendChild(tdNone);
 
             roles.forEach(role => {
                 const td = document.createElement('td');

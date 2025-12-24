@@ -12,6 +12,14 @@ let currentPermissions = {
     currentUser: null
 };
 
+// Global for deletion
+let itemsToDelete = []; // Stores IDs of items to delete
+const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+const closeConfirmDeleteModal = document.getElementById('closeConfirmDeleteModal');
+const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+const confirmDeleteMessage = document.getElementById('confirmDeleteMessage');
+
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize MessageManager if available
     if (typeof MessageManager !== 'undefined') {
@@ -29,48 +37,77 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Search Functionality
-    const searchInput = document.getElementById('searchInput');
-    const clearSearch = document.getElementById('clearSearch');
-
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase().trim();
-            clearSearch.style.display = searchTerm ? 'flex' : 'none';
-
-            if (searchTerm === '') {
-                filteredReports = allReports;
-            } else {
-                filteredReports = allReports.filter(report => {
-                    // Filter based on flat properties returned by API
-                    // Properties are typically PascalCase from SQL: EventName, Location, ManagerName, Id
-                    const name = (report.EventName || '').toLowerCase();
-                    const loc = (report.Location || '').toLowerCase();
-                    const mgr = (report.ManagerName || '').toLowerCase();
-                    const createdBy = (report.CreatedBy || '').toLowerCase();
-                    const id = String(report.Id || '');
-
-                    return name.includes(searchTerm) ||
-                        loc.includes(searchTerm) ||
-                        mgr.includes(searchTerm) ||
-                        createdBy.includes(searchTerm) ||
-                        id.includes(searchTerm);
-                });
+    const delBtn = document.getElementById('deleteSelectedBtn');
+    if (delBtn) {
+        delBtn.addEventListener('click', () => {
+            const selected = Array.from(document.querySelectorAll('.row-checkbox:not(#selectAll):checked'))
+                .map(cb => cb.getAttribute('data-id'));
+            if (selected.length > 0) {
+                openDeleteModal(selected);
             }
-            renderTable(filteredReports);
         });
-    }
+    } // End filtering logic? No, this is closing search listener probably.
 
-    if (clearSearch) {
-        clearSearch.addEventListener('click', () => {
-            searchInput.value = '';
-            clearSearch.style.display = 'none';
-            filteredReports = allReports;
-            renderTable(filteredReports);
-            searchInput.focus();
+    // Confirm Delete Button Logic
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', async () => {
+            if (!itemsToDelete || itemsToDelete.length === 0) return;
+            hideDeleteModal();
+
+            try {
+                // Delete each item
+                // Use Promise.all
+                const promises = itemsToDelete.map(id =>
+                    fetch(`/api/event-management/${id}`, { method: 'DELETE' })
+                );
+
+                const results = await Promise.all(promises);
+                const allOk = results.every(r => r.ok);
+
+                if (allOk) {
+                    // Update list
+                    loadReports();
+                    // Clear selection
+                    itemsToDelete = [];
+                    // Disable delete button
+                    const delBtn = document.getElementById('deleteSelectedBtn');
+                    if (delBtn) delBtn.disabled = true;
+                    document.getElementById('selectAll').checked = false;
+
+                    if (typeof MessageManager !== 'undefined') {
+                        MessageManager.show('Selected reports deleted successfully.', 'success');
+                    } else {
+                        alert('Selected reports deleted successfully.');
+                    }
+                } else {
+                    alert('Error deleting some items.');
+                    loadReports(); // Reload to see what remains
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert('Error processing deletion.');
+            }
         });
     }
 });
+
+if (closeConfirmDeleteModal) closeConfirmDeleteModal.addEventListener('click', hideDeleteModal);
+if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+window.addEventListener('click', (e) => {
+    if (e.target === confirmDeleteModal) hideDeleteModal();
+});
+
+function openDeleteModal(ids) {
+    itemsToDelete = ids;
+    const count = ids.length;
+    confirmDeleteMessage.innerHTML = `Are you sure you want to delete <strong>${count}</strong> selected report(s)?`;
+    confirmDeleteModal.style.display = 'flex';
+}
+
+function hideDeleteModal() {
+    confirmDeleteModal.style.display = 'none';
+}
 
 async function loadPermissions() {
     try {
@@ -203,6 +240,39 @@ function renderTable(data) {
     });
 
     updateCheckboxListeners(); // Bind new checkboxes
+}
+
+function updateCheckboxListeners() {
+    const checkboxes = document.querySelectorAll('.row-checkbox:not(#selectAll)');
+    const deleteBtn = document.getElementById('deleteSelectedBtn');
+    const selectAll = document.getElementById('selectAll');
+
+    // Update button state based on selection
+    const updateButtonState = () => {
+        const selected = Array.from(checkboxes).filter(cb => cb.checked);
+        if (deleteBtn) {
+            deleteBtn.disabled = selected.length === 0;
+            // Removed text update "Delete Selected (N)" -> User prefers simple "Delete Selected"
+            // deleteBtn.innerHTML = ...
+        }
+    };
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateButtonState);
+    });
+
+    if (selectAll) {
+        selectAll.addEventListener('change', (e) => {
+            checkboxes.forEach(cb => cb.checked = e.target.checked);
+            updateButtonState();
+        });
+    }
+
+    // Attach click handler to Delete Button (ONLY ONCE)
+    // Remove old listeners first? Or assume this function is called once per render?
+    // Actually, this function is called on every renderTable. 
+    // Attaching listeners to permanent elements like deleteBtn here is BAD.
+    // Move deleteBtn listener to DOMContentLoaded or handle "off/on"
 }
 // Helper handled outside
 
@@ -867,64 +937,12 @@ async function viewSelectedReport() {
     await EventManager.loadReportForEdit(id, true); // true = viewOnly
 }
 
-async function deleteSelectedReports() {
-    const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
-    const ids = Array.from(checkedBoxes).map(cb => cb.dataset.id);
-    const names = Array.from(checkedBoxes).map(cb => cb.dataset.name);
 
-    if (ids.length === 0) return;
-
-    const confirmed = confirm(`Are you sure you want to delete ${ids.length} report(s)?\n\n${names.join('\n')}`);
-    if (!confirmed) return;
-
-    try {
-        const deletePromises = ids.map(id =>
-            fetch(`/api/event-management/${id}`, { method: 'DELETE' })
-                .then(res => {
-                    if (res.status === 401) {
-                        window.location.href = '/login.html';
-                        throw new Error('Unauthorized');
-                    }
-                    return res;
-                })
-        );
-
-        const results = await Promise.all(deletePromises);
-        const allSuccessful = results.every(res => res.ok);
-
-        if (allSuccessful) {
-            const msg = `Successfully deleted ${ids.length} report(s)!`;
-            if (typeof MessageManager !== 'undefined') MessageManager.show(msg, 'success');
-            else alert(msg);
-
-            if (document.getElementById('selectAll')) document.getElementById('selectAll').checked = false;
-            loadReports();
-        } else {
-            const msg = 'Some reports could not be deleted.';
-            if (typeof MessageManager !== 'undefined') MessageManager.show(msg, 'error');
-            else alert(msg);
-            loadReports();
-        }
-    } catch (error) {
-        console.error('Error deleting reports:', error);
-        alert('Error deleting reports');
-    }
-}
 
 // Bind Global Events (Ensure this runs after DOM load)
 document.addEventListener('DOMContentLoaded', () => {
-    const selectAll = document.getElementById('selectAll');
-    if (selectAll) {
-        selectAll.addEventListener('change', (e) => {
-            document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = e.target.checked);
-            updateSelectedCount();
-        });
-    }
-
-    const deleteBtn = document.getElementById('deleteSelectedBtn');
-    if (deleteBtn) {
-        deleteBtn.addEventListener('click', deleteSelectedReports);
-    }
+    // Note: selectAll and deleteSelectedBtn are handled in the main DOMContentLoaded block or updateCheckboxListeners
+    // We only need to add listeners for View and Add here if not already handled.
 
     const viewBtn = document.getElementById('viewReportBtn');
     if (viewBtn) {
@@ -940,3 +958,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+

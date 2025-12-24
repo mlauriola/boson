@@ -509,6 +509,85 @@ app.get('/api/users', isAdministrator, async (req, res) => {
   }
 });
 
+// API: Create User (Admin)
+app.post('/api/users', isAdministrator, async (req, res) => {
+  try {
+    const { username, password, referent, email, phone, roleId } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password required' });
+    }
+
+    const result = await pool.request()
+      .input('Username', sql.NVarChar, username)
+      .input('Password', sql.NVarChar, password)
+      .input('Email', sql.NVarChar, email || '')
+      .input('Referent', sql.NVarChar, referent || '')
+      .input('Phone', sql.NVarChar, phone || '')
+      .input('RoleId', sql.Int, roleId || 3) // Default to Viewer if not specified
+      .execute('sp_CreateUser');
+
+    // Check for explicit error result from SP
+    if (result.recordset && result.recordset[0] && result.recordset[0].Result === -1) {
+       return res.status(400).json({ error: result.recordset[0].ErrorMessage });
+    }
+
+    // sp_CreateUser returns default result set on success
+    res.status(201).json(result.recordset[0]);
+
+  } catch (err) {
+    console.error('Error creating user:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// API: Update User (Admin)
+app.put('/api/users/:userId', isAdministrator, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { username, password, referent, email, phone, roleId, recovery, recoveryOTP } = req.body;
+
+    const result = await pool.request()
+      .input('UserId', sql.Int, parseInt(userId))
+      .input('Username', sql.NVarChar, username)
+      .input('Password', sql.NVarChar, password) // Pass null/undefined if not changing
+      .input('Referent', sql.NVarChar, referent)
+      .input('Email', sql.NVarChar, email)
+      .input('Phone', sql.NVarChar, phone)
+      .input('RoleId', sql.Int, roleId)
+      .input('Recovery', sql.Int, recovery)
+      .input('RecoveryOTP', sql.NVarChar, recoveryOTP)
+      .execute('sp_UpdateUser');
+
+    if (result.recordset && result.recordset[0] && result.recordset[0].Result === -1) {
+        return res.status(404).json({ error: result.recordset[0].ErrorMessage });
+    }
+
+    res.json(result.recordset[0]);
+
+  } catch (err) {
+    console.error('Error updating user:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// API: Delete User (Admin) - Soft Delete
+app.delete('/api/users/:userId', isAdministrator, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Use direct query for soft delete as sp_DeleteUser is missing
+    await pool.request()
+      .input('UserId', sql.Int, parseInt(userId))
+      .query('UPDATE MP_T_USER SET Usr_IsValid = 0 WHERE Usr_Code = @UserId');
+
+    res.json({ success: true, message: 'User deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting user:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // API: Profile
 app.get('/api/profile', isAuthenticated, async (req, res) => {
   try {

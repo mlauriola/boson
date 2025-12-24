@@ -8,6 +8,14 @@ let currentPermissions = {
     currentUser: null
 };
 
+// Global for deletion
+let itemsToDelete = []; // Stores IDs of items to delete
+const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+const closeConfirmDeleteModal = document.getElementById('closeConfirmDeleteModal');
+const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+const confirmDeleteMessage = document.getElementById('confirmDeleteMessage');
+
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize MessageManager if available
     if (typeof MessageManager !== 'undefined') {
@@ -19,7 +27,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners
     setupEventListeners();
+
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', async () => {
+            if (!itemsToDelete || itemsToDelete.length === 0) return;
+            hideDeleteModal();
+
+            let successCount = 0;
+            // Single API DELETE calls sequence
+            for (const id of itemsToDelete) {
+                try {
+                    await fetch(`/api/missing-items/${id}`, { method: 'DELETE' });
+                    successCount++;
+                } catch (e) {
+                    console.error(`Failed to delete ${id}`, e);
+                }
+            }
+
+            if (successCount > 0) {
+                showMessage(`${successCount} items deleted.`, 'success');
+                loadItems();
+                // Reset
+                itemsToDelete = [];
+                const delBtn = document.getElementById('deleteSelectedBtn');
+                if (delBtn) delBtn.disabled = true;
+                document.getElementById('selectAll').checked = false;
+            } else {
+                alert('Error deleting items.');
+            }
+        });
+    }
+
+    if (closeConfirmDeleteModal) closeConfirmDeleteModal.addEventListener('click', hideDeleteModal);
+    if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+    window.addEventListener('click', (e) => {
+        if (e.target === confirmDeleteModal) hideDeleteModal();
+    });
 });
+
+function openDeleteModal(ids) {
+    itemsToDelete = ids;
+    const count = ids.length;
+    confirmDeleteMessage.innerHTML = `Are you sure you want to delete <strong>${count}</strong> selected item(s)?`;
+    confirmDeleteModal.style.display = 'flex';
+}
+
+function hideDeleteModal() {
+    confirmDeleteModal.style.display = 'none';
+}
 
 async function initModule() {
     await loadPermissions();
@@ -160,7 +215,10 @@ function setupEventListeners() {
 
     if (deleteSelectedBtn) {
         deleteSelectedBtn.addEventListener('click', () => {
-            deleteSelectedItems();
+            const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+            if (checkboxes.length === 0) return;
+            const ids = Array.from(checkboxes).map(cb => cb.getAttribute('data-id'));
+            openDeleteModal(ids);
         });
     }
 
@@ -314,23 +372,7 @@ async function saveItem() {
 }
 
 async function deleteItem(id) {
-    if (!confirm('Are you sure you want to delete this item?')) return;
-
-    try {
-        const response = await fetch(`/api/missing-items/${id}`, {
-            method: 'DELETE'
-        });
-
-        if (response.ok) {
-            showMessage('Item deleted successfully', 'success');
-            loadItems();
-        } else {
-            const err = await response.json();
-            alert('Error: ' + err.error);
-        }
-    } catch (e) {
-        alert('Delete failed: ' + e.message);
-    }
+    openDeleteModal([id]);
 }
 
 // --- Helpers ---

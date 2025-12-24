@@ -86,7 +86,7 @@
                             </div>
 
                             <div class="table-wrapper">
-                                <table class="table">
+                                <table class="table data-table" id="reportsTable">
                                     <thead>
                                         <tr>
                                             <th class="checkbox-col"><input type="checkbox" id="selectAll"
@@ -305,10 +305,28 @@
                     </div>
                 </div>
             </div>
+            <!-- Confirm Delete Modal -->
+            <div id="confirmDeleteModal" class="modal" style="display: none;">
+                <div class="modal-content" style="max-width: 450px;">
+                    <div class="modal-header">
+                        <h2>Confirm Deletion</h2>
+                        <span class="close" id="closeConfirmDeleteModal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirmDeleteMessage" style="margin-bottom: 20px; font-weight: 500;"></p>
+                        <p class="text-danger"><small><strong>Warning:</strong> This action cannot be undone.</small>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+                        <button class="btn btn-danger" id="confirmDeleteBtn">Delete Permanently</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="event-management.js"></script>
+    <script src="event-management.js?v=2"></script>
 </body>
 
 </html>

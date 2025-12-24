@@ -341,8 +341,14 @@ function updateSidebarMenuVisibility(roleId, moduleRoles = {}) {
       const moduleKey = item.dataset.moduleKey;
       let effectiveRole = roleId;
 
-      if (moduleKey && moduleRoles[moduleKey]) {
-        effectiveRole = moduleRoles[moduleKey];
+      if (moduleKey) {
+        if (moduleRoles && moduleRoles[moduleKey]) {
+          effectiveRole = moduleRoles[moduleKey];
+        } else {
+          // STRICT: If no role is assigned for this module, user has NO ACCESS (0).
+          // This applies to everyone, including Admins (Role 1), as requested.
+          effectiveRole = 0;
+        }
       }
 
       if (Array.isArray(roles)) {

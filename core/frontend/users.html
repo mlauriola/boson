@@ -15,7 +15,7 @@
   </script>
   <script src="common.js"></script>
   <script src="header-component.js?v=8"></script>
-  <script src="sidebar-component.js?v=14"></script>
+  <script src="sidebar-component.js?v=16"></script>
   <script src="maintenance-banner.js"></script>
 </head>
 
@@ -156,6 +156,7 @@
       </div>
 
       <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelAdd">Cancel</button>
         <button type="submit" class="btn btn-primary" form="addUserForm">Create</button>
       </div>
     </div>
@@ -222,13 +223,32 @@
       </div>
 
       <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelEdit">Cancel</button>
         <button type="submit" class="btn btn-primary" form="editUserForm">Update</button>
       </div>
     </div>
   </div>
 
+  <!-- Confirm Delete Modal (System Style) -->
+  <div id="confirmDeleteModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 450px;">
+      <div class="modal-header">
+        <h2>Confirm Deletion</h2>
+        <span class="close" id="closeConfirmDeleteModal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p id="confirmDeleteMessage" style="margin-bottom: 20px; font-weight: 500;"></p>
+        <p class="text-danger"><small><strong>Warning:</strong> This action cannot be undone.</small></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+        <button class="btn btn-danger" id="confirmDeleteBtn">Delete Permanently</button>
+      </div>
+    </div>
+  </div>
+
   <script src="help-modal.js?v=1"></script>
-  <script src="users.js?v=1"></script>
+  <script src="users.js?v=4"></script>
 </body>
 
 </html>
