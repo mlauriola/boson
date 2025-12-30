@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning - Event Management</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+        window.ACTIVE_PAGE = 'planningPage'; // Matches ID in modules.json
+        window.PAGE_TITLE = 'Planning & Calendar';
+        window.PAGE_DESCRIPTION = 'Manage events, resource allocations, and logistics timeline.';
+    </script>
+    <script src="/common.js"></script>
+    <script src="/header-component.js"></script>
+    <script src="/sidebar-component.js"></script>
+
+    <style>
+        /* Calendar Grid Layout */
+        .calendar-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            /* Fill available space */
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            /* Container clips, grid scrolls */
+            height: 100%;
+            /* Ensure it fills parent */
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            flex-shrink: 0;
+            /* Keep header fixed size */
+        }
+
+        .month-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .month-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--brand-color);
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(140px, 1fr));
+            /* Min col width forces scrolling */
+            grid-auto-rows: minmax(100px, 1fr);
+            flex: 1;
+            border-left: 1px solid #e9ecef;
+            border-top: 1px solid #e9ecef;
+            overflow: auto;
+            /* Enable Scrollbars */
+        }
+
+        .day-header {
+            text-align: center;
+            font-weight: 600;
+            padding: 10px;
+            background: #f1f3f5;
+            border-bottom: 1px solid #e9ecef;
+            border-right: 1px solid #e9ecef;
+            color: #495057;
+            position: sticky;
+            /* Sticky Headers */
+            top: 0;
+            z-index: 10;
+        }
+
+        .calendar-day {
+            border-right: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+            padding: 5px;
+            min-height: 100px;
+            background: #fff;
+            position: relative;
+        }
+
+        .calendar-day.other-month {
+            background: #f8f9fa;
+            color: #adb5bd;
+        }
+
+        .calendar-day.today {
+            background: #fff9db;
+            /* Light yellow highlight */
+        }
+
+        .day-number {
+            text-align: right;
+            font-weight: 600;
+            margin-bottom: 5px;
+            padding-right: 5px;
+        }
+
+        /* Event Bars */
+        .event-bar {
+            display: block;
+            padding: 2px 6px;
+            margin-bottom: 2px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #fff;
+            background-color: var(--brand-color, #0056b3);
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+            transition: opacity 0.2s;
+        }
+
+        .event-bar:hover {
+            opacity: 0.9;
+        }
+
+        .event-bar .delete-icon {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 2px;
+            font-weight: bold;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            text-align: center;
+            line-height: 14px;
+            font-size: 12px;
+        }
+
+        .event-bar:hover .delete-icon {
+            display: block;
+        }
+
+        /* --- QUARTERLY VIEW STYLES --- */
+        .quarterly-container {
+            display: none;
+            /* Hidden by default */
+            flex: 1;
+            flex-direction: column;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .quarterly-table-wrapper {
+            flex: 1;
+            overflow: auto;
+            /* Both X and Y scroll */
+            position: relative;
+        }
+
+        .quarterly-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: max-content;
+            /* Allow horizontal expansion */
+            font-size: 0.85rem;
+        }
+
+        .quarterly-table th,
+        .quarterly-table td {
+            box-sizing: border-box;
+            /* Include padding/border in width to fix overlaps */
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            padding: 4px 8px;
+            height: 30px;
+            white-space: nowrap;
+        }
+
+        /* Sticky Left Columns */
+        .sticky-col {
+            position: sticky;
+            background: #fff;
+            z-index: 20;
+            /* Above timeline cells */
+        }
+
+        .sticky-col.header {
+            z-index: 30;
+            /* Above regular sticky cols */
+            background-color: var(--table-header-bg);
+            color: var(--table-header-text);
+        }
+
+        /* Specific column widths - Recalculated for Client=80px (to fit "CLIENT"), Sub=100px, Title=300px */
+        .col-category {
+            left: 0;
+            width: 40px;
+            min-width: 40px;
+            max-width: 40px;
+            text-align: center;
+            display: table-cell;
+        }
+
+        .col-client {
+            left: 40px;
+            width: 65px;
+            min-width: 65px;
+            max-width: 65px;
+            text-align: center;
+            display: table-cell;
+        }
+
+        .col-event {
+            left: 105px;
+            width: 350px;
+            min-width: 350px;
+            max-width: 350px;
+            display: table-cell;
+        }
+
+        .col-status {
+            left: 455px;
+            /* 105 + 350 */
+            width: 80px;
+            min-width: 80px;
+            text-align: center;
+            display: table-cell;
+            border-right: 1px solid #ddd;
+            /* Explicit border to ensure visibility */
+            z-index: 25;
+            /* Ensure it sits ABOVE the manager column to keep border visible */
+        }
+
+        .col-manager {
+            left: 535px;
+            /* 455 + 80 */
+            width: 120px;
+            min-width: 120px;
+            display: table-cell;
+            border-right: 3px solid #666 !important;
+            /* Bold separator */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Total Freeze Width: 680px */
+
+        .timeline-cell {
+            min-width: 30px;
+            text-align: center;
+            padding: 0;
+            position: relative;
+        }
+
+        /* Sticky Header Rows (Dates) */
+        .sticky-row {
+            position: sticky;
+            top: 0;
+            background: #f8f9fa;
+            z-index: 25;
+        }
+
+        .sticky-row.row-2 {
+            top: 30px;
+            /* Below first header row */
+        }
+
+        /* Event Row Styling */
+        .row-event-header {
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .row-event-header td.sticky-col {
+            color: #333;
+            /* Keep metadata readable if needed, or colored */
+            /* Actually Google Sheet colors the whole row? User said "Header Row (Level 1) Ha un colore di sfondo pieno" */
+        }
+
+        .row-allocation {
+            background: #fafafa;
+        }
+
+        /* Gantt Bars */
+        .gantt-bar {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: 0;
+            right: 0;
+            background: #3498db;
+            /* Default */
+            border-radius: 4px;
+            z-index: 5;
+        }
+
+        /* View Switcher */
+        .view-switcher {
+            display: flex;
+            gap: 10px;
+            margin-right: 20px;
+        }
+
+        .view-btn {
+            background: #e9ecef;
+            border: 1px solid #ced4da;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .view-btn.active {
+            background: var(--brand-color);
+            color: #fff;
+            border-color: var(--brand-color);
+        }
+
+        .event-bar .delete-icon:hover {
+            background: #c00;
+        }
+
+        /* Modal Tabs */
+        .tab-nav {
+            display: flex;
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .tab-btn.active {
+            color: var(--brand-color);
+            border-bottom-color: var(--brand-color);
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* Allocation Row */
+        .alloc-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        /* Timeline Matrix Grid */
+        .timeline-matrix {
+            display: grid;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+            max-height: 400px;
+        }
+
+        .matrix-row {
+            display: flex;
+            min-width: max-content;
+        }
+
+        .matrix-cell {
+            width: 60px;
+            min-width: 60px;
+            padding: 4px;
+            border: 1px solid #eee;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .matrix-header {
+            font-weight: bold;
+            background: #f8f9fa;
+        }
+
+        .matrix-resource {
+            width: 150px;
+            min-width: 150px;
+            position: sticky;
+            left: 0;
+            background: #fff;
+            z-index: 1;
+            font-weight: 600;
+            border-right: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            padding-left: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="header" id="topBar"></header>
+
+        <div class="layout-wrapper">
+            <aside class="sidebar" id="sidebar"></aside>
+
+            <main class="main-content">
+                <div style="padding: 0 20px; flex: 1; min-height: 0; display: flex; flex-direction: column;">
+
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <div class="month-nav">
+                                <button class="btn btn-secondary" id="btnPrevMonth">&lt;</button>
+                                <div class="month-title" id="monthDisplay">January 2026</div>
+                                <button class="btn btn-secondary" id="btnNextMonth">&gt;</button>
+                            </div>
+
+                            <!-- View Tabs (Swapped Order as requested) -->
+                            <div class="sheet-tabs-container"
+                                style="flex:1; margin-left:20px; border-bottom: 1px solid #dee2e6;">
+                                <button class="btn btn-sm mr-1 btn-light" id="btnViewQuarterly">Quarterly</button>
+                                <button class="btn btn-sm mr-1 btn-primary" id="btnViewCalendar">Calendar</button>
+                            </div>
+
+                            <div style="flex:1;"> </div> <!-- Spacer -->
+
+                            <div class="filters" style="margin-right: 20px;">
+                                <select id="filterClient" class="form-control"
+                                    style="width: 150px; display:inline-block;">
+                                    <option value="">All Clients</option>
+                                    <!-- Populated dynamically -->
+                                </select>
+                                <select id="filterStatus" class="form-control"
+                                    style="width: 150px; display:inline-block;">
+                                    <option value="">All Statuses</option>
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+
+                            <button class="btn btn-primary" id="btnNewEvent">+ New Event</button>
+                        </div>
+
+                        <div class="calendar-grid" id="calendarGrid">
+                            <!-- Weekday Headers -->
+                            <div class="day-header">Mon</div>
+                            <div class="day-header">Tue</div>
+                            <div class="day-header">Wed</div>
+                            <div class="day-header">Thu</div>
+                            <div class="day-header">Fri</div>
+                            <div class="day-header">Sat</div>
+                            <div class="day-header">Sun</div>
+
+                            <!-- Days generated by JS -->
+                        </div>
+
+                        <div id="quarterlyView" class="quarterly-container">
+                            <!-- Filter bar removed to use shared main header -->
+                            <div class="quarterly-table-wrapper" id="quarterlyTableContainer">
+                                <!-- Table injected via JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+
+            <!-- 1. EVENT MODAL -->
+            <div id="eventModal" class="modal" style="display:none;">
+                <div class="modal-content" style="max-width: 900px;">
+                    <div class="modal-header">
+                        <h2 id="eventModalTitle">New Event</h2>
+                        <span class="close" id="closeEventModal">&times;</span>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- Navigation Tabs -->
+                        <div class="tab-nav">
+                            <button class="tab-btn active" data-tab="tabGeneral">General Details</button>
+                            <button class="tab-btn" data-tab="tabAllocations">Resources & Allocations</button>
+                        </div>
+
+                        <!-- Form -->
+                        <form id="eventForm">
+                            <input type="hidden" id="eventId">
+
+                            <!-- TAB: GENERAL -->
+                            <div id="tabGeneral" class="tab-pane active">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Client (Tag)</label>
+                                        <select id="eventClient" class="form-control" required>
+                                            <option value="">Select...</option>
+                                            <!-- WP, OG, SW tags -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sub-Client</label>
+                                        <input type="text" id="eventSubClient" class="form-control"
+                                            placeholder="e.g. AQUA">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group" style="flex: 2;">
+                                        <label>Event Name *</label>
+                                        <input type="text" id="eventName" class="form-control" required
+                                            placeholder="Event Name">
+                                    </div>
+                                    <div class="form-group" style="flex: 1;">
+                                        <label>Location</label>
+                                        <input type="text" id="eventLocation" class="form-control"
+                                            placeholder="City, Country">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Start Date *</label>
+                                        <input type="date" id="eventDateFrom" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>End Date *</label>
+                                        <input type="date" id="eventDateTo" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <select id="eventStatus" class="form-control">
+                                            <option value="Draft">Draft</option>
+                                            <option value="Confirmed">Confirmed</option>
+                                            <option value="Cancelled">Cancelled</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Manager (System)</label>
+                                        <select id="eventManager" class="form-control">
+                                            <!-- App Users -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Referent (Text/Ext)</label>
+                                        <input type="text" id="eventReferent" class="form-control"
+                                            placeholder="Name Override">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>General Notes</label>
+                                    <textarea id="eventNotes" class="form-control" rows="3"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- TAB: ALLOCATIONS -->
+                            <div id="tabAllocations" class="tab-pane">
+                                <div class="filter-actions"
+                                    style="justify-content: space-between; margin-bottom: 10px;">
+                                    <strong>Assigned Resources</strong>
+                                    <button type="button" class="btn btn-small btn-secondary disabled-if-new"
+                                        id="btnOpenTimelineMatrix">
+                                        View Timeline Matrix
+                                    </button>
+                                </div>
+
+                                <div id="allocationsContainer"
+                                    style="max-height: 300px; overflow-y: auto; border: 1px solid #eee; padding: 10px;">
+                                    <!-- Dynamic Allocation Rows -->
+                                </div>
+
+                                <button type="button" class="btn btn-outline" id="btnAddAllocation"
+                                    style="margin-top: 10px; width: 100%;">
+                                    + Add Resource
+                                </button>
+                                <p class="text-muted disabled-if-new-hint"
+                                    style="font-size: 0.8rem; margin-top: 5px; display:none;">
+                                    Save event first to manage full timeline functionality.
+                                </p>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="modal-footer" style="justify-content: space-between;">
+                        <button type="button" class="btn btn-danger" id="btnDeleteEvent" style="display: none;">Delete
+                            Event</button>
+                        <div style="margin-left: auto;">
+                            <button type="button" class="btn btn-secondary" id="btnCancelEvent">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="btnSaveEvent">Save Event</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Datalist for Roles -->
+            <datalist id="roleList"></datalist>
+
+            <!-- 2. TIMELINE MATRIX MODAL -->
+            <div id="timelineModal" class="modal" style="display:none;">
+                <div class="modal-content"
+                    style="max-width: 95vw; height: 80vh; display: flex; flex-direction: column;">
+                    <div class="modal-header">
+                        <h2>Event Timeline & Logistics</h2>
+                        <span class="close" id="closeTimelineModal">&times;</span>
+                    </div>
+                    <div class="modal-body" style="flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+                        <div style="margin-bottom: 15px;">
+                            <strong id="timelineEventName">Event Name</strong> <span
+                                id="timelineEventDates">Dates</span>
+                            <br>
+                            <small>Click cells to cycle status: TRAVEL (Yellow), HOTEL (Blue), WORK (Green)</small>
+                        </div>
+                        <div class="timeline-matrix-container" id="timelineMatrixContainer"
+                            style="flex: 1; overflow: auto; border: 1px solid #ccc;">
+                            <!-- Matrix Table Injected Here -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="btnCloseTimeline">Close</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. CONFIRM DELETE MODAL -->
+            <div id="confirmDeleteModal" class="modal" style="display: none;">
+                <div class="modal-content" style="max-width: 450px;">
+                    <div class="modal-header">
+                        <h2>Confirm Deletion</h2>
+                        <span class="close" id="closeConfirmDeleteModal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirmDeleteMessage">Are you sure you want to delete this event?</p>
+                        <p class="text-danger"><small>This action cannot be undone.</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+                        <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="planning.js"></script>
+</body>
+
+</html>
