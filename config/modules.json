@@ -102,6 +102,16 @@
                             1,
                             2
                         ]
+                    },
+                    {
+                        "label": "External Consultants",
+                        "link": "consultants.html",
+                        "id": "consultantsList",
+                        "roles": [
+                            1,
+                            2,
+                            3
+                        ]
                     }
                 ]
             }

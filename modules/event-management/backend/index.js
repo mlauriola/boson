@@ -65,6 +65,77 @@ export default async function setupEventReportModule(app, context) {
         }
     });
 
+    // --- CONSULTANTS API (Must be before Generic :id routes) ---
+
+    // API: Get Skills (Autocomplete)
+    app.get('/api/event-management/skills', isAuthenticated, checkModuleEnabled, async (req, res) => {
+        try {
+            const result = await modulePool.request().execute('sp_GetSkills');
+            res.json(result.recordset);
+        } catch (err) {
+            console.error('Error fetching skills:', err);
+            res.status(500).json({ error: 'Failed to fetch skills', details: err.message });
+        }
+    });
+
+    // API: Get Consultants
+    app.get('/api/event-management/consultants', isAuthenticated, checkModuleEnabled, async (req, res) => {
+        try {
+            const result = await modulePool.request().execute('sp_GetConsultants');
+            res.json(result.recordset);
+        } catch (err) {
+            console.error('Error fetching consultants:', err);
+            res.status(500).json({ error: 'Failed to fetch consultants', details: err.message });
+        }
+    });
+
+    // API: Save Consultant (Create/Update)
+    app.post('/api/event-management/consultants', isAuthenticated, checkModuleEnabled, async (req, res) => {
+        const roleId = req.session.moduleRoles['event-management'] || 4;
+        if (roleId === 4) return res.status(403).json({ error: 'Viewers cannot manage consultants.' });
+
+        try {
+            const { id, firstName, lastName, email, phone, notes, skills } = req.body;
+
+            // skills is expected to be an array of strings
+            console.log('DEBUG: Saving Consultant Payload:', req.body);
+            const skillsStr = Array.isArray(skills) ? skills.join(',') : skills;
+            console.log('DEBUG: skillsStr:', skillsStr);
+
+            const request = modulePool.request();
+            request.input('Id', sql.Int, id || null);
+            request.input('FirstName', sql.NVarChar(100), firstName);
+            request.input('LastName', sql.NVarChar(100), lastName);
+            request.input('Email', sql.NVarChar(255), email || null);
+            request.input('Phone', sql.NVarChar(50), phone || null);
+            request.input('Notes', sql.NVarChar(sql.MAX), notes || null);
+            request.input('SkillsList', sql.NVarChar(sql.MAX), skillsStr || null);
+
+            await request.execute('sp_SaveConsultant');
+
+            res.json({ success: true, message: 'Consultant saved successfully' });
+        } catch (err) {
+            console.error('Error saving consultant:', err);
+            res.status(500).json({ error: 'Failed to save consultant', details: err.message });
+        }
+    });
+
+    // API: Delete Consultant
+    app.delete('/api/event-management/consultants/:id', isAuthenticated, checkModuleEnabled, async (req, res) => {
+        const roleId = req.session.moduleRoles['event-management'] || 4;
+        if (roleId === 4) return res.status(403).json({ error: 'Viewers cannot delete consultants.' });
+
+        try {
+            const request = modulePool.request();
+            request.input('Id', sql.Int, req.params.id);
+            await request.execute('sp_DeleteConsultant');
+            res.json({ success: true });
+        } catch (err) {
+            console.error('Error deleting consultant:', err);
+            res.status(500).json({ error: 'Failed to delete consultant', details: err.message });
+        }
+    });
+
     // 4. API: Get Single Report by ID
     app.get('/api/event-management/:id', isAuthenticated, checkModuleEnabled, async (req, res) => {
         if (!modulePool) return res.status(500).json({ error: 'Database not connected' });
@@ -412,6 +483,8 @@ export default async function setupEventReportModule(app, context) {
             res.status(500).json({ error: 'Failed to delete item' });
         }
     });
+
+
 }
 
 // Helper Function to handle both Create and Update

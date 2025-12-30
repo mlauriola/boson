@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultants Management</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+        // Set active page for sidebar component
+        window.ACTIVE_PAGE = 'event-management';
+        window.PAGE_TITLE = 'Consultants Management';
+        window.PAGE_DESCRIPTION = 'Manage external consultants and their skills.';
+    </script>
+    <script src="/common.js"></script>
+    <script src="/header-component.js"></script>
+    <script src="/sidebar-component.js"></script>
+    <script src="/maintenance-banner.js"></script>
+
+    <style>
+        /* Specific styles for tag input */
+        .tags-input-wrapper {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            min-height: 38px;
+        }
+
+        .tags-input-wrapper input {
+            border: none;
+            outline: none;
+            flex-grow: 1;
+            padding: 5px;
+            min-width: 150px;
+        }
+
+        .tag {
+            background-color: var(--brand-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin: 2px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .tag .remove-tag {
+            margin-left: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .suggestions-list {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            border-top: none;
+            z-index: 1000;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 300px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .suggestions-list li {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .suggestions-list li:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header" id="topBar"></header>
+
+        <div class="layout-wrapper">
+            <aside class="sidebar" id="sidebar">
+                <!-- Sidebar content injected by sidebar-component.js -->
+            </aside>
+
+            <main class="main-content">
+                <div style="padding: 0 20px; flex: 1; overflow-y: auto;">
+                    <section class="users-section">
+                        <!-- Search Section -->
+                        <div class="filters-section" style="display: block; margin-bottom: 15px;">
+                            <div class="search-bar">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" class="search-icon">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.35-4.35"></path>
+                                </svg>
+                                <input type="text" id="searchInput" placeholder="Search by name, email or skill..."
+                                    class="search-input">
+                                <button id="clearSearch" class="btn-clear" style="display: none;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="content-card">
+                            <div class="filter-actions">
+                                <button class="btn btn-danger" id="deleteSelectedBtn" disabled>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" style="margin-right: 8px;">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
+                                    Delete Selected (<span id="selectedCount">0</span>)
+                                </button>
+                                <button class="btn btn-primary d-flex align-items-center" id="addConsultantBtn">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" style="margin-right: 8px;">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    Add Consultant
+                                </button>
+                            </div>
+
+                            <div class="table-wrapper">
+                                <table class="table data-table" id="consultantsTable">
+                                    <thead>
+                                        <tr>
+                                            <th class="checkbox-col">
+                                                <input type="checkbox" id="selectAll" class="row-checkbox">
+                                            </th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Skills</th>
+                                            <th style="width: 100px;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="consultantsTableBody">
+                                        <!-- Populated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+
+            <!-- Modal for New/Edit Consultant -->
+            <div id="consultantModal" class="modal" style="display:none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="modalTitle">Add Consultant</h2>
+                        <span class="close" id="closeModal">&times;</span>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="consultantForm">
+                            <input type="hidden" id="consultantId">
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>First Name *</label>
+                                    <input type="text" id="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name *</label>
+                                    <input type="text" id="lastName" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="email">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="text" id="phone">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="position: relative;">
+                                <label>Skills (Type and press Enter)</label>
+                                <div class="tags-input-wrapper" id="skillsWrapper">
+                                    <input type="text" id="skillInput" placeholder="Add a skill...">
+                                </div>
+                                <ul id="skillsSuggestions" class="suggestions-list" style="display: none;"></ul>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Notes</label>
+                                <textarea id="notes" rows="3"></textarea>
+                            </div>
+                            <!-- Implicit submit to catch Enter key -->
+                            <button type="submit" style="display: none;"></button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                        <button type="button" class="btn btn-primary"
+                            onclick="document.getElementById('consultantForm').requestSubmit()">Save</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirm Delete Modal (Reusing structure) -->
+            <div id="confirmDeleteModal" class="modal" style="display: none;">
+                <div class="modal-content" style="max-width: 450px;">
+                    <div class="modal-header">
+                        <h2>Confirm Deletion</h2>
+                        <span class="close" id="closeConfirmDeleteModal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirmDeleteMessage">Are you sure you want to delete this consultant?</p>
+                        <p class="text-danger"><small>This action cannot be undone.</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+                        <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="consultants.js"></script>
+</body>
+
+</html>
